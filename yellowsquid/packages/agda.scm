@@ -19,11 +19,13 @@
               (sha256
                (base32 "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))
     (build-system haskell-build-system)
-    (inputs (list agda))
-    (native-inputs (list ghc-filemanip))
+    (native-inputs (list agda ghc-filemanip))
     (outputs '("out" "doc"))
     (arguments
-     `(#:phases
+     `(#:modules ((guix build haskell-build-system)
+                  (guix build utils)
+                  (ice-9 receive))
+       #:phases
        (modify-phases %standard-phases
          (add-after 'build 'generate-everything
            (lambda* (#:key inputs #:allow-other-keys)
@@ -36,7 +38,7 @@
              (invoke "agda" "-i." "-isrc" "--html" "README.agda")))
          (delete 'haddock)
          (replace 'install
-           (lambda* (#:key outputs #:allow-other-keys)
+           (lambda* (#:key inputs outputs #:allow-other-keys)
              (define (install-file file target)
                (let ((dest (string-append target
                                           (if (string-suffix? "/" target)
@@ -55,7 +57,8 @@
              (let ((lib (string-append (assoc-ref outputs "out")
                                        "/share/agda/lib"))
                    (doc (string-append (assoc-ref outputs "doc")
-                                       "/share/doc/agda-stdlib-1.7.1")))
+                                       "/share/doc/agda-stdlib-1.7.1"))
+                   (agda (assoc-ref inputs "agda")))
                (mkdir-p lib)
                (mkdir-p doc)
                (call-with-output-file
@@ -70,7 +73,19 @@ include: stdlib\n"
                  (map (lambda (file)
                         (install-file file (string-append lib "/stdlib/")))
                       (find-files "." "\\.agda")))
-               (copy-recursively "_build" (string-append lib "/_build")))))
+               (receive (_ agda-ver)
+                   (package-name->name+version (strip-store-file-name agda))
+                 (with-directory-excursion
+                     (string-append "_build/" agda-ver "/agda/src")
+                   (map
+                    (lambda (file)
+                      (install-file
+                       file
+                       (string-append lib
+                                      "/_build/"
+                                      agda-ver
+                                      "/agda/stdlib/")))
+                    (find-files "." "\\.agdai")))))))
          (delete 'register))))
     (synopsis "Standard library for Agda")
     (description "The Agda standard library aims to contain all the tools needed
