@@ -25,13 +25,13 @@
     (arguments
      `(#:phases
        (modify-phases %standard-phases
-         (add-after 'build 'generate-everything
+         (add-after 'compile 'generate-everything
            (lambda* (#:key inputs #:allow-other-keys)
              (invoke "dist/build/GenerateEverything/GenerateEverything")))
-         (add-after 'generate-everything 'build-agdai
+         (add-after 'generate-everything 'compile-agda
            (lambda* (#:key inputs #:allow-other-keys)
              (invoke "agda" "-i." "-isrc" "Everything.agda")))
-         (add-after 'build-agdai 'build-doc
+         (add-after 'compile-agda 'build-doc
            (lambda* (#:key inputs #:allow-other-keys)
              (invoke "agda" "-i." "-isrc" "--html" "README.agda")))
          (delete 'haddock)
@@ -69,7 +69,8 @@ include: stdlib\n"
                (with-directory-excursion "src"
                  (map (lambda (file)
                         (install-file file (string-append lib "/stdlib/")))
-                      (find-files "." "\\.agdai?"))))))
+                      (find-files "." "\\.agda")))
+               (copy-recursively "_build" (string-append lib "/_build/")))))
          (delete 'register))))
     (synopsis "Standard library for Agda")
     (description "The Agda standard library aims to contain all the tools needed
