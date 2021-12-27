@@ -25,7 +25,7 @@
     (arguments
      `(#:phases
        (modify-phases %standard-phases
-         (add-after 'compile 'generate-everything
+         (add-after 'build 'generate-everything
            (lambda* (#:key inputs #:allow-other-keys)
              (invoke "dist/build/GenerateEverything/GenerateEverything")))
          (add-after 'generate-everything 'compile-agda
@@ -70,7 +70,7 @@ include: stdlib\n"
                  (map (lambda (file)
                         (install-file file (string-append lib "/stdlib/")))
                       (find-files "." "\\.agda")))
-               (copy-recursively "_build" (string-append lib "/_build/")))))
+               (copy-recursively "_build" (string-append lib "/_build")))))
          (delete 'register))))
     (synopsis "Standard library for Agda")
     (description "The Agda standard library aims to contain all the tools needed
