@@ -65,7 +65,7 @@
 name: standard-library-1.7.1
 include: stdlib\n"
                             port)))
-               (copy-recursively "html" (string-append lib "/"))
+               (copy-recursively "html" (string-append doc "/"))
                (with-directory-excursion "src"
                  (map (lambda (file)
                         (install-file file (string-append lib "/stdlib/")))
