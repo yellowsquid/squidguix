@@ -47,6 +47,6 @@
     (synopsis "Realtime policy and watchdog daemon")
     (description "RealtimeKit is a D-Bus system service that changes the
 scheduling policy of user processes/threads to SCHED_RR (i.e. realtime
-scheduling mode) on request. It is intended to be used as a secure mechanism
+scheduling mode) on request.  It is intended to be used as a secure mechanism
 to allow real-time scheduling to be used by normal user processes.")
     (license license:gpl3+)))

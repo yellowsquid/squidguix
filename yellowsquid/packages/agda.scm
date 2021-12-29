@@ -89,7 +89,7 @@ include: stdlib\n"
          (delete 'register))))
     (synopsis "Standard library for Agda")
     (description "The Agda standard library aims to contain all the tools needed
-to write both programs and proofs easily. Whilst the library tries to write
+to write both programs and proofs easily.  Whilst the library tries to write
 efficient code, ease of proof is prioritised over type-checking and
 normalisation performance.")
     (license license:expat)))
