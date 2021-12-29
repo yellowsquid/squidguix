@@ -22,6 +22,8 @@
                 (extensions
                  (list (service-extension dbus-root-service-type
                                           list)
+                       (service-extension polkit-service-type
+                                          list)
                        (service-extension account-service-type
                                           (const %rtkit-accounts))))
                 (default-value rtkit)
