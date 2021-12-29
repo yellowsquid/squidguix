@@ -43,7 +43,10 @@
                           "/share/dbus-1/system-services")
           ,(string-append "-Ddbus_interfacedir="
                           #$output
-                          "/share/dbus-1/interfaces"))))
+                          "/share/dbus-1/interfaces")
+          ,(string-append "-Ddbus_rulesdir="
+                          #$output
+                          "/etc/dbus-1/system.d"))))
     (synopsis "Realtime policy and watchdog daemon")
     (description "RealtimeKit is a D-Bus system service that changes the
 scheduling policy of user processes/threads to SCHED_RR (i.e. realtime
