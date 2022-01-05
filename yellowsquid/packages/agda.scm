@@ -7,10 +7,10 @@
   #:use-module (guix packages)
   #:use-module (yellowsquid build-system agda))
 
-(define-public agda-stdlib
+(define-public agda-stdlib-1.7
   (package
     (name "agda-stdlib")
-    (version "1.7.1")
+    (version "1.7")
     (home-page "https://github.com/agda/agda-stdlib")
     (source (origin
               (method git-fetch)
@@ -19,7 +19,7 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))
+                "14h3jprm6924g9576v25axn9v6xnip354hvpzlcqsc5qqyj7zzjs"))))
     (build-system agda-build-system)
     (native-inputs (list ghc ghc-filemanip))
     (arguments
@@ -107,3 +107,20 @@ needed to write both programs and proofs easily.  Whilst the library tries to
 write efficient code, ease of proof is prioritised over type-checking and
 normalisation performance.")
     (license license:expat)))
+
+(define-public agda-stdlib-1.7.1
+  (package
+    (inherit agda-stdlib-1.7)
+    (name "agda-stdlib")
+    (version "1.7.1")
+    (home-page "https://github.com/agda/agda-stdlib")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference (url home-page)
+                                  (commit (string-append "v" version))))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))))
+
+(define-public agda-stdlib agda-stdlib-1.7.1)
