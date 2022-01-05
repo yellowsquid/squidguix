@@ -1,10 +1,11 @@
 (define-module (yellowsquid packages agda)
   #:use-module (gnu packages agda)
+  #:use-module (gnu packages haskell)
   #:use-module (gnu packages haskell-xyz)
-  #:use-module (guix build-system haskell)
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (guix packages))
+  #:use-module (guix packages)
+  #:use-module (yellowsquid build-system agda))
 
 (define-public agda-stdlib
   (package
@@ -17,79 +18,92 @@
                                   (commit (string-append "v" version))))
               (file-name (git-file-name name version))
               (sha256
-               (base32 "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))
-    (build-system haskell-build-system)
-    (native-inputs (list agda ghc-filemanip))
-    (outputs '("out" "doc"))
+               (base32
+                "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))
+    (build-system agda-build-system)
+    (native-inputs (list ghc ghc-filemanip))
     (arguments
-     `(#:modules ((guix build haskell-build-system)
-                  (guix build utils)
-                  (ice-9 receive))
-       #:phases
+     '(#:phases
        (modify-phases %standard-phases
-         (add-after 'build 'generate-everything
-           (lambda* (#:key inputs #:allow-other-keys)
-             (invoke "dist/build/GenerateEverything/GenerateEverything")))
-         (add-after 'generate-everything 'compile-agda
-           (lambda* (#:key inputs #:allow-other-keys)
-             (invoke "agda" "-i." "-isrc" "Everything.agda")))
-         (add-after 'compile-agda 'build-doc
-           (lambda* (#:key inputs #:allow-other-keys)
-             (invoke "agda" "-i." "-isrc" "--html" "README.agda")))
-         (delete 'haddock)
-         (replace 'install
-           (lambda* (#:key inputs outputs #:allow-other-keys)
-             (define (install-file file target)
-               (let ((dest (string-append target
-                                          (if (string-suffix? "/" target)
-                                              file
-                                              (string-append "/" file)))))
-                 (format (current-output-port) "`~a' -> `~a'~%" file dest)
-                 (mkdir-p (dirname dest))
-                 (let ((stat (lstat file)))
-                   (case (stat:type stat)
-                     ((symlink)
-                      (let ((target (readlink file)))
-                        (symlink target dest)))
-                     (else
-                      (copy-file file dest))))))
+         (add-before 'build 'generate-everything
+           ;; taken from (gnu build haskell-build-system)
+           (lambda* (#:key outputs #:allow-other-keys)
+             (use-modules (srfi srfi-1))
+             (define %tmp-db-dir
+               (string-append (or (getenv "TMP") "/tmp")
+                              "/package.conf.d"))
 
-             (let ((lib (string-append (assoc-ref outputs "out")
-                                       "/share/agda/lib"))
-                   (doc (string-append (assoc-ref outputs "doc")
-                                       "/share/doc/agda-stdlib-1.7.1"))
-                   (agda (assoc-ref inputs "agda")))
-               (mkdir-p lib)
-               (mkdir-p doc)
-               (call-with-output-file
-                   (string-append lib "/standard-library.agda-lib")
-                 (lambda (port)
-                   (display "
-name: standard-library-1.7.1
-include: stdlib\n"
-                            port)))
-               (copy-recursively "html" (string-append doc "/"))
-               (with-directory-excursion "src"
-                 (map (lambda (file)
-                        (install-file file (string-append lib "/stdlib/")))
-                      (find-files "." "\\.agda")))
-               (receive (_ agda-ver)
-                   (package-name->name+version (strip-store-file-name agda))
-                 (with-directory-excursion
-                     (string-append "_build/" agda-ver "/agda/src")
-                   (map
-                    (lambda (file)
-                      (install-file
-                       file
-                       (string-append lib
-                                      "/_build/"
-                                      agda-ver
-                                      "/agda/stdlib/")))
-                    (find-files "." "\\.agdai")))))))
-         (delete 'register))))
+             (define (run-setuphs command params)
+               (let ((setup-file (cond
+                                  ((file-exists? "Setup.hs")
+                                   "Setup.hs")
+                                  ((file-exists? "Setup.lhs")
+                                   "Setup.lhs")
+                                  (else
+                                   #f)))
+                     (pkgdb (string-append "-package-db=" %tmp-db-dir)))
+                 (if setup-file
+                     (begin
+                       (format #t
+                               "running \"runhaskell Setup.hs\" with command \
+~s and parameters ~s~%"
+                               command params)
+                       (apply invoke
+                              "runhaskell"
+                              pkgdb
+                              setup-file
+                              command
+                              params))
+                     (error "no Setup.hs nor Setup.lhs found"))))
+
+             #;(run-setuphs "run" '("GenerateEverything"))
+             (let* ((out (assoc-ref outputs "out"))
+                    (name-version (strip-store-file-name out))
+                    (ghc-path (getenv "GHC_PACKAGE_PATH"))
+                    (conf-dirs (search-path-as-string->list
+                                (getenv "GHC_PACKAGE_PATH")))
+                    (conf-files (append-map
+                                 (lambda (file) (find-files file "\\.conf$"))
+                                 conf-dirs))
+                    (params `(,(string-append "--prefix=" out)
+                              ,(string-append "--libdir=" out "/lib")
+                              ,(string-append "--docdir="
+                                              out
+                                              "/share/doc/"
+                                              name-version)
+                              "--libsubdir=$compiler/$pkg-$version"
+                              ,(string-append "--package-db=" %tmp-db-dir)
+                              "--global"
+                              "--enable-shared"
+                              "--enable-executable-dynamic"
+                              "--ghc-option=-fPIC"
+                              ,(string-append
+                                "--ghc-option=-optl=-Wl,-rpath="
+                                out
+                                "/lib/$compiler/$pkg-$version"))))
+               (mkdir-p %tmp-db-dir)
+               (for-each
+                (lambda (file)
+                  (let ((dest (string-append %tmp-db-dir
+                                             "/"
+                                             (basename file))))
+                    (unless (file-exists? dest)
+                      (copy-file file dest))))
+                conf-files)
+               (invoke "ghc-pkg"
+                       (string-append "--package-db=" %tmp-db-dir)
+                       "recache")
+               (unsetenv "GHC_PACKAGE_PATH")
+               (when (file-exists? "configure")
+                 (setenv "CONFIG_SHELL" "sh"))
+               (run-setuphs "configure" params)
+               (setenv "GHC_PACKAGE_PATH" ghc-path)
+               (run-setuphs "build" '())
+               (invoke
+                "dist/build/GenerateEverything/GenerateEverything")))))))
     (synopsis "Standard library for Agda")
-    (description "The Agda standard library aims to contain all the tools needed
-to write both programs and proofs easily.  Whilst the library tries to write
-efficient code, ease of proof is prioritised over type-checking and
+    (description "The Agda standard library aims to contain all the tools
+needed to write both programs and proofs easily.  Whilst the library tries to
+write efficient code, ease of proof is prioritised over type-checking and
 normalisation performance.")
     (license license:expat)))
