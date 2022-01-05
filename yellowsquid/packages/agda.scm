@@ -125,7 +125,7 @@ normalisation performance.")
 
 (define-public agda-stdlib agda-stdlib-1.7.1)
 
-(define-public agda-categories-0.1.7.1
+(define-public agda-categories
   (package
     (name "agda-categories")
     (version "0.1.7.1")
