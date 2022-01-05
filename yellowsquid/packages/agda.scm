@@ -124,3 +124,26 @@ normalisation performance.")
                 "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))))
 
 (define-public agda-stdlib agda-stdlib-1.7.1)
+
+(define-public agda-categories-0.1.7.1
+  (package
+    (name "agda-categories")
+    (version "0.1.7.1")
+    (home-page "https://github.com/agda/agda-categories")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference (url home-page)
+                                  (commit (string-append "v" version))))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "1acb693ad2nrmnn6jxsyrlkc0di3kk2ksj2w9wnyfxrgvfsil7rn"))))
+    (build-system agda-build-system)
+    (inputs (list agda-stdlib-1.7))
+    (synopsis "Categories library for Agda")
+    (description "A proof-relevant category theory library for Agda.  The
+library contains definitions for many important parts of category theory.
+A major goal is to make the category ready to be incorporated into the
+standard library.  Note that the library is currently pre-beta software, and
+backwards compatibility is not assured.")
+    (license license:expat)))
