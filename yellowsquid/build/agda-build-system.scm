@@ -244,7 +244,7 @@
 
   (let* ((my-agda-lib (find+parse-agda-lib))
          (out (assoc-ref outputs "out"))
-         (name (agda-lib-name my-agda-lib))
+         (name (or (agda-lib-name my-agda-lib) (strip-store-file-name out)))
          (libdir (string-append out "/share/agda/lib/"))
          (my-agda-lib* (agda-lib
                         (inherit my-agda-lib)
