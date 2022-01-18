@@ -4,7 +4,6 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages pulseaudio)
-  #:use-module (gnu packages rust)
   #:use-module (gnu packages tls)
   #:use-module (guix build-system cargo)
   #:use-module (guix download)
@@ -67,8 +66,7 @@
         #:cargo-development-inputs
         (("rust-env-logger" ,rust-env-logger-0.7))
         #:features
-        '("pulseaudio_backend" "dbus_keyring" "dbus_mpris")
-        #:rust ,rust-1.56))
+        '("pulseaudio_backend" "dbus_keyring" "dbus_mpris")))
     (synopsis "A Spotify daemon")
     (description "This package provides a Spotify daemon")
     (license license:gpl3)))
