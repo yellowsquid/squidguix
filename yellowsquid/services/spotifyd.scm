@@ -72,7 +72,7 @@
        "[global]\n"
        ,@(match username
            (('raw value) (put-string "username" value))
-           (('cmd value) (put-string "username_cmd" value))
+           (('cmd value) (put-string "username_cmd" value)))
        ,@(if use-keyring?
              (put-boolean "use_keyring" #t)
              (match password
@@ -95,7 +95,7 @@
        ,@(put-maybe "normalisation_pregain" normalisation-pregain #f)
        ,@(put-maybe "zeroconf_port" zeroconf-port #f)
        ,@(put-maybe "proxy" proxy #f)
-       ,@(put-string "device_type" device-type))))))
+       ,@(put-string "device_type" device-type)))))
 
 (define (spotifyd-shepherd-service config)
   (list (shepherd-service
