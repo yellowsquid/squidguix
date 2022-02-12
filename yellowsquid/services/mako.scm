@@ -31,6 +31,7 @@
                         mako-files)
                        (service-extension
                         home-profile-service-type
-                        mako-configuration-package)))
+                        (lambda (config)
+                          (list (mako-configuration-package config))))))
                 (default-value (mako-configuration))
                 (description "Install and configure mako.")))
