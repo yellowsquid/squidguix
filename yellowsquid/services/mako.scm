@@ -21,7 +21,7 @@
        config
        (filter-configuration-fields
         mako-configuration-fields
-        'config-parts)))))
+        '(config-parts))))))
 
 (define mako-service-type
   (service-type (name 'mako)
