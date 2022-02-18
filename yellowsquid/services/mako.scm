@@ -17,11 +17,13 @@
 
 (define (mako-files config)
   `(("config/mako/config"
-     ,(serialize-configuration
-       config
-       (filter-configuration-fields
-        mako-configuration-fields
-        '(config-parts))))))
+     ,(mixed-text-file
+       "mako-config"
+       (serialize-configuration
+        config
+        (filter-configuration-fields
+         mako-configuration-fields
+         '(config-parts)))))))
 
 (define mako-service-type
   (service-type (name 'mako)
