@@ -34,7 +34,7 @@
           (format port "include:~%")
           (for-each (cut format port "  ~a~%" <>) includes))
         (unless (null? flags)
-          (format port "flag:~%")
+          (format port "flags:~%")
           (for-each (cut format port "  ~a~%" <>) flags))))))
 
 (define (parse-agda-lib filename)
