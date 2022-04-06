@@ -31,8 +31,6 @@
 (define* (lower name
                 #:key source inputs native-inputs outputs system target
                 (agda (default-agda))
-                (everything "Everything.agda")
-                (readme "README.agda")
                 #:allow-other-keys
                 #:rest arguments)
   (define private-keywords
@@ -57,6 +55,8 @@
 (define* (agda-build name inputs
                      #:key
                      guile source
+                     (everything "Everything.agda")
+                     (readme "README.agda")
                      (outputs '("out"))
                      (search-paths '())
                      (out-of-source? #t)
@@ -83,6 +83,8 @@
                             #:system #$system
                             #:outputs %outputs
                             #:inputs %build-inputs
+                            #:everything #$everything
+                            #:readme #$readme
                             #:search-paths
                             '#$(sexp->gexp
                                 (map search-path-specification->sexp
