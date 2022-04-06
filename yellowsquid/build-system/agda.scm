@@ -31,7 +31,6 @@
 (define* (lower name
                 #:key source inputs native-inputs outputs system target
                 (agda (default-agda))
-                (agda-inputs '())
                 #:allow-other-keys
                 #:rest arguments)
   (define private-keywords
@@ -40,13 +39,15 @@
   (bag
     (name name)
     (system system)
-    (host-inputs `(,@(if source
+    (target target)
+    (build-inputs `(,@(if source
                          `(("source" ,source))
                          '())
-                   ,@inputs
-                   ,@(standard-packages)))
-    (build-inputs `(("agda" ,agda)
-                    ,@native-inputs))
+                    ,@native-inputs
+                    ,@(if target '() inputs)
+                    ("agda" agda)
+                    ,@(standard-packages)))
+    (host-inputs (if target inputs '()))
     (outputs outputs)
     (build agda-build)
     (arguments (strip-keyword-arguments private-keywords arguments))))
