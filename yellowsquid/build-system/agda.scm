@@ -47,7 +47,7 @@
                          '())
                     ,@native-inputs
                     ,@(if target '() inputs)
-                    ("agda" agda)
+                    ("agda" ,agda)
                     ,@(standard-packages)))
     (host-inputs (if target inputs '()))
     (outputs outputs)
