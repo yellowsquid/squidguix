@@ -149,3 +149,30 @@ A major goal is to make the category ready to be incorporated into the
 standard library.  Note that the library is currently pre-beta software, and
 backwards compatibility is not assured.")
     (license license:expat)))
+
+(define-public cubical
+  (package
+    (name "cubical")
+    (version "0.3")
+    (home-page "https://github.com/agda/cubical")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference (url home-page)
+                                  (commit (string-append "v" version))))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "11pvsbswch77hyc4bz1fv1mn2gl01qalhfx7icx0hd0zghbnv8sx"))))
+    (build-system agda-build-system)
+    (inputs (list ghc))
+    (arguments
+     '(#:phases
+       (modify-phases %standard-phases
+         (add-before 'build 'generate-everything
+           (lambda* (#:key outputs #:allow-other-keys)
+             (invoke "make" "gen-everythings"))))
+       #:everything "Cubical/README.agda"
+       #:readme "Cubical/README.agda"))
+    (synopsis "Standard library for Cubical Agda")
+    (description "A standard library for Cubical Agda. ")
+    (license license:expat)))
