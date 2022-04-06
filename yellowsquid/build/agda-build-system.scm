@@ -44,7 +44,7 @@
     (define (helper chars)
       (match chars
         (() '())
-        ((#\- #\- (? char-whitespace?) rest ...) '())
+        ((#\- #\- (? char-whitespace?) _ ...) '())
         (((and c (? char-whitespace?)) rest ...)
          (let ((rec (helper rest)))
            (if (null? rec)
@@ -90,7 +90,7 @@
     (define* (duplicates xs #:optional (= equal?))
       (match xs
         (() #f)
-        ((x) #f)
+        ((_) #f)
         ((x y rest ...) (or (= x y) (duplicates (cons y rest) =)))))
     (let* ((sorted (sort headers string<)))
       (if (duplicates sorted)
@@ -192,17 +192,16 @@
                       (format #f "/share/agda/lib/~a.agda-lib" name)))))
          (agda-lib-depends agda-lib))))))
 
-(define* (build #:key outputs #:allow-other-keys)
+(define* (build #:key everything #:allow-other-keys)
   "Build a given Agda library."
   (invoke "agda"
           "--include-path=."
           "--library-file=libraries"
-          "Everything.agda"))
+          everything))
 
-(define* (build-docs #:key outputs #:allow-other-keys)
+(define* (build-docs #:key outputs readme #:allow-other-keys)
   "Build documentation for a given Agda library."
-  (let ((out (assoc-ref outputs "out"))
-        (readme (scandir "." (cut equal? "README.agda" <>))))
+  (let ((out (assoc-ref outputs "out")))
     (invoke "agda"
             "--include-path=."
             "--library-file=libraries"
@@ -211,9 +210,7 @@
                     "--html-dir=~a/share/doc/~a/html"
                     out
                     (strip-store-file-name out))
-            (match readme
-              ((filename) filename)
-              (_ "Everything.agda")))))
+            readme)))
 
 (define* (install #:key inputs outputs #:allow-other-keys)
   "Install a given Agda library."
@@ -233,14 +230,6 @@
              (symlink target dest)))
           (else
            (copy-file file dest))))))
-
-  (define (serialize-configuration config fields)
-    (apply string-append
-           (map (lambda (field)
-                  ((configuration-field-serializer field)
-                   (configuration-field-name field)
-                   ((configuration-field-getter field) config)))
-                fields)))
 
   (let* ((my-agda-lib (find+parse-agda-lib))
          (out (assoc-ref outputs "out"))

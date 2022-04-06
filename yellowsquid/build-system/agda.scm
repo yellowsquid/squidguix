@@ -31,6 +31,8 @@
 (define* (lower name
                 #:key source inputs native-inputs outputs system target
                 (agda (default-agda))
+                (everything "Everything.agda")
+                (readme "README.agda")
                 #:allow-other-keys
                 #:rest arguments)
   (define private-keywords

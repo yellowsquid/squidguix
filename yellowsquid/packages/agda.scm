@@ -140,6 +140,8 @@ normalisation performance.")
                 "1acb693ad2nrmnn6jxsyrlkc0di3kk2ksj2w9wnyfxrgvfsil7rn"))))
     (build-system agda-build-system)
     (inputs (list agda-stdlib-1.7))
+    (arguments
+     '(#:readme "Everything.agda"))
     (synopsis "Categories library for Agda")
     (description "A proof-relevant category theory library for Agda.  The
 library contains definitions for many important parts of category theory.
