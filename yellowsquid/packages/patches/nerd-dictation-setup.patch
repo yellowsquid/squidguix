@@ -1,0 +1,52 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index c228223..62cbcb4 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,2 +1,17 @@
++[project]
++name = "nerd-dictation"
++version = "0.0.1"
++description = "Offline text to speech"
++readme = "readme.rst"
++license = { text = "GPL-3.0-only" }
++dependencies = ["vosk>=0.3.32"]
++
++[project.scripts]
++nerd-dictation = "nerd_dictation:main"
++
+ [tool.black]
+ line-length = 119
++
++[build-system]
++requires = ["setuptools>=61"]
++build-backend = "setuptools.build_meta"
+diff --git a/setup.cfg b/setup.cfg
+new file mode 100644
+index 0000000..ba8d818
+--- /dev/null
++++ b/setup.cfg
+@@ -0,0 +1,15 @@
++[metadata]
++name = nerd-dictation
++version = 0.0.1
++description = Offline text to speech
++long_description = file: readme.rst
++license = GPL-3.0-only
++
++[options]
++py_modules = nerd_dictation
++install_requires =
++    vosk>="0.3.32"
++
++[options.entry_points]
++console_scripts =
++    nerd-dictation = nerd_dictation:main
+diff --git a/setup.py b/setup.py
+new file mode 100644
+index 0000000..6068493
+--- /dev/null
++++ b/setup.py
+@@ -0,0 +1,3 @@
++from setuptools import setup
++
++setup()
