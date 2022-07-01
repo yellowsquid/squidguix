@@ -1,5 +1,4 @@
 (define-module (yellowsquid packages vosk)
-  #:use-module (gnu packages)
   #:use-module (gnu packages audio)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages machine-learning)
@@ -13,7 +12,8 @@
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:use-module (srfi srfi-26))
+  #:use-module (srfi srfi-26)
+  #:use-module (yellowsquid packages))
 
 (define-public openfst-1.7.2
   (package
@@ -70,8 +70,7 @@
                (base32
                 "1inmw0wd0zvbz83cwk6x8svwycgxzzd9vd0n12xgjc4ypqlk8fk9"))
               (patches
-               (parameterize ((%patch-path (map (cut string-append <> "/yellowsquid/packages/patches") %load-path)))
-                 (search-patches "vosk-makefile.patch")))))
+               (search-patches "vosk-makefile.patch"))))
     (build-system python-build-system)
     (inputs (list openfst-1.7.2+far+lookahead+ngram
                   kaldi-501de70
@@ -113,8 +112,7 @@ programming languages.")
                 (sha256
                  (base32
                   "1lx8lgsqgs8qrss583wcyk7n0hv3xyr7wrwnvxhfjvpjx6jflmmx"))
-                (patches (parameterize ((%patch-path (map (cut string-append <> "/yellowsquid/packages/patches") %load-path)))
-                 (search-patches "nerd-dictation-setup.patch")) )
+                (patches (search-patches "nerd-dictation-setup.patch"))
                 (snippet #~(rename-file "nerd-dictation" "nerd_dictation.py"))))
       (build-system python-build-system)
       (arguments
