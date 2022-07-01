@@ -91,4 +91,4 @@
            (prepend glibc libgccjit libxcomposite)))))))
 
 (define-public emacs-native-comp
-  (emacs-with-native-comp emacs gcc-12))
+  (emacs-with-native-comp emacs gcc-12 'full-aot))
