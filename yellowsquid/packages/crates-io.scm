@@ -10,7 +10,8 @@
   #:use-module (guix build-system cargo)
   #:use-module (guix download)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (guix packages))
+  #:use-module (guix packages)
+  #:use-module (guix utils))
 
 (define-public rust-abort-on-panic-1
   (package
@@ -2151,35 +2152,6 @@ version = \"0.3.21\"
         (sha256
           (base32
             "0sk8rxiq3h2y33hdq15hnf915l8rv09zl9sgg2vjysvypms4ksrd"))))
-    (build-system cargo-build-system)
-    (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-bitflags" ,rust-bitflags-1)
-         ("rust-jack-sys" ,rust-jack-sys-0.2)
-         ("rust-lazy-static" ,rust-lazy-static-1)
-         ("rust-libc" ,rust-libc-0.2))))
-    (home-page
-      "https://github.com/RustAudio/rust-jack")
-    (synopsis "Real time audio and midi with JACK.")
-    (description
-      "Real time audio and midi with JACK.")
-    (license license:expat)))
-
-(define-public rust-jack-0.7
-  (package
-    (name "rust-jack")
-    (version "0.7.3")
-    (source
-      (origin
-        (method url-fetch)
-        (uri (crate-uri "jack" version))
-        (file-name
-          (string-append name "-" version ".tar.gz"))
-        (sha256
-          (base32
-            "1r7bgfpbph3fl9xyp4i9qffcc4h923dcs7d967mpir13lxg216yp"))))
     (inputs (list jack-1))
     (build-system cargo-build-system)
     (arguments
@@ -2187,8 +2159,7 @@ version = \"0.3.21\"
         (("rust-bitflags" ,rust-bitflags-1)
          ("rust-jack-sys" ,rust-jack-sys-0.2)
          ("rust-lazy-static" ,rust-lazy-static-1)
-         ("rust-libc" ,rust-libc-0.2)
-         ("rust-log" ,rust-log-0.4))
+         ("rust-libc" ,rust-libc-0.2))
         #:cargo-development-inputs
         (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5))
         #:phases
@@ -2199,7 +2170,7 @@ version = \"0.3.21\"
                   (begin
                     (let ((pid (primitive-fork)))
                       (if (= pid 0)
-                          (execl "./dummy_jack_server.sh" "dummy_jack_server.sh")
+                          (execlp "sh" "sh" "./dummy_jack_server.sh")
                           (begin
                             (setenv "RUST_TEST_THREADS" "1")
                             (apply invoke "cargo" "test" cargo-test-flags)
@@ -2212,29 +2183,35 @@ version = \"0.3.21\"
       "Real time audio and midi with JACK.")
     (license license:expat)))
 
+(define-public rust-jack-0.7
+  (package
+    (inherit rust-jack-0.6)
+    (version "0.7.3")
+    (source
+      (origin
+        (method url-fetch)
+        (uri (crate-uri "jack" version))
+        (file-name
+          (string-append (package-name rust-jack-0.6) "-" version ".tar.gz"))
+        (sha256
+          (base32
+            "1r7bgfpbph3fl9xyp4i9qffcc4h923dcs7d967mpir13lxg216yp"))))
+    (arguments
+     (substitute-keyword-arguments (package-arguments rust-jack-0.6)
+       ((#:cargo-inputs inputs)
+        (cons `("rust-log" ,rust-log-0.4) inputs))))))
+
 (define-public rust-jack-0.8
   (package
-    (name "rust-jack")
+    (inherit rust-jack-0.7)
     (version "0.8.4")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "jack" version))
-              (file-name (string-append name "-" version ".tar.gz"))
+              (file-name (string-append (package-name rust-jack-0.6) "-" version ".tar.gz"))
               (sha256
                (base32
-                "0lz10s0n2gy128m65pf96is9ip00vfgvnkfja0y9ydmv24pw2ajx"))))
-    (build-system cargo-build-system)
-    (arguments
-     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
-                       ("rust-jack-sys" ,rust-jack-sys-0.2)
-                       ("rust-lazy-static" ,rust-lazy-static-1)
-                       ("rust-libc" ,rust-libc-0.2)
-                       ("rust-log" ,rust-log-0.4))
-       #:cargo-development-inputs (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5))))
-    (home-page "https://github.com/RustAudio/rust-jack")
-    (synopsis "Real time audio and midi with JACK.")
-    (description "Real time audio and midi with JACK.")
-    (license license:expat)))
+                "0lz10s0n2gy128m65pf96is9ip00vfgvnkfja0y9ydmv24pw2ajx"))))))
 
 (define-public rust-jack-sys-0.2
   (package
