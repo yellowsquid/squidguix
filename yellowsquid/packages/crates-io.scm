@@ -374,6 +374,25 @@
       "Pure Rust implementation of Base64 (RFC 4648) which avoids any usages of\ndata-dependent branches/LUTs and thereby provides portable \"best effort\"\nconstant-time operation and embedded-friendly no_std support")
     (license (list license:asl2.0 license:expat))))
 
+(define-public rust-bitflags-0.3
+  (package
+    (name "rust-bitflags")
+    (version "0.3.4")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "bitflags" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "07rvj36f3ifi4vlgdm8h2ddv6s1aiglip0l6gn6ln49bjcy29ljg"))))
+    (build-system cargo-build-system)
+    (home-page "https://github.com/bitflags/bitflags")
+    (synopsis "A macro to generate structures which behave like bitflags.
+")
+    (description
+     "This package provides a macro to generate structures which behave like bitflags.")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-brotli-decompressor-2
   (package
     (name "rust-brotli-decompressor")
@@ -758,6 +777,28 @@ Argument Parser")
       "Implementation of Cookie storage and retrieval")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-coreaudio-rs-0.5
+  (package
+    (name "rust-coreaudio-rs")
+    (version "0.5.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "coreaudio-rs" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1njbj52xr8l96b9iy1g7xxmr6k2wjv766b0gm39w27rqnhfdv5vz"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-0.3)
+                       ("rust-coreaudio-sys" ,rust-coreaudio-sys-0.1)
+                       ("rust-libc" ,rust-libc-0.2))))
+    (home-page "https://github.com/RustAudio/coreaudio-rs")
+    (synopsis "A friendly rust interface for Apple's CoreAudio API.")
+    (description
+     "This package provides a friendly rust interface for Apple's CoreAudio API.")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-coreaudio-rs-0.10
   (package
     (name "rust-coreaudio-rs")
@@ -786,6 +827,27 @@ Argument Parser")
       "This package provides a friendly rust interface for Apple's CoreAudio API.")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-coreaudio-sys-0.1
+  (package
+    (name "rust-coreaudio-sys")
+    (version "0.1.2")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "coreaudio-sys" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0i6dh6sz1f4xrs3caq7sg20cgw7wsqk6zbqin96d2k1acabih8ri"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-libc" ,rust-libc-0.2))))
+    (home-page "https://github.com/RustAudio/coreaudio-sys")
+    (synopsis
+     "Bindings for Apple's CoreAudio frameworks generated via rust-bindgen")
+    (description
+     "Bindings for Apple's CoreAudio frameworks generated via rust-bindgen")
+    (license license:expat)))
+
 (define-public rust-coreaudio-sys-0.2
   (package
     (name "rust-coreaudio-sys")
@@ -812,6 +874,31 @@ Argument Parser")
     (description
       "Bindings for Apple's CoreAudio frameworks generated via rust-bindgen")
     (license license:expat)))
+
+(define-public rust-cpal-0.2
+  (package
+    (name "rust-cpal")
+    (version "0.2.12")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "cpal" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "04xplav35z7n0jpv2xlyg3n9jilna0z6qhs6c1vihpy6b56zd7cq"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-alsa-sys" ,rust-alsa-sys-0.3)
+                       ("rust-coreaudio-rs" ,rust-coreaudio-rs-0.5)
+                       ("rust-lazy-static" ,rust-lazy-static-0.2)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-ole32-sys" ,rust-ole32-sys-0.2)
+                       ("rust-winapi" ,rust-winapi-0.2))
+       #:cargo-development-inputs (("rust-vorbis" ,rust-vorbis-0.0.14))))
+    (home-page "https://github.com/rustaudio/cpal")
+    (synopsis "Low-level cross-platform audio I/O library in pure Rust.")
+    (description "Low-level cross-platform audio I/O library in pure Rust.")
+    (license license:asl2.0)))
 
 (define-public rust-cpal-0.13
   (package
@@ -1776,7 +1863,10 @@ version = \"0.3.21\"
           (base32
             "0jbm25p2nc8758dnfjan1yk7hz2i85y89nrbai14zzxfrsr4n5la"))))
     (build-system cargo-build-system)
-    (arguments `(#:skip-build? #t))
+    (inputs (list alsa-lib))
+    (native-inputs (list pkg-config))
+    (arguments
+     `(#:cargo-development-inputs (("rust-cpal" ,rust-cpal-0.2))))
     (home-page "https://github.com/ruuda/hound")
     (synopsis "A wav encoding and decoding library")
     (description
@@ -3390,6 +3480,29 @@ version = \"0.3.21\"
     (synopsis "FFI for libogg, the media container.")
     (description
       "FFI for libogg, the media container.")
+    (license license:expat)))
+
+(define-public rust-ole32-sys-0.2
+  (package
+    (name "rust-ole32-sys")
+    (version "0.2.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ole32-sys" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "134xg38xicrqynx4pfjfxnpp8x83m3gqw5j3s8y27rc22w14jb2x"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-winapi" ,rust-winapi-0.2)
+                       ("rust-winapi-build" ,rust-winapi-build-0.1))))
+    (home-page "https://github.com/retep998/winapi-rs")
+    (synopsis
+     "Contains function definitions for the Windows API library ole32. See winapi for types and constants.")
+    (description
+     "Contains function definitions for the Windows API library ole32.  See winapi for
+types and constants.")
     (license license:expat)))
 
 (define-public rust-owo-colors-1
