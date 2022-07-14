@@ -157,6 +157,27 @@
     (description "Wrapper around AFL source")
     (license license:asl2.0)))
 
+(define-public rust-al-sys-0.6
+  (package
+    (name "rust-al-sys")
+    (version "0.6.1")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "al-sys" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "08whlcfrhn4gqi4nbglkdqv5ysdpnvnlsqg51q34q9hh9l7rp3gz"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-cmake" ,rust-cmake-0.1)
+                       ("rust-libloading" ,rust-libloading-0.5)
+                       ("rust-rental" ,rust-rental-0.5))))
+    (home-page "https://github.com/jpernst/alto.git")
+    (synopsis "Raw bindings for OpenAL 1.1")
+    (description "Raw bindings for OpenAL 1.1")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-alsa-0.5
   (package
     (name "rust-alsa")
@@ -236,6 +257,29 @@
     (description
       "FFI bindings for the ALSA project (Advanced Linux Sound Architecture)")
     (license license:expat)))
+
+(define-public rust-alto-3
+  (package
+    (name "rust-alto")
+    (version "3.0.4")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "alto" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1rgsdmh346s3rwhzqacjc6nz7jap4dd72c1gfmkaq9sgzh9fhnyp"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-al-sys" ,rust-al-sys-0.6)
+                       ("rust-lazy-static" ,rust-lazy-static-0.2)
+                       ("rust-parking-lot" ,rust-parking-lot-0.4))))
+    (home-page "https://github.com/jpernst/alto.git")
+    (synopsis
+     "Idiomatic interface for OpenAL 1.1 and extensions (including EFX)")
+    (description
+     "Idiomatic interface for OpenAL 1.1 and extensions (including EFX)")
+    (license (list license:expat license:asl2.0))))
 
 (define-public rust-android-log-sys-0.2
   (package
@@ -2391,14 +2435,15 @@ version = \"0.3.21\"
             "0c60fn004awg5c3cvx82d6na2pirf0qdz9w3b93mbcdakbglhyvp"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
+      `(#:cargo-inputs
         (("rust-byteorder" ,rust-byteorder-1)
          ("rust-futures" ,rust-futures-0.1)
          ("rust-ogg" ,rust-ogg-0.8)
          ("rust-tinyvec" ,rust-tinyvec-1)
-         ("rust-tokio-io" ,rust-tokio-io-0.1))))
+         ("rust-tokio-io" ,rust-tokio-io-0.1))
+        #:cargo-development-inputs
+        (("rust-alto" ,rust-alto-3)
+         ("rust-ogg" ,rust-ogg-0.8))))
     (home-page "https://github.com/RustAudio/lewton")
     (synopsis "Pure Rust vorbis decoder")
     (description "Pure Rust vorbis decoder")
@@ -3592,6 +3637,28 @@ features.")
 types and constants.")
     (license license:expat)))
 
+(define-public rust-owning-ref-0.3
+  (package
+    (name "rust-owning-ref")
+    (version "0.3.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "owning-ref" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0dqgf5hwbmvkf2ffbik5xmhvaqvqi6iklhwk9x47n0wycd0lzy6d"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-stable-deref-trait" ,rust-stable-deref-trait-1))))
+    (home-page "https://github.com/Kimundi/owning-ref-rs")
+    (synopsis
+     "A library for creating references that carry their owner with them.")
+    (description
+     "This package provides a library for creating references that carry their owner
+with them.")
+    (license license:expat)))
+
 (define-public rust-owo-colors-1
   (package
     (name "rust-owo-colors")
@@ -3618,6 +3685,57 @@ types and constants.")
     (description
       "Zero-allocation terminal colors that'll make people go owo")
     (license license:expat)))
+
+(define-public rust-parking-lot-0.4
+  (package
+    (name "rust-parking-lot")
+    (version "0.4.8")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "parking-lot" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0ph0kv3dfcxpjbi83wkzammqb7lm95j8in7w7hz17hgkjxdqz78l"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-owning-ref" ,rust-owning-ref-0.3)
+                       ("rust-parking-lot-core" ,rust-parking-lot-core-0.2))
+       #:cargo-development-inputs (("rust-rand" ,rust-rand-0.3))))
+    (home-page "https://github.com/Amanieu/parking_lot")
+    (synopsis
+     "More compact and efficient implementations of the standard synchronization primitives.")
+    (description
+     "More compact and efficient implementations of the standard synchronization
+primitives.")
+    (license (list license:asl2.0 license:expat))))
+
+(define-public rust-parking-lot-core-0.2
+  (package
+    (name "rust-parking-lot-core")
+    (version "0.2.15")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "parking-lot-core" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "15qv920lymlbbwzzkkhn86i3q2pbvhlb7hlacfpai8fmpk1i5w6r"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-backtrace" ,rust-backtrace-0.3)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-petgraph" ,rust-petgraph-0.4)
+                       ("rust-rand" ,rust-rand-0.5)
+                       ("rust-smallvec" ,rust-smallvec-0.6)
+                       ("rust-thread-id" ,rust-thread-id-3)
+                       ("rust-winapi" ,rust-winapi-0.3))))
+    (home-page "https://github.com/Amanieu/parking_lot")
+    (synopsis
+     "An advanced API for creating custom synchronization primitives.")
+    (description
+     "An advanced API for creating custom synchronization primitives.")
+    (license (list license:asl2.0 license:expat))))
 
 (define-public rust-password-hash-0.2
   (package
@@ -3999,6 +4117,52 @@ types and constants.")
     (description
      "This package provides a Rust port of the `which` utility.  Locates an executable
 in the userâs path.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-rental-0.5
+  (package
+    (name "rust-rental")
+    (version "0.5.6")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "rental" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0bhzz2pfbg0yaw8p1l31bggq4jn077wslf6ifhj22vf3r8mgx2fc"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-rental-impl" ,rust-rental-impl-0.5)
+                       ("rust-stable-deref-trait" ,rust-stable-deref-trait-1))))
+    (home-page "https://github.com/jpernst/rental")
+    (synopsis
+     "A macro to generate safe self-referential structs, plus premade types for common use cases.")
+    (description
+     "This package provides a macro to generate safe self-referential structs, plus
+premade types for common use cases.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-rental-impl-0.5
+  (package
+    (name "rust-rental-impl")
+    (version "0.5.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "rental-impl" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1pj0qgmvwwsfwyjqyjxzikkwbwc3vj7hm3hdykr47dy5inbnhpj7"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-1))))
+    (home-page "https://www.jpernst.com")
+    (synopsis
+     "An implementation detail of rental. Should not be used directly.")
+    (description
+     "An implementation detail of rental.  Should not be used directly.")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-rodio-0.13
