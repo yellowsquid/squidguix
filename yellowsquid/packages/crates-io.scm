@@ -2609,6 +2609,69 @@ multiplication and division with overflow protection")
 features.")
     (license license:expat)))
 
+(define-public rust-ntest-proc-macro-helper-0.7
+  (package
+    (name "rust-ntest-proc-macro-helper")
+    (version "0.7.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ntest-proc-macro-helper" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0lkyfx97aynbm7cnhzyc9cr0rpq1xzng1hwmzizbf1a6855y6llg"))))
+    (build-system cargo-build-system)
+    (home-page "https://github.com/becheran/ntest")
+    (synopsis
+     "Provide helper functions for the procedural macros used in ntest.")
+    (description
+     "Provide helper functions for the procedural macros used in ntest.")
+    (license license:expat)))
+
+(define-public rust-ntest-test-cases-0.7
+  (package
+    (name "rust-ntest-test-cases")
+    (version "0.7.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ntest-test-cases" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1ghal2rb03cnj7ciqgdq0dvifdf8qp2hnmi9z1ip1j5b02s1xa4r"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-1))))
+    (home-page "https://github.com/becheran/ntest")
+    (synopsis "Test cases for ntest framework.")
+    (description "Test cases for ntest framework.")
+    (license license:expat)))
+
+(define-public rust-ntest-timeout-0.7
+  (package
+    (name "rust-ntest-timeout")
+    (version "0.7.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ntest-timeout" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "08v3r6hggh43qabl887pkz88k6lg6hrc62mppxyabb0pw44v03di"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-ntest-proc-macro-helper" ,rust-ntest-proc-macro-helper-0.7)
+                       ("rust-proc-macro-crate" ,rust-proc-macro-crate-1)
+                       ("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-1))))
+    (home-page "https://github.com/becheran/ntest")
+    (synopsis "Timeout attribute for the ntest framework.")
+    (description "Timeout attribute for the ntest framework.")
+    (license license:expat)))
+
 (define-public rust-num-enum-0.5
   (package
     (name "rust-num-enum")
