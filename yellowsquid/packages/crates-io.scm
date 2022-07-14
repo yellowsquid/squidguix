@@ -779,6 +779,45 @@ Argument Parser")
       "Implementation of Cookie storage and retrieval")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-core-foundation-0.9
+  (package
+    (name "rust-core-foundation")
+    (version "0.9.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "core-foundation" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0ii1ihpjb30fk38gdikm5wqlkmyr8k46fh4k2r8sagz5dng7ljhr"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-chrono" ,rust-chrono-0.4)
+                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-uuid" ,rust-uuid-0.5))))
+    (home-page "https://github.com/servo/core-foundation-rs")
+    (synopsis "Bindings to Core Foundation for macOS")
+    (description "Bindings to Core Foundation for macOS")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-core-foundation-sys-0.8
+  (package
+    (name "rust-core-foundation-sys")
+    (version "0.8.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "core-foundation-sys" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1p5r2wckarkpkyc4z83q08dwpvcafrb1h6fxfa3qnikh8szww9sq"))))
+    (build-system cargo-build-system)
+    (home-page "https://github.com/servo/core-foundation-rs")
+    (synopsis "Bindings to Core Foundation for macOS")
+    (description "Bindings to Core Foundation for macOS")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-coreaudio-rs-0.5
   (package
     (name "rust-coreaudio-rs")
@@ -2305,7 +2344,7 @@ version = \"0.3.21\"
 (define-public rust-keyring-0.10
   (package
     (name "rust-keyring")
-    (version "0.10.1")
+    (version "0.10.4")
     (source
       (origin
         (method url-fetch)
@@ -2314,20 +2353,20 @@ version = \"0.3.21\"
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "1ylz593bd2xw45839iivp6frclrfi1v2zz85qy9rkxlrh7s69k9b"))))
+            "0xs73nygvd6gb5mnisdxngqdh0i5vmbg0id8k1l0nfv6d8aqp6m4"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:cargo-inputs
+      `(#:tests? #f ;; Requires a secret service instance
+        #:cargo-inputs
         (("rust-byteorder" ,rust-byteorder-1)
-         ("rust-secret-service" ,rust-secret-service-1)
-         ("rust-security-framework"
-          ,rust-security-framework-0.4)
+         ("rust-secret-service" ,rust-secret-service-2)
+         ("rust-security-framework" ,rust-security-framework-2)
          ("rust-winapi" ,rust-winapi-0.3))
         #:cargo-development-inputs
         (("rust-clap" ,rust-clap-2)
-         ("rust-keychain-services"
-          ,rust-keychain-services-0.1)
-         ("rust-rpassword" ,rust-rpassword-2)
+         ("rust-rand" ,rust-rand-0.8)
+         ("rust-rpassword" ,rust-rpassword-5)
+         ("rust-serial-test" ,rust-serial-test-0.5)
          ("rust-tempfile" ,rust-tempfile-3))))
     (home-page
       "https://github.com/hwchen/keyring-rs")
@@ -3276,6 +3315,61 @@ version = \"0.3.21\"
       "Extensions to the standard library's networking types as proposed in RFC 1158.")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-nix-0.22
+  (package
+    (name "rust-nix")
+    (version "0.22.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "nix" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1bsgc8vjq07a1wg9vz819bva3dvn58an4r87h80dxrfqkqanz4g4"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
+                       ("rust-cc" ,rust-cc-1)
+                       ("rust-cfg-if" ,rust-cfg-if-1)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-memoffset" ,rust-memoffset-0.6))
+       #:cargo-development-inputs (("rust-assert-impl" ,rust-assert-impl-0.1)
+                                   ("rust-caps" ,rust-caps-0.5)
+                                   ("rust-lazy-static" ,rust-lazy-static-1)
+                                   ("rust-rand" ,rust-rand-0.8)
+                                   ("rust-semver" ,rust-semver-1)
+                                   ("rust-sysctl" ,rust-sysctl-0.1)
+                                   ("rust-tempfile" ,rust-tempfile-3))))
+    (home-page "https://github.com/nix-rust/nix")
+    (synopsis "Rust friendly bindings to *nix APIs")
+    (description "Rust friendly bindings to *nix APIs")
+    (license license:expat)))
+
+(define-public rust-ntest-0.7
+  (package
+    (name "rust-ntest")
+    (version "0.7.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ntest" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0i4xsvx52hmcnga2xbjl74hdylz4jy8bc2swcichlvw1di4lwm2w"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-ntest-proc-macro-helper" ,rust-ntest-proc-macro-helper-0.7)
+                       ("rust-ntest-test-cases" ,rust-ntest-test-cases-0.7)
+                       ("rust-ntest-timeout" ,rust-ntest-timeout-0.7))
+       #:cargo-development-inputs (("rust-tokio" ,rust-tokio-1))))
+    (home-page "https://github.com/becheran/ntest")
+    (synopsis
+     "Testing framework for rust which enhances the built-in library with some useful features.")
+    (description
+     "Testing framework for rust which enhances the built-in library with some useful
+features.")
+    (license license:expat)))
+
 (define-public rust-num-enum-0.5
   (package
     (name "rust-num-enum")
@@ -4182,38 +4276,34 @@ in the userâs path.")
       "Raw SDL2 bindings for Rust, used internally rust-sdl2")
     (license license:expat)))
 
-(define-public rust-secret-service-1
+(define-public rust-secret-service-2
   (package
     (name "rust-secret-service")
-    (version "1.1.3")
-    (source
-      (origin
-        (method url-fetch)
-        (uri (crate-uri "secret-service" version))
-        (file-name
-          (string-append name "-" version ".tar.gz"))
-        (sha256
-          (base32
-            "12hxz35i7sw5xsdldz1c6776fmz98z4dwh5779jis98w61020xbd"))))
+    (version "2.0.2")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "secret-service" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "18l0yz9sb062jddcx56qi70d4ry2js3irkgysdgii0w77d15rnp1"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-aes" ,rust-aes-0.6)
-         ("rust-block-modes" ,rust-block-modes-0.7)
-         ("rust-dbus" ,rust-dbus-0.2)
-         ("rust-hkdf" ,rust-hkdf-0.10)
-         ("rust-lazy-static" ,rust-lazy-static-1)
-         ("rust-num" ,rust-num-0.3)
-         ("rust-rand" ,rust-rand-0.7)
-         ("rust-sha2" ,rust-sha2-0.9))))
-    (home-page
-      "https://github.com/hwchen/secret-service-rs.git")
-    (synopsis
-      "Library to interface with Secret Service API")
-    (description
-      "Library to interface with Secret Service API")
+     `(#:cargo-inputs (("rust-aes" ,rust-aes-0.7)
+                       ("rust-block-modes" ,rust-block-modes-0.8)
+                       ("rust-hkdf" ,rust-hkdf-0.11)
+                       ("rust-lazy-static" ,rust-lazy-static-1)
+                       ("rust-num" ,rust-num-0.4)
+                       ("rust-rand" ,rust-rand-0.8)
+                       ("rust-serde" ,rust-serde-1)
+                       ("rust-sha2" ,rust-sha2-0.9)
+                       ("rust-zbus" ,rust-zbus-1)
+                       ("rust-zbus-macros" ,rust-zbus-macros-1)
+                       ("rust-zvariant" ,rust-zvariant-2)
+                       ("rust-zvariant-derive" ,rust-zvariant-derive-2))))
+    (home-page "https://github.com/hwchen/secret-service-rs.git")
+    (synopsis "Library to interface with Secret Service API")
+    (description "Library to interface with Secret Service API")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-security-framework-0.4
@@ -4250,6 +4340,35 @@ in the userâs path.")
       "Security.framework bindings for macOS and iOS")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-security-framework-2
+  (package
+    (name "rust-security-framework")
+    (version "2.6.1")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "security-framework" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1p0hgqba3h2glm7mgp5d45l2gpmh28kn5vddlfa032mg5wblzh9d"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
+                       ("rust-core-foundation" ,rust-core-foundation-0.9)
+                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-log" ,rust-log-0.4)
+                       ("rust-num-bigint" ,rust-num-bigint-0.4)
+                       ("rust-security-framework-sys" ,rust-security-framework-sys-2))
+       #:cargo-development-inputs (("rust-env-logger" ,rust-env-logger-0.9)
+                                   ("rust-hex" ,rust-hex-0.4)
+                                   ("rust-tempdir" ,rust-tempdir-0.3)
+                                   ("rust-x509-parser" ,rust-x509-parser-0.12))))
+    (home-page "https://lib.rs/crates/security_framework")
+    (synopsis "Security.framework bindings for macOS and iOS")
+    (description "Security.framework bindings for macOS and iOS")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-security-framework-sys-0.4
   (package
     (name "rust-security-framework-sys")
@@ -4277,6 +4396,26 @@ in the userâs path.")
       "Apple `Security.framework` low-level FFI bindings")
     (description
       "Apple `Security.framework` low-level FFI bindings")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-security-framework-sys-2
+  (package
+    (name "rust-security-framework-sys")
+    (version "2.6.1")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "security-framework-sys" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0mn5lm0jip9nm6ydqm6qd9alyiwq15c027777jsbyibs2wxa2q01"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+                       ("rust-libc" ,rust-libc-0.2))))
+    (home-page "https://lib.rs/crates/security-framework-sys")
+    (synopsis "Apple `Security.framework` low-level FFI bindings")
+    (description "Apple `Security.framework` low-level FFI bindings")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-shannon-0.2
@@ -5382,6 +5521,93 @@ in the userâs path.")
       "Retrieve the current user and environment.")
     (license (list license:expat license:boost1.0))))
 
+(define-public rust-zbus-1
+  (package
+    (name "rust-zbus")
+    (version "1.9.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "zbus" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0jgwydwjgk16dyrzdbc1k0dnqj9kv9p3fwcv92a7l9np3hlv5glw"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-async-io" ,rust-async-io-1)
+                       ("rust-byteorder" ,rust-byteorder-1)
+                       ("rust-derivative" ,rust-derivative-2)
+                       ("rust-enumflags2" ,rust-enumflags2-0.6)
+                       ("rust-fastrand" ,rust-fastrand-1)
+                       ("rust-futures" ,rust-futures-0.3)
+                       ("rust-nb-connect" ,rust-nb-connect-1)
+                       ("rust-nix" ,rust-nix-0.22)
+                       ("rust-once-cell" ,rust-once-cell-1)
+                       ("rust-polling" ,rust-polling-2)
+                       ("rust-scoped-tls" ,rust-scoped-tls-1)
+                       ("rust-serde" ,rust-serde-1)
+                       ("rust-serde-xml-rs" ,rust-serde-xml-rs-0.4)
+                       ("rust-serde-repr" ,rust-serde-repr-0.1)
+                       ("rust-zbus-macros" ,rust-zbus-macros-1)
+                       ("rust-zvariant" ,rust-zvariant-2))
+       #:cargo-development-inputs (("rust-doc-comment" ,rust-doc-comment-0.3)
+                                   ("rust-ntest" ,rust-ntest-0.7)
+                                   ("rust-zbus-polkit" ,rust-zbus-polkit-1))))
+    (home-page "https://gitlab.freedesktop.org/dbus/zbus/")
+    (synopsis "API for D-Bus communication")
+    (description "API for D-Bus communication")
+    (license license:expat)))
+
+(define-public rust-zbus-macros-1
+  (package
+    (name "rust-zbus-macros")
+    (version "1.9.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "zbus-macros" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "19p0pdwdf52zkaknav0pj5qvgcf52xk8a4p3a4ymxybwhjkmjfgs"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-proc-macro-crate" ,rust-proc-macro-crate-0.1)
+                       ("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-1))
+       #:cargo-development-inputs (("rust-rustversion" ,rust-rustversion-1)
+                                   ("rust-serde" ,rust-serde-1)
+                                   ("rust-trybuild" ,rust-trybuild-1)
+                                   ("rust-zbus" ,rust-zbus-1)
+                                   ("rust-zvariant" ,rust-zvariant-2))))
+    (home-page "https://gitlab.freedesktop.org/dbus/zbus/")
+    (synopsis "proc-macros for zbus")
+    (description "proc-macros for zbus")
+    (license license:expat)))
+
+(define-public rust-zbus-polkit-1
+  (package
+    (name "rust-zbus-polkit")
+    (version "1.2.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "zbus-polkit" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1yzbs8sga4s3h97vb6n5nvdvlnmhws2vj46bn44hbncfm25f51mc"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-enumflags2" ,rust-enumflags2-0.6)
+                       ("rust-serde" ,rust-serde-1)
+                       ("rust-serde-repr" ,rust-serde-repr-0.1)
+                       ("rust-zbus" ,rust-zbus-1)
+                       ("rust-zvariant" ,rust-zvariant-2))))
+    (home-page "https://gitlab.freedesktop.org/dbus/zbus/")
+    (synopsis "PolicyKit binding")
+    (description "PolicyKit binding")
+    (license license:expat)))
+
 (define-public rust-zeroize-0.4
   (package
     (name "rust-zeroize")
@@ -5410,3 +5636,59 @@ in the userâs path.")
       "Securely clear secrets from memory with a simple trait built on stable Rust\nprimitives which guarantee memory is zeroed using an operation will not be\n'optimized away' by the compiler.  Uses a portable pure Rust implementation that\nworks everywhere, even WASM!")
     (license (list license:asl2.0 license:expat))))
 
+(define-public rust-zvariant-2
+  (package
+    (name "rust-zvariant")
+    (version "2.10.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "zvariant" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0995d59vl8409mk3qrbshqrz5d76dq52szg0x2vqji07y9app356"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-arrayvec" ,rust-arrayvec-0.5)
+                       ("rust-byteorder" ,rust-byteorder-1)
+                       ("rust-enumflags2" ,rust-enumflags2-0.6)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-serde" ,rust-serde-1)
+                       ("rust-serde-bytes" ,rust-serde-bytes-0.11)
+                       ("rust-static-assertions" ,rust-static-assertions-1)
+                       ("rust-zvariant-derive" ,rust-zvariant-derive-2))
+       #:cargo-development-inputs (("rust-criterion" ,rust-criterion-0.3)
+                                   ("rust-rand" ,rust-rand-0.8)
+                                   ("rust-serde-json" ,rust-serde-json-1)
+                                   ("rust-serde-repr" ,rust-serde-repr-0.1))))
+    (home-page "https://gitlab.freedesktop.org/dbus/zbus/")
+    (synopsis "D-Bus & GVariant encoding & decoding")
+    (description "D-Bus & GVariant encoding & decoding")
+    (license license:expat)))
+
+(define-public rust-zvariant-derive-2
+  (package
+    (name "rust-zvariant-derive")
+    (version "2.10.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "zvariant-derive" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1s9xk9c4p9vl0j2vr1abqc12mgv500sjc3fnh8ij3d1yb4i5xjp4"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-proc-macro-crate" ,rust-proc-macro-crate-1)
+                       ("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-1))
+       #:cargo-development-inputs (("rust-byteorder" ,rust-byteorder-1)
+                                   ("rust-enumflags2" ,rust-enumflags2-0.6)
+                                   ("rust-serde" ,rust-serde-1)
+                                   ("rust-serde-repr" ,rust-serde-repr-0.1)
+                                   ("rust-zvariant" ,rust-zvariant-2))))
+    (home-page "https://gitlab.freedesktop.org/dbus/zbus/")
+    (synopsis "D-Bus & GVariant encoding & decoding")
+    (description "D-Bus & GVariant encoding & decoding")
+    (license license:expat)))
