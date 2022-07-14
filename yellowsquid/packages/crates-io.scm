@@ -564,13 +564,15 @@
             "1lb2li71zvpxp80nck98gcqbqm3dnmp43pnlvm52z9x8livy9vmn"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-once-cell" ,rust-once-cell-1)
-         ("rust-owo-colors" ,rust-owo-colors-1)
-         ("rust-tracing-core" ,rust-tracing-core-0.1)
-         ("rust-tracing-error" ,rust-tracing-error-0.1))))
+     `(#:cargo-inputs
+       (("rust-once-cell" ,rust-once-cell-1)
+        ("rust-owo-colors" ,rust-owo-colors-1)
+        ("rust-tracing-core" ,rust-tracing-core-0.1)
+        ("rust-tracing-error" ,rust-tracing-error-0.1))
+       #:cargo-development-inputs
+       (("rust-ansi-parser" ,rust-ansi-parser-0.6)
+        ("rust-tracing" ,rust-tracing-0.1)
+        ("rust-tracing-subscriber" ,rust-tracing-subscriber-0.2))))
     (home-page
       "https://github.com/yaahc/color-spantrace")
     (synopsis
