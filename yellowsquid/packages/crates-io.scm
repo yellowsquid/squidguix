@@ -2,6 +2,8 @@
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages crates-graphics)
   #:use-module (gnu packages crates-gtk)
+  #:use-module (gnu packages linux)
+  #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages rust-apps)
   #:use-module (guix build-system cargo)
   #:use-module (guix download)
@@ -84,8 +86,11 @@
           (base32
             "03nmld6vbpxqg22fy07p51x2rmwl7bzsc7rszhd03gyknd5ldaqb"))))
     (build-system cargo-build-system)
+    (inputs (list alsa-lib))
+    (native-inputs (list pkg-config))
     (arguments
-      `(#:cargo-inputs
+      `(#:tests? #f
+        #:cargo-inputs
         (("rust-alsa-sys" ,rust-alsa-sys-0.3)
          ("rust-bitflags" ,rust-bitflags-1)
          ("rust-libc" ,rust-libc-0.2)
