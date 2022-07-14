@@ -1,4 +1,5 @@
 (define-module (yellowsquid packages crates-io)
+  #:use-module (gnu packages audio)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages crates-graphics)
   #:use-module (gnu packages crates-gtk)
@@ -2179,16 +2180,31 @@ version = \"0.3.21\"
         (sha256
           (base32
             "1r7bgfpbph3fl9xyp4i9qffcc4h923dcs7d967mpir13lxg216yp"))))
+    (inputs (list jack-1))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
+      `(#:cargo-inputs
         (("rust-bitflags" ,rust-bitflags-1)
          ("rust-jack-sys" ,rust-jack-sys-0.2)
          ("rust-lazy-static" ,rust-lazy-static-1)
          ("rust-libc" ,rust-libc-0.2)
-         ("rust-log" ,rust-log-0.4))))
+         ("rust-log" ,rust-log-0.4))
+        #:cargo-development-inputs
+        (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5))
+        #:phases
+        (modify-phases %standard-phases
+          (replace 'check
+            (lambda* (#:key tests? (cargo-test-flags '("--release")) #:allow-other-keys)
+              (if tests?
+                  (begin
+                    (let ((pid (primitive-fork)))
+                      (if (= pid 0)
+                          (execl "./dummy_jack_server.sh" "dummy_jack_server.sh")
+                          (begin
+                            (setenv "RUST_TEST_THREADS" "1")
+                            (apply invoke "cargo" "test" cargo-test-flags)
+                            (unsetenv "RUST_TEST_THREADS")
+                            (kill pid SIGINT)))))))))))
     (home-page
       "https://github.com/RustAudio/rust-jack")
     (synopsis "Real time audio and midi with JACK.")
