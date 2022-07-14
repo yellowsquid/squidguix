@@ -965,12 +965,14 @@ Argument Parser")
         (sha256
           (base32
             "0b85dl7y396g8xh1xh89wxnb1fvvf840dar9axavfhhhlq7c385l"))))
+    (inputs (list dbus))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
+      `(#:tests? #f ;; Fails to create dbus instance.
         #:cargo-inputs
-        (("rust-libc" ,rust-libc-0.2))))
+        (("rust-libc" ,rust-libc-0.2))
+        #:cargo-development-inputs
+        (("rust-tempdir" ,rust-tempdir-0.3))))
     (home-page "https://github.com/diwic/dbus-rs")
     (synopsis
       "Bindings to D-Bus, which is a bus commonly used on Linux for inter-process communication.")
