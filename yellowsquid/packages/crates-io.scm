@@ -1761,33 +1761,6 @@ version = \"0.3.21\"
     (description "FFI bindings to libgstreamer-1.0")
     (license license:expat)))
 
-(define-public rust-hkdf-0.10
-  (package
-    (name "rust-hkdf")
-    (version "0.10.0")
-    (source
-      (origin
-        (method url-fetch)
-        (uri (crate-uri "hkdf" version))
-        (file-name
-          (string-append name "-" version ".tar.gz"))
-        (sha256
-          (base32
-            "0kwn3scjvv2x8zc6nz3wrnzxp9shpsdxnjqiyv2r65r3kiijzasi"))))
-    (build-system cargo-build-system)
-    (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-digest" ,rust-digest-0.9)
-         ("rust-hmac" ,rust-hmac-0.10))))
-    (home-page "https://github.com/RustCrypto/KDFs/")
-    (synopsis
-      "HMAC-based Extract-and-Expand Key Derivation Function (HKDF)")
-    (description
-      "HMAC-based Extract-and-Expand Key Derivation Function (HKDF)")
-    (license (list license:expat license:asl2.0))))
-
 (define-public rust-hound-3
   (package
     (name "rust-hound")
