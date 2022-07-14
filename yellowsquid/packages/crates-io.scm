@@ -184,6 +184,28 @@
       "Thin but safe wrappers for ALSA (Linux sound API)")
     (license (list license:asl2.0 license:expat))))
 
+(define-public rust-alsa-0.6
+  (package
+    (name "rust-alsa")
+    (version "0.6.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "alsa" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0szx8finhqbffh08fp3bgh4ywz0b572vcdyh4hwyhrfgw8pza5ar"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-alsa-sys" ,rust-alsa-sys-0.3)
+                       ("rust-bitflags" ,rust-bitflags-1)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-nix" ,rust-nix-0.23))))
+    (home-page "https://github.com/diwic/alsa-rs")
+    (synopsis "Thin but safe wrappers for ALSA (Linux sound API)")
+    (description "Thin but safe wrappers for ALSA (Linux sound API)")
+    (license (list license:asl2.0 license:expat))))
+
 (define-public rust-alsa-sys-0.3
   (package
     (name "rust-alsa-sys")
@@ -421,6 +443,25 @@
     (description "Structures to wrap C arrays")
     (license (list license:asl2.0 license:expat))))
 
+(define-public rust-cache-padded-1
+  (package
+    (name "rust-cache-padded")
+    (version "1.2.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "cache-padded" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0b39fmvn6j47xcyc03biyh8kdd52qwhb55xmx72hj3y73ri5kny1"))))
+    (build-system cargo-build-system)
+    (home-page "https://github.com/smol-rs/cache-padded")
+    (synopsis
+     "Prevent false sharing by padding and aligning to the length of a cache line")
+    (description
+     "Prevent false sharing by padding and aligning to the length of a cache line")
+    (license (list license:asl2.0 license:expat))))
+
 (define-public rust-cala-core-0.1
   (package
     (name "rust-cala-core")
@@ -447,6 +488,68 @@
     (synopsis "Low-level platform glue for Cala")
     (description "Low-level platform glue for Cala")
     (license (list license:asl2.0 license:zlib))))
+
+(define-public rust-clap-3
+  (package
+    (name "rust-clap")
+    (version "3.2.11")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "clap" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "17w261qvrb74sd7p24r5i54c9w0dfliaj1z942mc81zbwnnwfinn"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-atty" ,rust-atty-0.2)
+                       ("rust-backtrace" ,rust-backtrace-0.3)
+                       ("rust-bitflags" ,rust-bitflags-1)
+                       ("rust-clap-derive" ,rust-clap-derive-3)
+                       ("rust-clap-lex" ,rust-clap-lex-0.2)
+                       ("rust-indexmap" ,rust-indexmap-1)
+                       ("rust-once-cell" ,rust-once-cell-1)
+                       ("rust-regex" ,rust-regex-1)
+                       ("rust-strsim" ,rust-strsim-0.10)
+                       ("rust-termcolor" ,rust-termcolor-1)
+                       ("rust-terminal-size" ,rust-terminal-size-0.1)
+                       ("rust-textwrap" ,rust-textwrap-0.15)
+                       ("rust-unicase" ,rust-unicase-2)
+                       ("rust-yaml-rust" ,rust-yaml-rust-0.4))
+       #:cargo-development-inputs (("rust-humantime" ,rust-humantime-2)
+                                   ("rust-regex" ,rust-regex-1)
+                                   ("rust-rustversion" ,rust-rustversion-1)
+                                   ("rust-shlex" ,rust-shlex-1)
+                                   ("rust-snapbox" ,rust-snapbox-0.2)
+                                   ("rust-static-assertions" ,rust-static-assertions-1)
+                                   ("rust-trybuild" ,rust-trybuild-1)
+                                   ("rust-trycmd" ,rust-trycmd-0.13))))
+    (home-page "https://github.com/clap-rs/clap")
+    (synopsis
+     "A simple to use, efficient, and full-featured Command Line Argument Parser")
+    (description
+     "This package provides a simple to use, efficient, and full-featured Command Line
+Argument Parser")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-clap-lex-0.2
+  (package
+    (name "rust-clap-lex")
+    (version "0.2.4")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "clap-lex" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1ib1a9v55ybnaws11l63az0jgz5xiy24jkdgsmyl7grcm3sz4l18"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-os-str-bytes" ,rust-os-str-bytes-6))))
+    (home-page "https://github.com/clap-rs/clap/tree/master/clap_lex")
+    (synopsis "Minimal, flexible command line parser")
+    (description "Minimal, flexible command line parser")
+    (license (list license:expat license:asl2.0))))
 
 (define-public rust-claxon-0.4
   (package
@@ -684,7 +787,7 @@
 (define-public rust-coreaudio-sys-0.2
   (package
     (name "rust-coreaudio-sys")
-    (version "0.2.10")
+    (version "0.2.6")
     (source
       (origin
         (method url-fetch)
@@ -693,13 +796,13 @@
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "1rjppvvv1j6wbsjw48mrsa5m3z818l5x8f3x0xrp03b3h16l9zrx"))))
+            "1mx89ynkf2ds1n43hdd6radg2660gp27dw2l90vkqk4zybq3vxqp"))))
     (build-system cargo-build-system)
     (arguments
       `(#:skip-build?
         #t
         #:cargo-inputs
-        (("rust-bindgen" ,rust-bindgen-0.59))))
+        (("rust-bindgen" ,rust-bindgen-0.53))))
     (home-page
       "https://github.com/RustAudio/coreaudio-sys")
     (synopsis
@@ -711,7 +814,7 @@
 (define-public rust-cpal-0.13
   (package
     (name "rust-cpal")
-    (version "0.13.4")
+    (version "0.13.5")
     (source
       (origin
         (method url-fetch)
@@ -720,34 +823,38 @@
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "0614gbjg29n817m97595974pbw331dqyz2c8g0ncs5zn4455zx4q"))))
+            "05j11vz8rw19gqqvpd48i7wvm6j77v8fwx5lwhlkckqjllv7h4bl"))))
+    (inputs (list alsa-lib))
+    (native-inputs (list pkg-config))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-alsa" ,rust-alsa-0.5)
-         ("rust-asio-sys" ,rust-asio-sys-0.2)
-         ("rust-core-foundation-sys"
-          ,rust-core-foundation-sys-0.8)
-         ("rust-coreaudio-rs" ,rust-coreaudio-rs-0.10)
-         ("rust-jack" ,rust-jack-0.7)
-         ("rust-jni" ,rust-jni-0.19)
-         ("rust-js-sys" ,rust-js-sys-0.3)
-         ("rust-lazy-static" ,rust-lazy-static-1)
-         ("rust-libc" ,rust-libc-0.2)
-         ("rust-mach" ,rust-mach-0.3)
-         ("rust-ndk" ,rust-ndk-0.3)
-         ("rust-ndk-glue" ,rust-ndk-glue-0.3)
-         ("rust-nix" ,rust-nix-0.20)
-         ("rust-num-traits" ,rust-num-traits-0.2)
-         ("rust-oboe" ,rust-oboe-0.4)
-         ("rust-parking-lot" ,rust-parking-lot-0.11)
-         ("rust-stdweb" ,rust-stdweb-0.1)
-         ("rust-thiserror" ,rust-thiserror-1)
-         ("rust-wasm-bindgen" ,rust-wasm-bindgen-0.2)
-         ("rust-web-sys" ,rust-web-sys-0.3)
-         ("rust-winapi" ,rust-winapi-0.3))))
+     `(#:cargo-inputs
+       (("rust-alsa" ,rust-alsa-0.6)
+        ("rust-asio-sys" ,rust-asio-sys-0.2)
+        ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+        ("rust-coreaudio-rs" ,rust-coreaudio-rs-0.10)
+        ("rust-jack" ,rust-jack-0.8)
+        ("rust-jni" ,rust-jni-0.19)
+        ("rust-js-sys" ,rust-js-sys-0.3)
+        ("rust-lazy-static" ,rust-lazy-static-1)
+        ("rust-libc" ,rust-libc-0.2)
+        ("rust-mach" ,rust-mach-0.3)
+        ("rust-ndk" ,rust-ndk-0.6)
+        ("rust-ndk-glue" ,rust-ndk-glue-0.6)
+        ("rust-nix" ,rust-nix-0.23)
+        ("rust-num-traits" ,rust-num-traits-0.2)
+        ("rust-oboe" ,rust-oboe-0.4)
+        ("rust-parking-lot" ,rust-parking-lot-0.11)
+        ("rust-stdweb" ,rust-stdweb-0.1)
+        ("rust-thiserror" ,rust-thiserror-1)
+        ("rust-wasm-bindgen" ,rust-wasm-bindgen-0.2)
+        ("rust-web-sys" ,rust-web-sys-0.3)
+        ("rust-winapi" ,rust-winapi-0.3))
+       #:cargo-development-inputs
+       (("rust-anyhow" ,rust-anyhow-1)
+        ("rust-clap" ,rust-clap-3)
+        ("rust-hound" ,rust-hound-3)
+        ("rust-ringbuf" ,rust-ringbuf-0.2))))
     (home-page "https://github.com/rustaudio/cpal")
     (synopsis
       "Low-level cross-platform audio I/O library in pure Rust.")
@@ -2039,6 +2146,30 @@
     (synopsis "Real time audio and midi with JACK.")
     (description
       "Real time audio and midi with JACK.")
+    (license license:expat)))
+
+(define-public rust-jack-0.8
+  (package
+    (name "rust-jack")
+    (version "0.8.4")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "jack" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0lz10s0n2gy128m65pf96is9ip00vfgvnkfja0y9ydmv24pw2ajx"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
+                       ("rust-jack-sys" ,rust-jack-sys-0.2)
+                       ("rust-lazy-static" ,rust-lazy-static-1)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-log" ,rust-log-0.4))
+       #:cargo-development-inputs (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5))))
+    (home-page "https://github.com/RustAudio/rust-jack")
+    (synopsis "Real time audio and midi with JACK.")
+    (description "Real time audio and midi with JACK.")
     (license license:expat)))
 
 (define-public rust-jack-sys-0.2
@@ -3870,6 +4001,27 @@ in the userâs path.")
     (license
       (list license:asl2.0 license:isc license:expat))))
 
+(define-public rust-ringbuf-0.2
+  (package
+    (name "rust-ringbuf")
+    (version "0.2.8")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ringbuf" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "18n2qmbvvxj9s775p6q2dv5s68ndbpvb7fr3mx5fg2gpa26z2npn"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-cache-padded" ,rust-cache-padded-1))))
+    (home-page "https://github.com/agerasev/ringbuf")
+    (synopsis
+     "Lock-free SPSC FIFO ring buffer with direct access to inner data")
+    (description
+     "Lock-free SPSC FIFO ring buffer with direct access to inner data")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-sct-0.7
   (package
     (name "rust-sct")
@@ -4191,6 +4343,36 @@ in the userâs path.")
     (description
       "Pure-Rust traits and utilities for constant-time cryptographic implementations.")
     (license license:bsd-3)))
+
+(define-public rust-textwrap-0.15
+  (package
+    (name "rust-textwrap")
+    (version "0.15.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "textwrap" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1yw513k61lfiwgqrfvsjw1a5wpvm0azhpjr2kr0jhnq9c56is55i"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-hyphenation" ,rust-hyphenation-0.8)
+                       ("rust-smawk" ,rust-smawk-0.3)
+                       ("rust-terminal-size" ,rust-terminal-size-0.1)
+                       ("rust-unicode-linebreak" ,rust-unicode-linebreak-0.1)
+                       ("rust-unicode-width" ,rust-unicode-width-0.1))
+       #:cargo-development-inputs (("rust-criterion" ,rust-criterion-0.3)
+                                   ("rust-lipsum" ,rust-lipsum-0.8)
+                                   ("rust-termion" ,rust-termion-1)
+                                   ("rust-unic-emoji-char" ,rust-unic-emoji-char-0.9)
+                                   ("rust-version-sync" ,rust-version-sync-0.9))))
+    (home-page "https://github.com/mgeisler/textwrap")
+    (synopsis
+     "Powerful library for word wrapping, indenting, and dedenting strings")
+    (description
+     "Powerful library for word wrapping, indenting, and dedenting strings")
+    (license license:expat)))
 
 (define-public rust-time-0.2
   (package
@@ -4801,6 +4983,27 @@ in the userâs path.")
     (description
       "Utilities for implementing and composing `tracing` subscribers.")
     (license license:expat)))
+
+(define-public rust-unic-emoji-char-0.9
+  (package
+    (name "rust-unic-emoji-char")
+    (version "0.9.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "unic-emoji-char" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0ka9fr7s6lv0z43r9xphg9injn35pfxf9g9q18ki0wl9d0g241qb"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-unic-char-property" ,rust-unic-char-property-0.9)
+                       ("rust-unic-char-range" ,rust-unic-char-range-0.9)
+                       ("rust-unic-ucd-version" ,rust-unic-ucd-version-0.9))))
+    (home-page "https://github.com/open-i18n/rust-unic/")
+    (synopsis "UNIC â Unicode Emoji â Emoji Character Properties")
+    (description "UNIC â Unicode Emoji â Emoji Character Properties")
+    (license (list license:expat license:asl2.0))))
 
 (define-public rust-unicode-normalization-0.1
   (package
