@@ -344,33 +344,6 @@
     (description "Low-level platform glue for Cala")
     (license (list license:asl2.0 license:zlib))))
 
-(define-public rust-cc-1
-  (package
-    (name "rust-cc")
-    (version "1.0.72")
-    (source
-      (origin
-        (method url-fetch)
-        (uri (crate-uri "cc" version))
-        (file-name
-          (string-append name "-" version ".tar.gz"))
-        (sha256
-          (base32
-            "1vl50h2qh0nh0iddzj6gd1pnxnxpvwmbfxc30578c1pajmxi7a92"))))
-    (build-system cargo-build-system)
-    (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-jobserver" ,rust-jobserver-0.1))))
-    (home-page
-      "https://github.com/alexcrichton/cc-rs")
-    (synopsis
-      "A build-time dependency for Cargo build scripts to assist in invoking the native\nC compiler to compile native C code into a static archive to be linked into Rust\ncode.\n")
-    (description
-      "This package provides a build-time dependency for Cargo build scripts to assist\nin invoking the native C compiler to compile native C code into a static archive\nto be linked into Rust code.")
-    (license (list license:expat license:asl2.0))))
-
 (define-public rust-claxon-0.4
   (package
     (name "rust-claxon")
