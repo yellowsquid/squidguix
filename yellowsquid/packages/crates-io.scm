@@ -1934,6 +1934,38 @@ version = \"0.3.21\"
     (description "FFI bindings to libgstreamer-1.0")
     (license license:expat)))
 
+(define-public rust-hashbrown-0.12
+  (package
+    (name "rust-hashbrown")
+    (version "0.12.2")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "hashbrown" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "08k02a6g0z9pb7r7ilq9zbcgxh4k553ds94l6cd2b1akfclqlz30"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-ahash" ,rust-ahash-0.7)
+                       ("rust-bumpalo" ,rust-bumpalo-3)
+                       ("rust-compiler-builtins" ,rust-compiler-builtins-0.1)
+                       ("rust-rayon" ,rust-rayon-1)
+                       ("rust-rustc-std-workspace-alloc" ,rust-rustc-std-workspace-alloc-1)
+                       ("rust-rustc-std-workspace-core" ,rust-rustc-std-workspace-core-1)
+                       ("rust-serde" ,rust-serde-1))
+       #:cargo-development-inputs (("rust-doc-comment" ,rust-doc-comment-0.3)
+                                   ("rust-fnv" ,rust-fnv-1)
+                                   ("rust-lazy-static" ,rust-lazy-static-1)
+                                   ("rust-rand" ,rust-rand-0.8)
+                                   ("rust-rayon" ,rust-rayon-1)
+                                   ("rust-serde-test" ,rust-serde-test-1))))
+    (home-page "https://github.com/rust-lang/hashbrown")
+    (synopsis "A Rust port of Google's SwissTable hash map")
+    (description
+     "This package provides a Rust port of Google's SwissTable hash map")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-hound-3
   (package
     (name "rust-hound")
@@ -2661,7 +2693,7 @@ version = \"0.3.21\"
          ("rust-tokio" ,rust-tokio-1)
          ("rust-vorbis" ,rust-vorbis-0.0.14)
          ("rust-zerocopy" ,rust-zerocopy-0.3))))
-    (home-page "")
+    (home-page "https://github.com/librespot-org/librespot")
     (synopsis
       "The audio fetching and processing logic for librespot")
     (description
@@ -5106,10 +5138,10 @@ premade types for common use cases.")
       "Event loop that drives Tokio I/O resources.")
     (license license:expat)))
 
-(define-public rust-tokio-stream-0.1.7
+(define-public rust-tokio-stream-0.1
   (package
     (name "rust-tokio-stream")
-    (version "0.1.7")
+    (version "0.1.9")
     (source
       (origin
         (method url-fetch)
@@ -5118,15 +5150,15 @@ premade types for common use cases.")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "0zvj8d2i1147s4i3ml3lh3h6fypncjmbw0h1mhck3w2kh9lkybvv"))))
+            "1n804q6lpcsrgs1acj7101bm1cv6wpjf23x4zvjc9zfn2x0xam6z"))))
     (build-system cargo-build-system)
     (arguments
       `(#:cargo-inputs
         (("rust-futures-core" ,rust-futures-core-0.3)
          ("rust-pin-project-lite"
           ,rust-pin-project-lite-0.2)
-         ("rust-tokio" ,rust-tokio-1.8)
-         ("rust-tokio-util" ,rust-tokio-util-0.6))
+         ("rust-tokio" ,rust-tokio-1)
+         ("rust-tokio-util" ,rust-tokio-util-0.7))
         #:cargo-development-inputs
         (("rust-async-stream" ,rust-async-stream-0.3)
          ("rust-futures" ,rust-futures-0.3)
@@ -5165,6 +5197,41 @@ premade types for common use cases.")
     (home-page "https://github.com/tokio-rs/tokio")
     (synopsis "Timer facilities for Tokio\n")
     (description "Timer facilities for Tokio")
+    (license license:expat)))
+
+(define-public rust-tokio-util-0.7
+  (package
+    (name "rust-tokio-util")
+    (version "0.7.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "tokio-util" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0igzhn80k8l9w6r5qj0bci70kxhbsm1j31gr406pghyxvvc3qinc"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-bytes" ,rust-bytes-1)
+                       ("rust-futures-core" ,rust-futures-core-0.3)
+                       ("rust-futures-io" ,rust-futures-io-0.3)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3)
+                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-hashbrown" ,rust-hashbrown-0.12)
+                       ("rust-pin-project-lite" ,rust-pin-project-lite-0.2)
+                       ("rust-slab" ,rust-slab-0.4)
+                       ("rust-tokio" ,rust-tokio-1)
+                       ("rust-tracing" ,rust-tracing-0.1))
+       #:cargo-development-inputs (("rust-async-stream" ,rust-async-stream-0.3)
+                                   ("rust-futures" ,rust-futures-0.3)
+                                   ("rust-futures-test" ,rust-futures-test-0.3)
+                                   ("rust-tokio" ,rust-tokio-1)
+                                   ("rust-tokio-stream" ,rust-tokio-stream-0.1)
+                                   ("rust-tokio-test" ,rust-tokio-test-0.4))))
+    (home-page "https://tokio.rs")
+    (synopsis "Additional utilities for working with Tokio.
+")
+    (description "Additional utilities for working with Tokio.")
     (license license:expat)))
 
 (define-public rust-tracing-0.1
