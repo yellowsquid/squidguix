@@ -3032,6 +3032,9 @@ version = \"0.3.21\"
         (("rust-minimp3-sys" ,rust-minimp3-sys-0.3)
          ("rust-slice-deque" ,rust-slice-deque-0.3)
          ("rust-thiserror" ,rust-thiserror-1)
+         ("rust-tokio" ,rust-tokio-1))
+        #:cargo-development-inputs
+        (("rust-futures" ,rust-futures-0.3)
          ("rust-tokio" ,rust-tokio-1))))
     (home-page
       "https://github.com/germangb/minimp3-rs.git")
