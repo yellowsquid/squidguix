@@ -521,7 +521,8 @@
             "1dspj58bk57f9hiqlvbz25rik92i4a95iwa2dl4pg8g8grlqa60z"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:cargo-inputs
+      `(#:tests? #f ;; Includes some very brittle tests.
+        #:cargo-inputs
         (("rust-backtrace" ,rust-backtrace-0.3)
          ("rust-color-spantrace"
           ,rust-color-spantrace-0.1)
