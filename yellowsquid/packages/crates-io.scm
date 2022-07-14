@@ -1023,8 +1023,11 @@ Argument Parser")
           (base32
             "18wcwqm1qp8yisxj62vn81fdbh07kq4vxba9823fcd4zv6zinn64"))))
     (build-system cargo-build-system)
+    (inputs (list dbus))
+    (native-inputs (list pkg-config))
     (arguments
-      `(#:cargo-inputs (("rust-dbus" ,rust-dbus-0.9))))
+      `(#:tests? #f ;; Fails to create dbus instance.
+        #:cargo-inputs (("rust-dbus" ,rust-dbus-0.9))))
     (home-page "https://github.com/diwic/dbus-rs/")
     (synopsis
       "Framework for writing D-Bus method handlers")
