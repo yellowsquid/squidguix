@@ -1182,10 +1182,10 @@ Argument Parser")
       "Fowlerâ\x80\x93Nollâ\x80\x93Vo hash function")
     (license (list license:asl2.0 license:expat))))
 
-(define-public rust-futures-0.3.15
+(define-public rust-futures-0.3
   (package
     (name "rust-futures")
-    (version "0.3.15")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1194,26 +1194,43 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "09zwmmfi8d1glhi0bz2didagjyqz3q9gxa7nq4vzmqns0fl46zhf"))))
+            "17id2zvn2acny759indn6yj2acfa6lhkwzaidxr2pqfiaigycgzp"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:cargo-inputs
-        (("rust-futures-channel"
-          ,rust-futures-channel-0.3)
+      `(#:cargo-test-flags '("--release" "--all-features")
+        #:cargo-inputs
+        (("rust-futures-channel" ,rust-futures-channel-0.3)
          ("rust-futures-core" ,rust-futures-core-0.3)
-         ("rust-futures-executor"
-          ,rust-futures-executor-0.3)
+         ("rust-futures-executor" ,rust-futures-executor-0.3)
          ("rust-futures-io" ,rust-futures-io-0.3)
          ("rust-futures-sink" ,rust-futures-sink-0.3)
          ("rust-futures-task" ,rust-futures-task-0.3)
          ("rust-futures-util" ,rust-futures-util-0.3))
         #:cargo-development-inputs
         (("rust-assert-matches" ,rust-assert-matches-1)
+         ("rust-futures-test" ,rust-futures-test-0.3)
          ("rust-pin-project" ,rust-pin-project-1)
          ("rust-pin-utils" ,rust-pin-utils-0.1)
-         ("rust-static-assertions"
-          ,rust-static-assertions-1)
-         ("rust-tokio" ,rust-tokio-0.1))))
+         ("rust-static-assertions" ,rust-static-assertions-1)
+         ("rust-tokio" ,rust-tokio-0.1))
+        #:phases
+        (modify-phases %standard-phases
+          (add-after 'unpack-rust-crates 'patch-manifest
+            (lambda _
+              (let ((output-port (open-file "Cargo.toml" "a")))
+                (display "
+[dev-dependencies.futures-test]
+version = \"0.3.21\"
+" output-port)
+                (close output-port))))
+          (replace 'check
+            (lambda* (#:key tests? (cargo-test-flags '("--release")) #:allow-other-keys)
+              (if tests?
+                  (begin
+                    ;; Abuse RUSTC_BOOTSTRAP to enable nightly features in stable
+                    (setenv "RUSTC_BOOTSTRAP" "1")
+                    (apply invoke "cargo" "test" cargo-test-flags)
+                    (unsetenv "RUSTC_BOOTSTRAP"))))))))
     (home-page
       "https://rust-lang.github.io/futures-rs")
     (synopsis
@@ -1225,7 +1242,7 @@ Argument Parser")
 (define-public rust-futures-channel-0.3
   (package
     (name "rust-futures-channel")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1234,12 +1251,10 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "02vzdkc1n25nliwa2758pni7fyn1ch2msrzw18v5ycw8cl5xlgds"))))
+            "0420lz2fmxa356ax1rp2sqi7b27ykfhvq4w9f1sla4hlp7j3q263"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
+      `(#:cargo-inputs
         (("rust-futures-core" ,rust-futures-core-0.3)
          ("rust-futures-sink" ,rust-futures-sink-0.3))))
     (home-page
@@ -1253,7 +1268,7 @@ Argument Parser")
 (define-public rust-futures-core-0.3
   (package
     (name "rust-futures-core")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1262,9 +1277,8 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "1mw34nxzggvr2jvk4ljygy077wy32lrdxkyw1j0mj9dqc42gzj6h"))))
+            "1lqhc6mqklh5bmkpr77p42lqwjj8gaskk5ba2p3kl1z4nw2gs28c"))))
     (build-system cargo-build-system)
-    (arguments `(#:skip-build? #t))
     (home-page
       "https://rust-lang.github.io/futures-rs")
     (synopsis
@@ -1276,7 +1290,7 @@ Argument Parser")
 (define-public rust-futures-executor-0.3
   (package
     (name "rust-futures-executor")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1285,12 +1299,10 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "0alxxnjbi6jjsjkj6mkmvizmwprfi99ldkmqhmfbj3xibgzx5mi9"))))
+            "19mq96kwgf06axgdc2fbrjhqzdnxww9vw6cz8b82gqr9z86bj84l"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
+      `(#:cargo-inputs
         (("rust-futures-core" ,rust-futures-core-0.3)
          ("rust-futures-task" ,rust-futures-task-0.3)
          ("rust-futures-util" ,rust-futures-util-0.3)
@@ -1306,7 +1318,7 @@ Argument Parser")
 (define-public rust-futures-io-0.3
   (package
     (name "rust-futures-io")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1315,9 +1327,8 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "1ckir41haa2hs9znrwavgh33hv3l23jmywqg73xwdam1ym5d7ydi"))))
+            "0swn29fysas36ikk5aw55104fi98117amvgxw9g96pjs5ab4ah7w"))))
     (build-system cargo-build-system)
-    (arguments `(#:skip-build? #t))
     (home-page
       "https://rust-lang.github.io/futures-rs")
     (synopsis
@@ -1329,7 +1340,7 @@ Argument Parser")
 (define-public rust-futures-macro-0.3
   (package
     (name "rust-futures-macro")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1338,12 +1349,10 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "0g5xp1xmyfibyscynig2m5gvp5smgg7xvcwr0p3yzc7zvxx99gbd"))))
+            "04pmj5xfk5rdhlj69wc7w3zvdg3xardg8srig96lszrk00wf3h9k"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
+      `(#:cargo-inputs
         (("rust-proc-macro2" ,rust-proc-macro2-1)
          ("rust-quote" ,rust-quote-1)
          ("rust-syn" ,rust-syn-1))))
@@ -1358,7 +1367,7 @@ Argument Parser")
 (define-public rust-futures-sink-0.3
   (package
     (name "rust-futures-sink")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1367,9 +1376,8 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "026m2x353l7x7apa3hdx26ma7kwgxgbghl0393v4zmv8rfn5n1g3"))))
+            "0s58gx5yw1a21xviw2qgc0wzk225vgn4kbzddrp141m3kw9kw5i1"))))
     (build-system cargo-build-system)
-    (arguments `(#:skip-build? #t))
     (home-page
       "https://rust-lang.github.io/futures-rs")
     (synopsis
@@ -1381,7 +1389,7 @@ Argument Parser")
 (define-public rust-futures-task-0.3
   (package
     (name "rust-futures-task")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1390,19 +1398,47 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "0wmd3b70sgp1dr3q24439hkm7zj9m1lcafmqvzj7q5ihbi4cdrvf"))))
+            "0skpiz2ljisywajv79p70yapfwhkqhb39wxy3f09v47mdfbnmijp"))))
     (build-system cargo-build-system)
-    (arguments `(#:skip-build? #t))
     (home-page
       "https://rust-lang.github.io/futures-rs")
     (synopsis "Tools for working with tasks.\n")
     (description "Tools for working with tasks.")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-futures-test-0.3
+  (package
+    (name "rust-futures-test")
+    (version "0.3.21")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "futures-test" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "167fm0bz93w57f2yns7y4y45ax8g7kbrbs3rvzb5vcxzvdwr6glc"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3)
+                       ("rust-futures-executor" ,rust-futures-executor-0.3)
+                       ("rust-futures-io" ,rust-futures-io-0.3)
+                       ("rust-futures-macro" ,rust-futures-macro-0.3)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3)
+                       ("rust-futures-task" ,rust-futures-task-0.3)
+                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-pin-project" ,rust-pin-project-1)
+                       ("rust-pin-utils" ,rust-pin-utils-0.1))))
+    (home-page "https://rust-lang.github.io/futures-rs")
+    (synopsis "Common utilities for testing components built off futures-rs.
+")
+    (description
+     "Common utilities for testing components built off futures-rs.")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-futures-util-0.3
   (package
     (name "rust-futures-util")
-    (version "0.3.19")
+    (version "0.3.21")
     (source
       (origin
         (method url-fetch)
@@ -1411,26 +1447,24 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "0r3i29hhfhv69qjdxh3j4ffxji4hl0yc1gmim1viy9vsni0czdfr"))))
+            "0sh3wqi8p36csjffy0irq8nlx9shqxp7z4dsih6bknarsvaspdyq"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
+      `(#:cargo-inputs
         (("rust-futures" ,rust-futures-0.1)
-         ("rust-futures-channel"
-          ,rust-futures-channel-0.3)
+         ("rust-futures-channel" ,rust-futures-channel-0.3)
          ("rust-futures-core" ,rust-futures-core-0.3)
          ("rust-futures-io" ,rust-futures-io-0.3)
          ("rust-futures-macro" ,rust-futures-macro-0.3)
          ("rust-futures-sink" ,rust-futures-sink-0.3)
          ("rust-futures-task" ,rust-futures-task-0.3)
          ("rust-memchr" ,rust-memchr-2)
-         ("rust-pin-project-lite"
-          ,rust-pin-project-lite-0.2)
+         ("rust-pin-project-lite" ,rust-pin-project-lite-0.2)
          ("rust-pin-utils" ,rust-pin-utils-0.1)
          ("rust-slab" ,rust-slab-0.4)
-         ("rust-tokio-io" ,rust-tokio-io-0.1))))
+         ("rust-tokio-io" ,rust-tokio-io-0.1))
+        #:cargo-development-inputs
+        (("rust-tokio" ,rust-tokio-0.1))))
     (home-page
       "https://rust-lang.github.io/futures-rs")
     (synopsis
