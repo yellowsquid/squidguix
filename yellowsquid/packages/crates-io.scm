@@ -3747,54 +3747,8 @@ backed applications.
 applications.")
     (license license:expat)))
 
-(define-public rust-tokio-1.6
-  (package
-    (name "rust-tokio")
-    (version "1.6.4")
-    (source (origin
-              (method url-fetch)
-              (uri (crate-uri "tokio" version))
-              (file-name (string-append name "-" version ".tar.gz"))
-              (sha256
-               (base32
-                "0mhhmbxhdwaw699wvxhs4mi9a5g8yb6zw4i2p3cyrn9gdgdv1cd4"))))
-    (build-system cargo-build-system)
-    (arguments
-     `(#:cargo-inputs (("rust-autocfg" ,rust-autocfg-1)
-                       ("rust-bytes" ,rust-bytes-1)
-                       ("rust-libc" ,rust-libc-0.2)
-                       ("rust-memchr" ,rust-memchr-2)
-                       ("rust-mio" ,rust-mio-0.7)
-                       ("rust-num-cpus" ,rust-num-cpus-1)
-                       ("rust-once-cell" ,rust-once-cell-1)
-                       ("rust-parking-lot" ,rust-parking-lot-0.11)
-                       ("rust-pin-project-lite" ,rust-pin-project-lite-0.2)
-                       ("rust-signal-hook-registry" ,rust-signal-hook-registry-1)
-                       ("rust-tokio-macros" ,rust-tokio-macros-1)
-                       ("rust-tracing" ,rust-tracing-0.1)
-                       ("rust-winapi" ,rust-winapi-0.3))
-       #:cargo-development-inputs (("rust-async-stream" ,rust-async-stream-0.3)
-                                   ("rust-futures" ,rust-futures-0.3)
-                                   ("rust-libc" ,rust-libc-0.2)
-                                   ("rust-loom" ,rust-loom-0.5)
-                                   ("rust-nix" ,rust-nix-0.19)
-                                   ("rust-proptest" ,rust-proptest-1)
-                                   ("rust-rand" ,rust-rand-0.8)
-                                   ("rust-tempfile" ,rust-tempfile-3)
-                                   ("rust-tokio-stream" ,rust-tokio-stream-0.1)
-                                   ("rust-tokio-test" ,rust-tokio-test-0.4))))
-    (home-page "https://tokio.rs")
-    (synopsis
-     "An event-driven, non-blocking I/O platform for writing asynchronous I/O
-backed applications.
-")
-    (description
-     "An event-driven, non-blocking I/O platform for writing asynchronous I/O backed
-applications.")
-    (license license:expat)))
-
 ;; maybe downgrade
-(define-public rust-tokio-1.8
+(define-public rust-tokio-1
   (package
     (name "rust-tokio")
     (version "1.8.4")
