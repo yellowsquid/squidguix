@@ -993,9 +993,12 @@ Argument Parser")
         (sha256
           (base32
             "1dlf2jzf7sjqz437aj9ksj885nzm5685m72jdb94wp1fdpawv2vg"))))
+    (inputs (list dbus))
+    (native-inputs (list pkg-config))
     (build-system cargo-build-system)
     (arguments
-      `(#:cargo-inputs
+      `(#:tests? #f ;; Fails to create dbus instance.
+        #:cargo-inputs
         (("rust-futures-channel" ,rust-futures-channel-0.3)
          ("rust-futures-executor" ,rust-futures-executor-0.3)
          ("rust-futures-util" ,rust-futures-util-0.3)
