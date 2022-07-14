@@ -221,9 +221,10 @@
           (base32
             "09qmmnpmlcj23zcgx2xsi4phcgm5i02g9xaf801y7i067mkfx3yv"))))
     (build-system cargo-build-system)
+    (inputs (list alsa-lib))
+    (native-inputs (list pkg-config))
     (arguments
-      `(#:skip-build?
-        #t
+      `(#:tests? #f
         #:cargo-inputs
         (("rust-libc" ,rust-libc-0.2)
          ("rust-pkg-config" ,rust-pkg-config-0.3))))
