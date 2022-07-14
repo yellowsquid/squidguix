@@ -1078,9 +1078,12 @@ Argument Parser")
         (sha256
           (base32
             "10112g227iasjiid7y9wrvnmxypfrczcymj2k5yjvcjk1i5ag88j"))))
+    (inputs (list dbus))
+    (native-inputs (list pkg-config))
     (build-system cargo-build-system)
     (arguments
-      `(#:cargo-inputs
+      `(#:tests? #f ;; Fails to create dbus instance
+        #:cargo-inputs
         (("rust-dbus" ,rust-dbus-0.9)
          ("rust-dbus-crossroads"
           ,rust-dbus-crossroads-0.5)
