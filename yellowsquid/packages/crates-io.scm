@@ -2,6 +2,7 @@
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages crates-graphics)
   #:use-module (gnu packages crates-gtk)
+  #:use-module (gnu packages glib)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages rust-apps)
@@ -977,10 +978,10 @@ Argument Parser")
       "Bindings to D-Bus, which is a bus commonly used on Linux for inter-process\ncommunication.")
     (license (list license:asl2.0 license:expat))))
 
-(define-public rust-dbus-0.9.5
+(define-public rust-dbus-0.9
   (package
     (name "rust-dbus")
-    (version "0.9.5")
+    (version "0.9.6")
     (source
       (origin
         (method url-fetch)
@@ -989,20 +990,18 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "1kn2v0w0q2q608xwl42c1yb3m2f7zvsm0f9ap1balb5k4mf782ny"))))
+            "1dlf2jzf7sjqz437aj9ksj885nzm5685m72jdb94wp1fdpawv2vg"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-futures-channel"
-          ,rust-futures-channel-0.3)
-         ("rust-futures-executor"
-          ,rust-futures-executor-0.3)
+      `(#:cargo-inputs
+        (("rust-futures-channel" ,rust-futures-channel-0.3)
+         ("rust-futures-executor" ,rust-futures-executor-0.3)
          ("rust-futures-util" ,rust-futures-util-0.3)
          ("rust-libc" ,rust-libc-0.2)
          ("rust-libdbus-sys" ,rust-libdbus-sys-0.2)
-         ("rust-winapi" ,rust-winapi-0.3))))
+         ("rust-winapi" ,rust-winapi-0.3))
+        #:cargo-development-inputs
+        (("rust-tempfile" ,rust-tempfile-3))))
     (home-page "https://github.com/diwic/dbus-rs")
     (synopsis
       "Bindings to D-Bus, which is a bus commonly used on Linux for inter-process communication.")
@@ -1025,7 +1024,7 @@ Argument Parser")
             "18wcwqm1qp8yisxj62vn81fdbh07kq4vxba9823fcd4zv6zinn64"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:cargo-inputs (("rust-dbus" ,rust-dbus-0.9.5))))
+      `(#:cargo-inputs (("rust-dbus" ,rust-dbus-0.9))))
     (home-page "https://github.com/diwic/dbus-rs/")
     (synopsis
       "Framework for writing D-Bus method handlers")
@@ -1036,7 +1035,7 @@ Argument Parser")
 (define-public rust-dbus-crossroads-0.5
   (package
     (name "rust-dbus-crossroads")
-    (version "0.5.0")
+    (version "0.5.1")
     (source
       (origin
         (method url-fetch)
@@ -1045,13 +1044,17 @@ Argument Parser")
           (string-append name "-" version ".tar.gz"))
         (sha256
           (base32
-            "0hc1j4vgy5k3lf8nqh5s0yk5hs50cmk2i7c5qkgd1izpg15krn55"))))
+            "0c3f80dychnx1mi8p2rlr7276pywnqyp6ainmzyk6aq1dlli8ham"))))
     (build-system cargo-build-system)
+    (inputs (list dbus))
+    (native-inputs (list pkg-config))
     (arguments
-      `(#:skip-build?
-        #t
+      `(#:tests? #f ;; FIXME: tests fail to compile
         #:cargo-inputs
-        (("rust-dbus" ,rust-dbus-0.9))))
+        (("rust-dbus" ,rust-dbus-0.9))
+        #:cargo-development-inputs
+        (("rust-tokio" ,rust-tokio-1)
+         ("rust-dbus-tokio" ,rust-dbus-tokio-0.7))))
     (home-page "https://github.com/diwic/dbus-rs/")
     (synopsis
       "Framework for writing D-Bus method handlers")
