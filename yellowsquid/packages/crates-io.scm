@@ -1131,34 +1131,6 @@ Argument Parser")
     (description "Rust binding for dns-sd")
     (license license:expat)))
 
-(define-public rust-eyre-0.6
-  (package
-    (name "rust-eyre")
-    (version "0.6.5")
-    (source
-      (origin
-        (method url-fetch)
-        (uri (crate-uri "eyre" version))
-        (file-name
-          (string-append name "-" version ".tar.gz"))
-        (sha256
-          (base32
-            "0awxjsn1bwa43kwv1ycgn1qy9zs66syddjcidxfvz1pasp8kj4i2"))))
-    (build-system cargo-build-system)
-    (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-indenter" ,rust-indenter-0.3)
-         ("rust-once-cell" ,rust-once-cell-1)
-         ("rust-pyo3" ,rust-pyo3-0.13))))
-    (home-page "https://github.com/yaahc/eyre")
-    (synopsis
-      "Flexible concrete Error Reporting type built on std::error::Error with customizable Reports")
-    (description
-      "Flexible concrete Error Reporting type built on std::error::Error with\ncustomizable Reports")
-    (license (list license:expat license:asl2.0))))
-
 (define-public rust-fetch-unroll-0.3
   (package
     (name "rust-fetch-unroll")
