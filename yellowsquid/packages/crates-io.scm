@@ -1160,42 +1160,6 @@ Argument Parser")
       "Simple utilities for fetching and unrolling .tar.gz archives")
     (license license:asl2.0)))
 
-(define-public rust-flate2-1
-  (package
-    (name "rust-flate2")
-    (version "1.0.22")
-    (source
-      (origin
-        (method url-fetch)
-        (uri (crate-uri "flate2" version))
-        (file-name
-          (string-append name "-" version ".tar.gz"))
-        (sha256
-          (base32
-            "0gy5iwfqylb2f0dd9n7r8w2xwbzlrqlsairvyj2w9jf1jzl8hs8y"))))
-    (build-system cargo-build-system)
-    (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
-        (("rust-cfg-if" ,rust-cfg-if-1)
-         ("rust-cloudflare-zlib-sys"
-          ,rust-cloudflare-zlib-sys-0.3)
-         ("rust-crc32fast" ,rust-crc32fast-1)
-         ("rust-futures" ,rust-futures-0.1)
-         ("rust-libc" ,rust-libc-0.2)
-         ("rust-libz-sys" ,rust-libz-sys-1)
-         ("rust-miniz-sys" ,rust-miniz-sys-0.1)
-         ("rust-miniz-oxide" ,rust-miniz-oxide-0.4)
-         ("rust-tokio-io" ,rust-tokio-io-0.1))))
-    (home-page
-      "https://github.com/rust-lang/flate2-rs")
-    (synopsis
-      "DEFLATE compression and decompression exposed as Read/BufRead/Write streams.\nSupports miniz_oxide, miniz.c, and multiple zlib implementations. Supports\nzlib, gzip, and raw deflate streams.\n")
-    (description
-      "DEFLATE compression and decompression exposed as Read/BufRead/Write streams.\nSupports miniz_oxide, miniz.c, and multiple zlib implementations.  Supports\nzlib, gzip, and raw deflate streams.")
-    (license (list license:expat license:asl2.0))))
-
 (define-public rust-fnv-1
   (package
     (name "rust-fnv")
