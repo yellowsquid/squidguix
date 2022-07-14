@@ -2488,9 +2488,7 @@ version = \"0.3.21\"
             "0siaarjhds4dxrxn7qgz4gnfb2hzcmsdcndd3rnkr1rfs2j8bhgs"))))
     (build-system cargo-build-system)
     (arguments
-      `(#:skip-build?
-        #t
-        #:cargo-inputs
+      `(#:cargo-inputs
         (("rust-byteorder" ,rust-byteorder-1)
          ("rust-futures-util" ,rust-futures-util-0.3)
          ("rust-hostname" ,rust-hostname-0.3)
@@ -2500,7 +2498,8 @@ version = \"0.3.21\"
          ("rust-rand" ,rust-rand-0.8)
          ("rust-socket2" ,rust-socket2-0.4)
          ("rust-thiserror" ,rust-thiserror-1)
-         ("rust-tokio" ,rust-tokio-1))))
+         ("rust-tokio" ,rust-tokio-1))
+        #:cargo-development-inputs (("rust-env-logger" ,rust-env-logger-0.8))))
     (home-page
       "https://github.com/librespot-org/libmdns")
     (synopsis
