@@ -4200,6 +4200,27 @@ premade types for common use cases.")
      "An implementation detail of rental.  Should not be used directly.")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-ringbuf-0.2
+  (package
+    (name "rust-ringbuf")
+    (version "0.2.8")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ringbuf" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "18n2qmbvvxj9s775p6q2dv5s68ndbpvb7fr3mx5fg2gpa26z2npn"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-cache-padded" ,rust-cache-padded-1))))
+    (home-page "https://github.com/agerasev/ringbuf")
+    (synopsis
+     "Lock-free SPSC FIFO ring buffer with direct access to inner data")
+    (description
+     "Lock-free SPSC FIFO ring buffer with direct access to inner data")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-rodio-0.13
   (package
     (name "rust-rodio")
@@ -4358,27 +4379,6 @@ premade types for common use cases.")
       "Basic .pem file parser for keys and certificates")
     (license
       (list license:asl2.0 license:isc license:expat))))
-
-(define-public rust-ringbuf-0.2
-  (package
-    (name "rust-ringbuf")
-    (version "0.2.8")
-    (source (origin
-              (method url-fetch)
-              (uri (crate-uri "ringbuf" version))
-              (file-name (string-append name "-" version ".tar.gz"))
-              (sha256
-               (base32
-                "18n2qmbvvxj9s775p6q2dv5s68ndbpvb7fr3mx5fg2gpa26z2npn"))))
-    (build-system cargo-build-system)
-    (arguments
-     `(#:cargo-inputs (("rust-cache-padded" ,rust-cache-padded-1))))
-    (home-page "https://github.com/agerasev/ringbuf")
-    (synopsis
-     "Lock-free SPSC FIFO ring buffer with direct access to inner data")
-    (description
-     "Lock-free SPSC FIFO ring buffer with direct access to inner data")
-    (license (list license:expat license:asl2.0))))
 
 (define-public rust-sct-0.7
   (package
