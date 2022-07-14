@@ -10,6 +10,24 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages))
 
+(define-public rust-abort-on-panic-1
+  (package
+    (name "rust-abort-on-panic")
+    (version "1.0.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "abort-on-panic" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "06gr9ryabrcg59b4496c6gwlwxy51b84zgpgap4mq2czxkwliacz"))))
+    (build-system cargo-build-system)
+    (home-page "https://github.com/emk/abort_on_panic-rs")
+    (synopsis "Intercept panic! from unsafe locations and abort the process")
+    (description
+     "Intercept panic! from unsafe locations and abort the process")
+    (license license:unlicense)))
+
 (define-public rust-aes-ctr-0.6
   (package
     (name "rust-aes-ctr")
@@ -71,6 +89,70 @@
     (description
       "Pure Rust implementation of the AES-GCM (Galois/Counter Mode) Authenticated\nEncryption with Associated Data (AEAD) Cipher with optional\narchitecture-specific hardware acceleration")
     (license (list license:asl2.0 license:expat))))
+
+(define-public rust-afl-0.1
+  (package
+    (name "rust-afl")
+    (version "0.1.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "afl" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "033gvl4pnyry34vh5pbr01h78c4zpycn997nc0mmha0ah356271z"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-afl-sys" ,rust-afl-sys-0.1)
+                       ("rust-gcc" ,rust-gcc-0.3))
+       #:cargo-development-inputs (("rust-afl-plugin" ,rust-afl-plugin-0.1)
+                                   ("rust-byteorder" ,rust-byteorder-0.3)
+                                   ("rust-libc" ,rust-libc-0.2)
+                                   ("rust-tempdir" ,rust-tempdir-0.3))))
+    (home-page "https://github.com/rust-fuzz/afl.rs")
+    (synopsis "Fuzzing Rust code with american-fuzzy-lop")
+    (description "Fuzzing Rust code with american-fuzzy-lop")
+    (license license:asl2.0)))
+
+(define-public rust-afl-plugin-0.1
+  (package
+    (name "rust-afl-plugin")
+    (version "0.1.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "afl-plugin" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "103ba3r1y285w7vmqfnsya5wdq2v8jlsc9wbrl6hbxsp8z9spkab"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-gcc" ,rust-gcc-0.3)
+                       ("rust-quale" ,rust-quale-1))))
+    (home-page "https://github.com/frewsxcv/afl.rs")
+    (synopsis "LLVM instrumentation compiler plugin for afl.rs")
+    (description "LLVM instrumentation compiler plugin for afl.rs")
+    (license license:asl2.0)))
+
+(define-public rust-afl-sys-0.1
+  (package
+    (name "rust-afl-sys")
+    (version "0.1.5")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "afl-sys" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0kipfjhbypflv0bbrvrccm0jan0jampl13d2f68pjxj1ymhcwpid"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-gcc" ,rust-gcc-0.3)
+                       ("rust-libc" ,rust-libc-0.2))))
+    (home-page "https://github.com/frewsxcv/afl.rs")
+    (synopsis "Wrapper around AFL source")
+    (description "Wrapper around AFL source")
+    (license license:asl2.0)))
 
 (define-public rust-alsa-0.5
   (package
@@ -296,6 +378,28 @@
       "This package provides a brotli decompressor that with an interface avoiding the\nrust stdlib.  This makes it suitable for embedded devices and kernels.  It is\ndesigned with a pluggable allocator so that the standard lib's allocator may be\nemployed.  The default build also includes a stdlib allocator and stream\ninterface.  Disable this with --features=no-stdlib.  Alternatively,\n--features=unsafe turns off array bounds checks and memory initialization but\nprovides a safe interface for the caller.  Without adding the --features=unsafe\nargument, all included code is safe.  For compression in addition to this\nlibrary, download https://github.com/dropbox/rust-brotli ")
     (license (list license:bsd-3 license:expat))))
 
+(define-public rust-byteorder-0.3
+  (package
+    (name "rust-byteorder")
+    (version "0.3.13")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "byteorder" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0xd1vzp1yzw9f9qpm7w3mp9kqxdxwrwzqs4d620n6m4g194smci9"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-development-inputs (("rust-quickcheck" ,rust-quickcheck-0.2)
+                                   ("rust-rand" ,rust-rand-0.3))))
+    (home-page "https://github.com/BurntSushi/byteorder")
+    (synopsis
+     "Library for reading/writing numbers in big-endian and little-endian.")
+    (description
+     "Library for reading/writing numbers in big-endian and little-endian.")
+    (license (list license:unlicense license:expat))))
+
 (define-public rust-c-vec-2
   (package
     (name "rust-c-vec")
@@ -358,9 +462,15 @@
           (base32
             "1206mxvw833ysg10029apcsjjwly8zmsvksgza5cm7ma4ikzbysb"))))
     (build-system cargo-build-system)
-    (arguments `(#:skip-build? #t))
-    (home-page
-      "https://github.com/ruuda/claxon#readme")
+    (arguments
+     `(#:tests? #f ;; Tests require downloading FLAC files.
+       #:cargo-development-inputs
+       (("rust-hound" ,rust-hound-3)
+        ("rust-mp4parse" ,rust-mp4parse-0.8)
+        ("rust-ogg" ,rust-ogg-0.5)
+        ("rust-time" ,rust-time-0.1)
+        ("rust-walkdir" ,rust-walkdir-1))))
+    (home-page "https://github.com/ruuda/claxon#readme")
     (synopsis "A FLAC decoding library")
     (description
       "This package provides a FLAC decoding library")
@@ -2732,6 +2842,31 @@
       "This package provides a zero overhead I/O library for Windows, focusing on IOCP\nand Async I/O abstractions.")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-mp4parse-0.8
+  (package
+    (name "rust-mp4parse")
+    (version "0.8.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "mp4parse" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1pqsv1zm5x9nnkjrv25qv2yg6ba4dny6bsy6cfdzrdm8kwg2r54r"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-abort-on-panic" ,rust-abort-on-panic-1)
+                       ("rust-afl" ,rust-afl-0.1)
+                       ("rust-afl-plugin" ,rust-afl-plugin-0.1)
+                       ("rust-bitreader" ,rust-bitreader-0.3)
+                       ("rust-byteorder" ,rust-byteorder-1)
+                       ("rust-num-traits" ,rust-num-traits-0.1))
+       #:cargo-development-inputs (("rust-test-assembler" ,rust-test-assembler-0.1))))
+    (home-page "https://github.com/mozilla/mp4parse-rust")
+    (synopsis "Parser for ISO base media file format (mp4)")
+    (description "Parser for ISO base media file format (mp4)")
+    (license license:mpl2.0)))
+
 (define-public rust-muldiv-0.2
   (package
     (name "rust-muldiv")
@@ -3085,6 +3220,29 @@
     (description
       "Unsafe bindings for oboe an android library for low latency audio IO")
     (license license:asl2.0)))
+
+(define-public rust-ogg-0.5
+  (package
+    (name "rust-ogg")
+    (version "0.5.1")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ogg" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1sg29xkg332s3cqj7axawvnzv7nfldk7f853c2xa1a006d1yb39z"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-byteorder" ,rust-byteorder-1)
+                       ("rust-bytes" ,rust-bytes-0.4)
+                       ("rust-futures" ,rust-futures-0.1)
+                       ("rust-tokio-io" ,rust-tokio-io-0.1))
+       #:cargo-development-inputs (("rust-rand" ,rust-rand-0.3))))
+    (home-page "https://github.com/RustAudio/ogg")
+    (synopsis "Ogg container decoder and encoder written in pure Rust")
+    (description "Ogg container decoder and encoder written in pure Rust")
+    (license license:bsd-3)))
 
 (define-public rust-ogg-0.8
   (package
@@ -3528,6 +3686,28 @@
     (synopsis "Code generation for PyO3 package")
     (description "Code generation for PyO3 package")
     (license license:asl2.0)))
+
+(define-public rust-quale-1
+  (package
+    (name "rust-quale")
+    (version "1.0.0")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "quale" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "135wx0fhg5qv4887c4fyj0bhqixknf97ihmd4gmwqr6c2g2i2s64"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-libc" ,rust-libc-0.2))))
+    (home-page "https://github.com/frewsxcv/rust-quale")
+    (synopsis
+     "A Rust port of the `which` utility. Locates an executable in the userâs path.")
+    (description
+     "This package provides a Rust port of the `which` utility.  Locates an executable
+in the userâs path.")
+    (license (list license:expat license:asl2.0))))
 
 (define-public rust-rodio-0.13
   (package
