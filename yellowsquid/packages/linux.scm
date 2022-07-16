@@ -2,7 +2,7 @@
   #:use-module (guix packages)
   #:use-module (nongnu packages linux))
 
-(define %latest-version "5.18.11")
+(define %latest-version "5.18.12")
 
 (define-public linux-latest
   (package
@@ -11,4 +11,4 @@
     (version %latest-version)
     (source ((@@ (gnu packages linux) %upstream-linux-source)
              %latest-version
-             (base32 "1bqm32nqas1dvcx5b0qh3cshh3gcmpl8wbkn4adhgxw2lxa8w3g2")))))
+             (base32 "09wmgfrnv1df6jg9v3svwhvnxl0j6h4f240p903xlmgj884lvds0")))))
