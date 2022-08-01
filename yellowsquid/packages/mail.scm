@@ -13,7 +13,17 @@
         #~(modify-phases #$phases
             (add-after 'configure 'configure-more
               (lambda* (#:key outputs #:allow-other-keys)
-                (substitute* "Local/Makefile"
-                  (("# (TRUSTED_CONFIG_LIST=).*" all var)
-                   (string-append var "/etc/exim.conf\n"))
-                  (("# (TRANSPORT_LMTP=yes)" all line) line))))))))))
+                (let ((out (assoc-ref outputs "out")))
+                  (substitute* "Local/Makefile"
+                    ;; Needs two paths to prevent automatic installation.
+                    ;; /etc/exim.conf has to be first or it is never used.
+                    (("(CONFIGURE_FILE=).*" all var)
+                     (string-append var "/etc/exim.conf:" out "/etc/exim.conf\n"))
+                    (("# (TRANSPORT_LMTP=yes)" all line) line)))))
+            (add-after 'install 'install-config
+              (lambda* (#:key outputs #:allow-other-keys)
+                (let ((out (assoc-ref outpus "out")))
+                  (mkdir-p (string-append out "/etc"))
+                  (copy-file "src/configure.default" (string-append out "/etc/exim.conf"))
+                  (substitute* (string-append out "/etc/exim.conf")
+                    (("SYSTEM_ALIASES_FILE") "/etc/aliases")))))))))))
