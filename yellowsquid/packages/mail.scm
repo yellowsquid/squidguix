@@ -22,7 +22,7 @@
                     (("# (TRANSPORT_LMTP=yes)" all line) line)))))
             (add-after 'install 'install-config
               (lambda* (#:key outputs #:allow-other-keys)
-                (let ((out (assoc-ref outpus "out")))
+                (let ((out (assoc-ref outputs "out")))
                   (mkdir-p (string-append out "/etc"))
                   (copy-file "src/configure.default" (string-append out "/etc/exim.conf"))
                   (substitute* (string-append out "/etc/exim.conf")
