@@ -67,7 +67,8 @@
            (lambda* (#:key inputs #:allow-other-keys)
              (let* ((libs '("libgtk-3.so.0" "libgdk-3.so.0" "libgobject-2.0.so.0" "libstdc++.so.6" "libgcc_s.so.1" "ld-linux-x86-64.so.2"))
                     (rpath (string-join (map (lambda (lib) (dirname (search-input-file inputs (string-append "/lib/" lib)))) libs) ":")))
-               (invoke "patchelf" "--set-rpath" rpath "minecraft-launcher"))))
+               (invoke "patchelf" "--set-rpath" rpath "minecraft-launcher")
+               (invoke "patchelf" "--set-interpreter" (search-input-file inputs "/lib/ld-linux-x86-64.so.2") "minecraft-launcher"))))
          (add-after 'install 'install-desktop
            (lambda* (#:key outputs #:allow-other-keys)
              (let ((out (assoc-ref outputs "out")))
