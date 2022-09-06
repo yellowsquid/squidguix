@@ -3057,6 +3057,56 @@ Cargo build scripts.
 in order to be used in Cargo build scripts.")
     (license (list license:expat license:asl2.0))))
 
+;; FIXME: remove when Guix upgrades
+(define-public rust-pin-project-0.4
+  (package
+    (name "rust-pin-project")
+    (version "0.4.30")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "pin-project" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "0nlxmsiq39bc73iryh92yslrp2jzlkdjjxd7rv5sjzpflljgkw1y"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-pin-project-internal" ,rust-pin-project-internal-0.4))
+       #:cargo-development-inputs (("rust-rustversion" ,rust-rustversion-1)
+                                   ("rust-ryu" ,rust-ryu-1)
+                                   ("rust-serde-json" ,rust-serde-json-1)
+                                   ("rust-toml" ,rust-toml-0.5)
+                                   ("rust-trybuild" ,rust-trybuild-1))))
+    (home-page "https://github.com/taiki-e/pin-project")
+    (synopsis "A crate for safe and ergonomic pin-projection.
+")
+    (description
+     "This package provides a crate for safe and ergonomic pin-projection.")
+    (license (list license:asl2.0 license:expat))))
+
+(define-public rust-pin-project-internal-0.4
+  (package
+    (name "rust-pin-project-internal")
+    (version "0.4.30")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "pin-project-internal" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "07p6mwz6kz317a6n3p93yk4llj939ihqdz7d1mwl7gmyx468s745"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-1))
+       #:cargo-development-inputs (("rust-rustversion" ,rust-rustversion-1))))
+    (home-page "https://github.com/taiki-e/pin-project")
+    (synopsis "Implementation detail of the `pin-project` crate.
+")
+    (description "Implementation detail of the `pin-project` crate.")
+    (license (list license:asl2.0 license:expat))))
+
 (define-public rust-portaudio-rs-0.3
   (package
     (name "rust-portaudio-rs")
