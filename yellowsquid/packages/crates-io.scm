@@ -2567,7 +2567,8 @@ multiplication and division with overflow protection")
                 "1bsgc8vjq07a1wg9vz819bva3dvn58an4r87h80dxrfqkqanz4g4"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
+     `(#:tests? #f
+       #:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
                        ("rust-cc" ,rust-cc-1)
                        ("rust-cfg-if" ,rust-cfg-if-1)
                        ("rust-libc" ,rust-libc-0.2)
