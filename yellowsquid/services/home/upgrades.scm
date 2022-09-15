@@ -25,7 +25,7 @@
   home-unattended-upgrade-configuration make-home-unattended-upgrade-configuration
   home-unattended-upgrade-configuration?
   (configuration-file home-unattended-upgrade-configuration-file
-                      (default (string-append (getenv "XDG_CONFIG_HOME") "/guix/home.scm")))
+                      (default #~(string-append (getenv "XDG_CONFIG_HOME") "/guix/home.scm")))
   (schedule home-unattended-upgrade-configuration-schedule
             (default "30 01 * * 0"))
   (channels home-unattended-upgrade-configuration-channels
@@ -40,7 +40,7 @@
             (default %home-unattended-upgrade-log-file)))
 
 (define %home-unattended-upgrade-log-file
-  (string-append (getenv "XDG_LOG_HOME") "/unattended-upgrade.log"))
+  #~(string-append (getenv "XDG_LOG_HOME") "/unattended-upgrade.log"))
 
 (define (home-unattended-upgrade-mcron-jobs config)
   (define channels
