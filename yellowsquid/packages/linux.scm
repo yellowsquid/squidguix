@@ -9,7 +9,7 @@
   #:use-module (nongnu packages linux)
   #:use-module (yellowsquid packages))
 
-(define %latest-version "5.19.11")
+(define %latest-version "6.0.1")
 
 (define-public linux-latest
   (package
@@ -18,7 +18,7 @@
     (version %latest-version)
     (source ((@@ (gnu packages linux) %upstream-linux-source)
              %latest-version
-             (base32 "0wyrwdqm4dypx2jbb7d8c3b7fl7q5j434d6g9x2v6sw01gwx4m2m")))))
+             (base32 "1yg8ax4nj2ffb29i4phkhvq7z8zgsj08gi70gzra07imd5d79plf")))))
 
 (define-public linuxconsole-tools
   (package
