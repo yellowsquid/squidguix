@@ -1,35 +1,14 @@
 (define-module (yellowsquid packages swaylock)
-  #:use-module (gnu packages freedesktop)
-  #:use-module (gnu packages gtk)
   #:use-module (gnu packages linux)
-  #:use-module (gnu packages man)
-  #:use-module (gnu packages pkg-config)
-  #:use-module (gnu packages xdisorg)
-  #:use-module (guix build-system meson)
+  #:use-module (gnu packages wm)
   #:use-module (guix git-download)
-  #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages))
 
 (define-public swaylock-pam
   (package
-    (name "swaylock")
-    (version "1.5")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/swaywm/swaylock")
-             (commit version)))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0r95p4w11dwm5ra614vddz83r8j7z6gd120z2vcchy7m9b0f15kf"))))
-    (build-system meson-build-system)
-    (inputs (list cairo gdk-pixbuf libxkbcommon linux-pam wayland))
-    (native-inputs (list pango pkg-config scdoc wayland-protocols))
-    (home-page "https://github.com/swaywm/sway")
-    (synopsis "Screen locking utility for Wayland compositors")
-    (description "Swaylock is a screen locking utility for Wayland compositors.")
-    (license license:expat)))
+    (inherit swaylock)
+    (inputs (modify-inputs (package-inputs swaylock)
+               (append linux-pam)))))
 
 (define-public swaylock-effects-pam
   (package
