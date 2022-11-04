@@ -1678,14 +1678,14 @@ Secure Enclave                 Processor (SEP).                  ")
 (define-public rust-libpulse-simple-binding-2
   (package
     (name "rust-libpulse-simple-binding")
-    (version "2.25.0")
+    (version "2.23.0")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "libpulse-simple-binding" version))
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "1mdws3gr5rvvb64hf77mkq17a6vzs6hryf8616v8r939zlfimgvw"))))
+                "1q0f7anf944w16idmg867xaphcnmyy192ywmqf3r11fvj999fx55"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
