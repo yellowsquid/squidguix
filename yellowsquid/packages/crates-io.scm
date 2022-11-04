@@ -3501,14 +3501,14 @@ applications.")
 (define-public rust-tokio-util-0.7
   (package
     (name "rust-tokio-util")
-    (version "0.7.3")
+    (version "0.7.4")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "tokio-util" version))
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "0igzhn80k8l9w6r5qj0bci70kxhbsm1j31gr406pghyxvvc3qinc"))))
+                "0h67jb56bsxy4pi1a41pda8d52569ci5clvqv3c6cg9vy1sy1chb"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-bytes" ,rust-bytes-1)
