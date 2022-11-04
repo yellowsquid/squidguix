@@ -837,6 +837,27 @@ for inter-process communication.")
     (description "Rust binding for dns-sd")
     (license license:expat)))
 
+(define-public rust-enumflags2-0.6
+  (package
+    (name "rust-enumflags2")
+    (version "0.6.4")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "enumflags2" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "182xd6cxxmadx1axnz6x73d12pzgwkc712zq2lxd4z1k48lxij43"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-enumflags2-derive" ,rust-enumflags2-derive-0.6)
+                       ("rust-serde" ,rust-serde-1))
+       #:cargo-development-inputs (("rust-criterion" ,rust-criterion-0.3))))
+    (home-page "https://github.com/NieDzejkob/enumflags2")
+    (synopsis "Enum-based bit flags")
+    (description "Enum-based bit flags")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-fetch-unroll-0.3
   (package
     (name "rust-fetch-unroll")
