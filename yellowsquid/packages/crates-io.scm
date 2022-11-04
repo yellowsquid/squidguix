@@ -3295,6 +3295,31 @@ premade types for common use cases.")
     (description "Apple `Security.framework` low-level FFI bindings")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-serde-xml-rs-0.4
+  (package
+    (name "rust-serde-xml-rs")
+    (version "0.4.1")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "serde-xml-rs" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1ykx1xkfd59gf0ijnp93xhpd457xy4zi8xv2hrr0ikvcd6h1pgzh"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-log" ,rust-log-0.4)
+                       ("rust-serde" ,rust-serde-1)
+                       ("rust-thiserror" ,rust-thiserror-1)
+                       ("rust-xml-rs" ,rust-xml-rs-0.8))
+       #:cargo-development-inputs (("rust-docmatic" ,rust-docmatic-0.1)
+                                   ("rust-serde-derive" ,rust-serde-derive-1)
+                                   ("rust-simple-logger" ,rust-simple-logger-1))))
+    (home-page "https://github.com/RReverser/serde-xml-rs")
+    (synopsis "xml-rs based deserializer for Serde (compatible with 0.9+)")
+    (description "xml-rs based deserializer for Serde (compatible with 0.9+)")
+    (license license:expat)))
+
 (define-public rust-shannon-0.2
   (package
     (name "rust-shannon")
