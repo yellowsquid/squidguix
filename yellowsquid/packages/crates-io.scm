@@ -594,18 +594,18 @@ color-backtrace")
 (define-public rust-coreaudio-sys-0.2
   (package
     (name "rust-coreaudio-sys")
-    (version "0.2.6")
+    (version "0.2.10")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "coreaudio-sys" version))
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "1mx89ynkf2ds1n43hdd6radg2660gp27dw2l90vkqk4zybq3vxqp"))))
+                "1rjppvvv1j6wbsjw48mrsa5m3z818l5x8f3x0xrp03b3h16l9zrx"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
-       #:cargo-inputs (("rust-bindgen" ,rust-bindgen-0.53))))
+       #:cargo-inputs (("rust-bindgen" ,rust-bindgen-0.59))))
     (home-page "https://github.com/RustAudio/coreaudio-sys")
     (synopsis
      "Bindings for Apple's CoreAudio frameworks generated via rust-bindgen")
