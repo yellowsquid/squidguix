@@ -858,6 +858,30 @@ for inter-process communication.")
     (description "Enum-based bit flags")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-enumflags2-derive-0.6
+  (package
+    (name "rust-enumflags2-derive")
+    (version "0.6.4")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "enumflags2-derive" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "1kkcwi4n76bi1c16ms00dyk4d393gdf29kpr4k9zsn5z7m7fjvll"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-1))))
+    (home-page "https://github.com/NieDzejkob/enumflags2")
+    (synopsis
+     "Do not use directly, use the reexport in the `enumflags2` crate. This allows for better compatibility across versions.")
+    (description
+     "Do not use directly, use the reexport in the `enumflags2` crate.  This allows
+for better compatibility across versions.")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-fetch-unroll-0.3
   (package
     (name "rust-fetch-unroll")
