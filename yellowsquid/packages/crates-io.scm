@@ -2423,14 +2423,14 @@ features.")
 (define-public rust-oboe-0.4
   (package
     (name "rust-oboe")
-    (version "0.4.5")
+    (version "0.4.6")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "oboe" version))
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "1lh20l8b4lx5h9a7lpf9n66z47sh2508w7x2203hsklvw7rchqr4"))))
+                "1hd5626s8qkpgrl2alwz73i8rh1rzifbxj6pxz7zp82gicskrxi7"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
