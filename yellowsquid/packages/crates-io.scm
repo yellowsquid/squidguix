@@ -204,7 +204,7 @@
     (arguments
      `(#:tests? #f
        #:cargo-inputs (("rust-libc" ,rust-libc-0.2)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "https://github.com/diwic/alsa-sys")
     (synopsis
      "FFI bindings for the ALSA project (Advanced Linux Sound Architecture)")
@@ -487,7 +487,7 @@ color-backtrace")
     (description "Implementation of Cookie storage and retrieval")
     (license (list license:expat license:asl2.0))))
 
-(define-public rust-core-foundation-0.9
+(define-public rust-core-foundation-0.9.3
   (package
     (name "rust-core-foundation")
     (version "0.9.3")
@@ -501,7 +501,7 @@ color-backtrace")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-chrono" ,rust-chrono-0.4)
-                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8.3)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-uuid" ,rust-uuid-0.5))))
     (home-page "https://github.com/servo/core-foundation-rs")
@@ -509,7 +509,7 @@ color-backtrace")
     (description "Bindings to Core Foundation for macOS")
     (license (list license:expat license:asl2.0))))
 
-(define-public rust-core-foundation-sys-0.8
+(define-public rust-core-foundation-sys-0.8.3
   (package
     (name "rust-core-foundation-sys")
     (version "0.8.3")
@@ -655,7 +655,7 @@ color-backtrace")
     (arguments
      `(#:cargo-inputs (("rust-alsa" ,rust-alsa-0.6)
                        ("rust-asio-sys" ,rust-asio-sys-0.2)
-                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8.3)
                        ("rust-coreaudio-rs" ,rust-coreaudio-rs-0.10)
                        ("rust-jack" ,rust-jack-0.8)
                        ("rust-jni" ,rust-jni-0.19)
@@ -708,8 +708,7 @@ color-backtrace")
 communication.")
     (license (list license:asl2.0 license:expat))))
 
-;; maybe inherit?
-(define-public rust-dbus-0.9
+(define-public rust-dbus-0.9.6
   (package
     (name "rust-dbus")
     (version "0.9.6")
@@ -729,7 +728,7 @@ communication.")
                        ("rust-futures-executor" ,rust-futures-executor-0.3)
                        ("rust-futures-util" ,rust-futures-util-0.3)
                        ("rust-libc" ,rust-libc-0.2)
-                       ("rust-libdbus-sys" ,rust-libdbus-sys-0.2)
+                       ("rust-libdbus-sys" ,rust-libdbus-sys-0.2.2)
                        ("rust-winapi" ,rust-winapi-0.3))
        #:cargo-development-inputs (("rust-tempfile" ,rust-tempfile-3))))
     (home-page "https://github.com/diwic/dbus-rs")
@@ -756,7 +755,7 @@ communication.")
     (native-inputs (list pkg-config))
     (arguments
      `(#:tests? #f ;Fails to create dbus instance.
-       #:cargo-inputs (("rust-dbus" ,rust-dbus-0.9))))
+       #:cargo-inputs (("rust-dbus" ,rust-dbus-0.9.6))))
     (home-page "https://github.com/diwic/dbus-rs/")
     (synopsis "Framework for writing D-Bus method handlers")
     (description "Framework for writing D-Bus method handlers")
@@ -778,7 +777,7 @@ communication.")
     (native-inputs (list pkg-config))
     (arguments
      `(#:tests? #f ;FIXME: tests fail to compile
-       #:cargo-inputs (("rust-dbus" ,rust-dbus-0.9))
+       #:cargo-inputs (("rust-dbus" ,rust-dbus-0.9.6))
        #:cargo-development-inputs (("rust-tokio" ,rust-tokio-1)
                                    ("rust-dbus-tokio" ,rust-dbus-tokio-0.7))))
     (home-page "https://github.com/diwic/dbus-rs/")
@@ -832,7 +831,7 @@ for inter-process communication.")
     (arguments
      `(#:skip-build? #t
        #:cargo-inputs (("rust-libc" ,rust-libc-0.2)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "https://github.com/plietar/rust-dns-sd")
     (synopsis "Rust binding for dns-sd")
     (description "Rust binding for dns-sd")
@@ -862,7 +861,7 @@ for inter-process communication.")
     (license license:asl2.0)))
 
 ;; maybe downgrade
-(define-public rust-futures-0.3
+(define-public rust-futures-0.3.21
   (package
     (name "rust-futures")
     (version "0.3.21")
@@ -876,15 +875,15 @@ for inter-process communication.")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-test-flags '("--release" "--all-features")
-       #:cargo-inputs (("rust-futures-channel" ,rust-futures-channel-0.3)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-executor" ,rust-futures-executor-0.3)
-                       ("rust-futures-io" ,rust-futures-io-0.3)
-                       ("rust-futures-sink" ,rust-futures-sink-0.3)
-                       ("rust-futures-task" ,rust-futures-task-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3))
+       #:cargo-inputs (("rust-futures-channel" ,rust-futures-channel-0.3.21)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-executor" ,rust-futures-executor-0.3.21)
+                       ("rust-futures-io" ,rust-futures-io-0.3.21)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3.21)
+                       ("rust-futures-task" ,rust-futures-task-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21))
        #:cargo-development-inputs (("rust-assert-matches" ,rust-assert-matches-1)
-                                   ("rust-futures-test" ,rust-futures-test-0.3)
+                                   ("rust-futures-test" ,rust-futures-test-0.3.21)
                                    ("rust-pin-project" ,rust-pin-project-1)
                                    ("rust-pin-utils" ,rust-pin-utils-0.1)
                                    ("rust-static-assertions" ,rust-static-assertions-1)
@@ -919,7 +918,7 @@ composability, and iterator-like interfaces.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-channel-0.3
+(define-public rust-futures-channel-0.3.21
   (package
     (name "rust-futures-channel")
     (version "0.3.21")
@@ -932,8 +931,8 @@ composability, and iterator-like interfaces.")
                 "0420lz2fmxa356ax1rp2sqi7b27ykfhvq4w9f1sla4hlp7j3q263"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-sink" ,rust-futures-sink-0.3))))
+     `(#:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3.21))))
     (home-page "https://rust-lang.github.io/futures-rs")
     (synopsis "Channels for asynchronous communication using futures-rs.
 ")
@@ -941,7 +940,7 @@ composability, and iterator-like interfaces.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-core-0.3
+(define-public rust-futures-core-0.3.21
   (package
     (name "rust-futures-core")
     (version "0.3.21")
@@ -960,7 +959,7 @@ composability, and iterator-like interfaces.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-executor-0.3
+(define-public rust-futures-executor-0.3.21
   (package
     (name "rust-futures-executor")
     (version "0.3.21")
@@ -973,9 +972,9 @@ composability, and iterator-like interfaces.")
                 "19mq96kwgf06axgdc2fbrjhqzdnxww9vw6cz8b82gqr9z86bj84l"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-task" ,rust-futures-task-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+     `(#:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-task" ,rust-futures-task-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-num-cpus" ,rust-num-cpus-1))))
     (home-page "https://rust-lang.github.io/futures-rs")
     (synopsis
@@ -986,7 +985,7 @@ composability, and iterator-like interfaces.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-io-0.3
+(define-public rust-futures-io-0.3.21
   (package
     (name "rust-futures-io")
     (version "0.3.21")
@@ -1008,7 +1007,7 @@ futures-rs library.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-macro-0.3
+(define-public rust-futures-macro-0.3.21
   (package
     (name "rust-futures-macro")
     (version "0.3.21")
@@ -1031,7 +1030,7 @@ futures-rs library.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-sink-0.3
+(define-public rust-futures-sink-0.3.21
   (package
     (name "rust-futures-sink")
     (version "0.3.21")
@@ -1050,7 +1049,7 @@ futures-rs library.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-task-0.3
+(define-public rust-futures-task-0.3.21
   (package
     (name "rust-futures-task")
     (version "0.3.21")
@@ -1069,7 +1068,7 @@ futures-rs library.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-test-0.3
+(define-public rust-futures-test-0.3.21
   (package
     (name "rust-futures-test")
     (version "0.3.21")
@@ -1082,13 +1081,13 @@ futures-rs library.")
                 "167fm0bz93w57f2yns7y4y45ax8g7kbrbs3rvzb5vcxzvdwr6glc"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-executor" ,rust-futures-executor-0.3)
-                       ("rust-futures-io" ,rust-futures-io-0.3)
-                       ("rust-futures-macro" ,rust-futures-macro-0.3)
-                       ("rust-futures-sink" ,rust-futures-sink-0.3)
-                       ("rust-futures-task" ,rust-futures-task-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+     `(#:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-executor" ,rust-futures-executor-0.3.21)
+                       ("rust-futures-io" ,rust-futures-io-0.3.21)
+                       ("rust-futures-macro" ,rust-futures-macro-0.3.21)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3.21)
+                       ("rust-futures-task" ,rust-futures-task-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-pin-project" ,rust-pin-project-1)
                        ("rust-pin-utils" ,rust-pin-utils-0.1))))
     (home-page "https://rust-lang.github.io/futures-rs")
@@ -1099,7 +1098,7 @@ futures-rs library.")
     (license (list license:expat license:asl2.0))))
 
 ;; maybe downgrade
-(define-public rust-futures-util-0.3
+(define-public rust-futures-util-0.3.21
   (package
     (name "rust-futures-util")
     (version "0.3.21")
@@ -1113,12 +1112,12 @@ futures-rs library.")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-futures" ,rust-futures-0.1)
-                       ("rust-futures-channel" ,rust-futures-channel-0.3)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-io" ,rust-futures-io-0.3)
-                       ("rust-futures-macro" ,rust-futures-macro-0.3)
-                       ("rust-futures-sink" ,rust-futures-sink-0.3)
-                       ("rust-futures-task" ,rust-futures-task-0.3)
+                       ("rust-futures-channel" ,rust-futures-channel-0.3.21)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-io" ,rust-futures-io-0.3.21)
+                       ("rust-futures-macro" ,rust-futures-macro-0.3.21)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3.21)
+                       ("rust-futures-task" ,rust-futures-task-0.3.21)
                        ("rust-memchr" ,rust-memchr-2)
                        ("rust-pin-project-lite" ,rust-pin-project-lite-0.2)
                        ("rust-pin-utils" ,rust-pin-utils-0.1)
@@ -1149,9 +1148,9 @@ futures-rs library.")
      `(#:skip-build? #t
        #:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
                        ("rust-cfg-if" ,rust-cfg-if-1)
-                       ("rust-futures-channel" ,rust-futures-channel-0.3)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-channel" ,rust-futures-channel-0.3.21)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-glib" ,rust-glib-0.10)
                        ("rust-glib-sys" ,rust-glib-sys-0.10)
                        ("rust-gobject-sys" ,rust-gobject-sys-0.10)
@@ -1187,8 +1186,8 @@ futures-rs library.")
     (arguments
      `(#:skip-build? #t
        #:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-sink" ,rust-futures-sink-0.3)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3.21)
                        ("rust-glib" ,rust-glib-0.10)
                        ("rust-glib-sys" ,rust-glib-sys-0.10)
                        ("rust-gobject-sys" ,rust-gobject-sys-0.10)
@@ -1511,7 +1510,7 @@ futures-rs library.")
        #:cargo-inputs (("rust-lazy-static" ,rust-lazy-static-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-libloading" ,rust-libloading-0.6)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "https://github.com/RustAudio/rust-jack/tree/main/jack-sys")
     (synopsis "Low-level binding to the JACK audio API.")
     (description "Low-level binding to the JACK audio API.")
@@ -1588,7 +1587,7 @@ Secure Enclave                 Processor (SEP).                  ")
      `(#:tests? #f ;Requires a secret service instance
        #:cargo-inputs (("rust-byteorder" ,rust-byteorder-1)
                        ("rust-secret-service" ,rust-secret-service-2)
-                       ("rust-security-framework" ,rust-security-framework-2)
+                       ("rust-security-framework" ,rust-security-framework-2.6)
                        ("rust-winapi" ,rust-winapi-0.3))
        #:cargo-development-inputs (("rust-clap" ,rust-clap-2)
                                    ("rust-rand" ,rust-rand-0.8)
@@ -1625,8 +1624,7 @@ Secure Enclave                 Processor (SEP).                  ")
     (description "Pure Rust vorbis decoder")
     (license (list license:expat license:asl2.0))))
 
-;; maybe downgrade
-(define-public rust-libdbus-sys-0.2
+(define-public rust-libdbus-sys-0.2.2
   (package
     (name "rust-libdbus-sys")
     (version "0.2.2")
@@ -1640,7 +1638,7 @@ Secure Enclave                 Processor (SEP).                  ")
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
-       #:cargo-inputs (("rust-pkg-config" ,rust-pkg-config-0.3))))
+       #:cargo-inputs (("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "https://github.com/diwic/dbus-rs")
     (synopsis "FFI bindings to libdbus.")
     (description "FFI bindings to libdbus.")
@@ -1660,7 +1658,7 @@ Secure Enclave                 Processor (SEP).                  ")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-byteorder" ,rust-byteorder-1)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-hostname" ,rust-hostname-0.3)
                        ("rust-if-addrs" ,rust-if-addrs-0.6)
                        ("rust-log" ,rust-log-0.4)
@@ -1693,7 +1691,7 @@ Secure Enclave                 Processor (SEP).                  ")
      `(#:skip-build? #t
        #:cargo-inputs (("rust-libpulse-binding" ,rust-libpulse-binding-2)
                        ("rust-libpulse-simple-sys" ,rust-libpulse-simple-sys-1)
-                       ("rust-libpulse-sys" ,rust-libpulse-sys-1))))
+                       ("rust-libpulse-sys" ,rust-libpulse-sys-1.19))))
     (home-page "https://github.com/jnqnfe/pulse-binding-rust")
     (synopsis
      "A Rust language binding for the PulseAudio libpulse-simple library.")
@@ -1716,8 +1714,8 @@ library.")
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
-       #:cargo-inputs (("rust-libpulse-sys" ,rust-libpulse-sys-1)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+       #:cargo-inputs (("rust-libpulse-sys" ,rust-libpulse-sys-1.19)
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "https://github.com/jnqnfe/pulse-binding-rust")
     (synopsis
      "FFI bindings for the PulseAudio libpulse-simple system library.")
@@ -1725,8 +1723,7 @@ library.")
      "FFI bindings for the PulseAudio libpulse-simple system library.")
     (license (list license:expat license:asl2.0))))
 
-;; maybe downgrade
-(define-public rust-libpulse-sys-1
+(define-public rust-libpulse-sys-1.19
   (package
     (name "rust-libpulse-sys")
     (version "1.19.3")
@@ -1743,7 +1740,7 @@ library.")
        #:cargo-inputs (("rust-libc" ,rust-libc-0.2)
                        ("rust-num-derive" ,rust-num-derive-0.3)
                        ("rust-num-traits" ,rust-num-traits-0.2)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3)
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24)
                        ("rust-winapi" ,rust-winapi-0.3))))
     (home-page "https://github.com/jnqnfe/pulse-binding-rust")
     (synopsis "FFI bindings for the PulseAudio libpulse system library.")
@@ -1767,7 +1764,7 @@ library.")
                        ("rust-byteorder" ,rust-byteorder-1)
                        ("rust-bytes" ,rust-bytes-1)
                        ("rust-cfg-if" ,rust-cfg-if-1)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-lewton" ,rust-lewton-0.10)
                        ("rust-librespot-core" ,rust-librespot-core-0.2)
                        ("rust-librespot-tremor" ,rust-librespot-tremor-0.2)
@@ -1799,8 +1796,8 @@ library.")
                        ("rust-base64" ,rust-base64-0.13)
                        ("rust-dns-sd" ,rust-dns-sd-0.1)
                        ("rust-form-urlencoded" ,rust-form-urlencoded-1)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-hmac" ,rust-hmac-0.11)
                        ("rust-hyper" ,rust-hyper-0.14)
                        ("rust-libmdns" ,rust-libmdns-0.6)
@@ -1808,7 +1805,7 @@ library.")
                        ("rust-librespot-playback" ,rust-librespot-playback-0.2)
                        ("rust-librespot-protocol" ,rust-librespot-protocol-0.2)
                        ("rust-log" ,rust-log-0.4)
-                       ("rust-protobuf" ,rust-protobuf-2)
+                       ("rust-protobuf" ,rust-protobuf-2.14)
                        ("rust-rand" ,rust-rand-0.8)
                        ("rust-serde" ,rust-serde-1)
                        ("rust-serde-json" ,rust-serde-json-1)
@@ -1840,8 +1837,8 @@ library.")
                        ("rust-byteorder" ,rust-byteorder-1)
                        ("rust-bytes" ,rust-bytes-1)
                        ("rust-form-urlencoded" ,rust-form-urlencoded-1)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-hmac" ,rust-hmac-0.11)
                        ("rust-http" ,rust-http-0.2)
                        ("rust-httparse" ,rust-httparse-1)
@@ -1855,7 +1852,7 @@ library.")
                        ("rust-once-cell" ,rust-once-cell-1)
                        ("rust-pbkdf2" ,rust-pbkdf2-0.8)
                        ("rust-priority-queue" ,rust-priority-queue-1)
-                       ("rust-protobuf" ,rust-protobuf-2)
+                       ("rust-protobuf" ,rust-protobuf-2.14)
                        ("rust-rand" ,rust-rand-0.8)
                        ("rust-rand" ,rust-rand-0.8)
                        ("rust-serde" ,rust-serde-1)
@@ -1893,7 +1890,7 @@ library.")
                        ("rust-librespot-core" ,rust-librespot-core-0.2)
                        ("rust-librespot-protocol" ,rust-librespot-protocol-0.2)
                        ("rust-log" ,rust-log-0.4)
-                       ("rust-protobuf" ,rust-protobuf-2))))
+                       ("rust-protobuf" ,rust-protobuf-2.14))))
     (home-page "https://github.com/librespot-org/librespot")
     (synopsis "The metadata logic for librespot")
     (description "The metadata logic for librespot")
@@ -1916,8 +1913,8 @@ library.")
        #:cargo-inputs (("rust-alsa" ,rust-alsa-0.5)
                        ("rust-byteorder" ,rust-byteorder-1)
                        ("rust-cpal" ,rust-cpal-0.13)
-                       ("rust-futures-executor" ,rust-futures-executor-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-executor" ,rust-futures-executor-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-glib" ,rust-glib-0.10)
                        ("rust-gstreamer" ,rust-gstreamer-0.16)
                        ("rust-gstreamer-app" ,rust-gstreamer-app-0.16)
@@ -1955,9 +1952,9 @@ library.")
     (arguments
      `(#:skip-build? #t
        #:cargo-inputs (("rust-glob" ,rust-glob-0.3)
-                       ("rust-protobuf" ,rust-protobuf-2)
-                       ("rust-protobuf-codegen" ,rust-protobuf-codegen-2)
-                       ("rust-protobuf-codegen-pure" ,rust-protobuf-codegen-pure-2))))
+                       ("rust-protobuf" ,rust-protobuf-2.14)
+                       ("rust-protobuf-codegen" ,rust-protobuf-codegen-2.14)
+                       ("rust-protobuf-codegen-pure" ,rust-protobuf-codegen-pure-2.14))))
     (home-page "https://github.com/librespot-org/librespot")
     (synopsis "The protobuf logic for communicating with Spotify servers")
     (description "The protobuf logic for communicating with Spotify servers")
@@ -1980,7 +1977,7 @@ library.")
        #:cargo-inputs (("rust-cc" ,rust-cc-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-ogg-sys" ,rust-ogg-sys-0.0.9)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "")
     (synopsis "Rust bindings to tremor")
     (description "Rust bindings to tremor")
@@ -2031,8 +2028,7 @@ library.")
     (description "Rust bindings for the minimp3 library.")
     (license license:expat)))
 
-;; maybe downgrade
-(define-public rust-mio-0.6
+(define-public rust-mio-0.6.23
   (package
     (name "rust-mio")
     (version "0.6.23")
@@ -2053,8 +2049,8 @@ library.")
                        ("rust-kernel32-sys" ,rust-kernel32-sys-0.2)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-log" ,rust-log-0.4)
-                       ("rust-miow" ,rust-miow-0.2)
-                       ("rust-net2" ,rust-net2-0.2)
+                       ("rust-miow" ,rust-miow-0.2.2)
+                       ("rust-net2" ,rust-net2-0.2.37)
                        ("rust-slab" ,rust-slab-0.4)
                        ("rust-winapi" ,rust-winapi-0.2))))
     (home-page "https://github.com/tokio-rs/mio")
@@ -2062,8 +2058,7 @@ library.")
     (description "Lightweight non-blocking IO")
     (license license:expat)))
 
-;; maybe downgrade
-(define-public rust-miow-0.2
+(define-public rust-miow-0.2.2
   (package
     (name "rust-miow")
     (version "0.2.2")
@@ -2263,8 +2258,7 @@ multiplication and division with overflow protection")
     (description "FFI bindings for the Android NDK")
     (license (list license:expat license:asl2.0))))
 
-;; maybe downgrade
-(define-public rust-net2-0.2
+(define-public rust-net2-0.2.37
   (package
     (name "rust-net2")
     (version "0.2.37")
@@ -2289,8 +2283,7 @@ multiplication and division with overflow protection")
      "Extensions to the standard library's networking types as proposed in RFC 1158.")
     (license (list license:expat license:asl2.0))))
 
-;; maybe downgrade
-(define-public rust-nix-0.22
+(define-public rust-nix-0.22.3
   (package
     (name "rust-nix")
     (version "0.22.3")
@@ -2523,7 +2516,7 @@ features.")
      `(#:skip-build? #t
        #:cargo-inputs (("rust-gcc" ,rust-gcc-0.3)
                        ("rust-libc" ,rust-libc-0.2)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "https://github.com/tomaka/ogg-sys")
     (synopsis "FFI for libogg, the media container.")
     (description "FFI for libogg, the media container.")
@@ -2721,8 +2714,7 @@ subset of the Modular Crypt Format a.k.a.  MCF)")
     (description "Generic implementation of PBKDF2")
     (license (list license:expat license:asl2.0))))
 
-;; maybe downgrade
-(define-public rust-pkg-config-0.3
+(define-public rust-pkg-config-0.3.24
   (package
     (name "rust-pkg-config")
     (version "0.3.24")
@@ -2783,7 +2775,7 @@ in order to be used in Cargo build scripts.")
     (arguments
      `(#:skip-build? #t
        #:cargo-inputs (("rust-libc" ,rust-libc-0.2)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "")
     (synopsis "Bindings to PortAudio")
     (description "Bindings to PortAudio")
@@ -2814,7 +2806,7 @@ in order to be used in Cargo build scripts.")
 efficiently change the priority of an item.")
     (license (list license:lgpl3 license:mpl2.0))))
 
-(define-public rust-protobuf-2
+(define-public rust-protobuf-2.14
   (package
     (name "rust-protobuf")
     (version "2.14.0")
@@ -2837,7 +2829,7 @@ efficiently change the priority of an item.")
     (description "Rust implementation of Google protocol buffers")
     (license license:expat)))
 
-(define-public rust-protobuf-codegen-2
+(define-public rust-protobuf-codegen-2.14
   (package
     (name "rust-protobuf-codegen")
     (version "2.14.0")
@@ -2851,7 +2843,7 @@ efficiently change the priority of an item.")
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
-       #:cargo-inputs (("rust-protobuf" ,rust-protobuf-2))))
+       #:cargo-inputs (("rust-protobuf" ,rust-protobuf-2.14))))
     (home-page "https://github.com/stepancheg/rust-protobuf/")
     (synopsis "Code generator for rust-protobuf.
 
@@ -2866,7 +2858,7 @@ Includes a library and `protoc-gen-rust` binary.
 See `protoc-rust` and `protobuf-codegen-pure` crates.")
     (license license:expat)))
 
-(define-public rust-protobuf-codegen-pure-2
+(define-public rust-protobuf-codegen-pure-2.14
   (package
     (name "rust-protobuf-codegen-pure")
     (version "2.14.0")
@@ -2880,8 +2872,8 @@ See `protoc-rust` and `protobuf-codegen-pure` crates.")
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
-       #:cargo-inputs (("rust-protobuf" ,rust-protobuf-2)
-                       ("rust-protobuf-codegen" ,rust-protobuf-codegen-2))))
+       #:cargo-inputs (("rust-protobuf" ,rust-protobuf-2.14)
+                       ("rust-protobuf-codegen" ,rust-protobuf-codegen-2.14))))
     (home-page
      "https://github.com/stepancheg/rust-protobuf/tree/master/protobuf-codegen-pure/")
     (synopsis "Pure-rust codegen for protobuf using protobuf-parser crate
@@ -3087,11 +3079,11 @@ premade types for common use cases.")
                        ("rust-cmake" ,rust-cmake-0.1)
                        ("rust-flate2" ,rust-flate2-1)
                        ("rust-libc" ,rust-libc-0.2)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3)
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24)
                        ("rust-tar" ,rust-tar-0.4)
                        ("rust-unidiff" ,rust-unidiff-0.3)
                        ("rust-vcpkg" ,rust-vcpkg-0.2)
-                       ("rust-version-compare" ,rust-version-compare-0.0.10))))
+                       ("rust-version-compare" ,rust-version-compare-0.0))))
     (home-page "https://github.com/rust-sdl2/rust-sdl2")
     (synopsis "Raw SDL2 bindings for Rust, used internally rust-sdl2")
     (description "Raw SDL2 bindings for Rust, used internally rust-sdl2")
@@ -3151,7 +3143,7 @@ premade types for common use cases.")
     (description "Security.framework bindings for macOS and iOS")
     (license (list license:expat license:asl2.0))))
 
-(define-public rust-security-framework-2
+(define-public rust-security-framework-2.6
   (package
     (name "rust-security-framework")
     (version "2.6.1")
@@ -3165,12 +3157,12 @@ premade types for common use cases.")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
-                       ("rust-core-foundation" ,rust-core-foundation-0.9)
-                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+                       ("rust-core-foundation" ,rust-core-foundation-0.9.3)
+                       ("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8.3)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-log" ,rust-log-0.4)
                        ("rust-num-bigint" ,rust-num-bigint-0.4)
-                       ("rust-security-framework-sys" ,rust-security-framework-sys-2))
+                       ("rust-security-framework-sys" ,rust-security-framework-sys-2.6))
        #:cargo-development-inputs (("rust-env-logger" ,rust-env-logger-0.9)
                                    ("rust-hex" ,rust-hex-0.4)
                                    ("rust-tempdir" ,rust-tempdir-0.3)
@@ -3201,7 +3193,7 @@ premade types for common use cases.")
     (description "Apple `Security.framework` low-level FFI bindings")
     (license (list license:expat license:asl2.0))))
 
-(define-public rust-security-framework-sys-2
+(define-public rust-security-framework-sys-2.6
   (package
     (name "rust-security-framework-sys")
     (version "2.6.1")
@@ -3214,7 +3206,7 @@ premade types for common use cases.")
                 "0mn5lm0jip9nm6ydqm6qd9alyiwq15c027777jsbyibs2wxa2q01"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8)
+     `(#:cargo-inputs (("rust-core-foundation-sys" ,rust-core-foundation-sys-0.8.3)
                        ("rust-libc" ,rust-libc-0.2))))
     (home-page "https://lib.rs/crates/security-framework-sys")
     (synopsis "Apple `Security.framework` low-level FFI bindings")
@@ -3287,8 +3279,7 @@ premade types for common use cases.")
      "This package provides a standard library for the client-side Web")
     (license (list license:expat license:asl2.0))))
 
-;; maybe downgrade
-(define-public rust-tokio-0.2
+(define-public rust-tokio-0.2.25
   (package
     (name "rust-tokio")
     (version "0.2.25")
@@ -3309,7 +3300,7 @@ premade types for common use cases.")
                        ("rust-lazy-static" ,rust-lazy-static-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-memchr" ,rust-memchr-2)
-                       ("rust-mio" ,rust-mio-0.6)
+                       ("rust-mio" ,rust-mio-0.6.23)
                        ("rust-mio-named-pipes" ,rust-mio-named-pipes-0.1)
                        ("rust-mio-uds" ,rust-mio-uds-0.6)
                        ("rust-num-cpus" ,rust-num-cpus-1)
@@ -3344,14 +3335,14 @@ applications.")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-futures" ,rust-futures-0.1)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-pin-project-lite" ,rust-pin-project-lite-0.1)
-                       ("rust-tokio" ,rust-tokio-0.2)
+                       ("rust-tokio" ,rust-tokio-0.2.25)
                        ("rust-tokio-current-thread" ,rust-tokio-current-thread-0.1)
-                       ("rust-tokio-executor" ,rust-tokio-executor-0.1)
-                       ("rust-tokio-reactor" ,rust-tokio-reactor-0.1)
-                       ("rust-tokio-timer" ,rust-tokio-timer-0.2))
+                       ("rust-tokio-executor" ,rust-tokio-executor-0.1.10)
+                       ("rust-tokio-reactor" ,rust-tokio-reactor-0.1.12)
+                       ("rust-tokio-timer" ,rust-tokio-timer-0.2.13))
        #:cargo-development-inputs (("rust-tokio" ,rust-tokio-0.1))))
     (home-page "https://tokio.rs")
     (synopsis "Compatibility between `tokio` 0.2 and legacy versions.
@@ -3376,7 +3367,7 @@ applications.")
                        ("rust-once-cell" ,rust-once-cell-1)
                        ("rust-pin-project-lite" ,rust-pin-project-lite-0.2)
                        ("rust-tokio" ,rust-tokio-1)
-                       ("rust-tokio" ,rust-tokio-0.2)
+                       ("rust-tokio" ,rust-tokio-0.2.25)
                        ("rust-tokio-stream" ,rust-tokio-stream-0.1))
        #:cargo-development-inputs (("rust-hyper" ,rust-hyper-0.13)
                                    ("rust-tokio" ,rust-tokio-1))))
@@ -3385,8 +3376,7 @@ applications.")
     (description "Tokio 0.2 compat utilities")
     (license license:expat)))
 
-;; maybe downgrade
-(define-public rust-tokio-executor-0.1
+(define-public rust-tokio-executor-0.1.10
   (package
     (name "rust-tokio-executor")
     (version "0.1.10")
@@ -3408,8 +3398,7 @@ applications.")
     (description "Future execution primitives")
     (license license:expat)))
 
-;; maybe downgrade
-(define-public rust-tokio-reactor-0.1
+(define-public rust-tokio-reactor-0.1.12
   (package
     (name "rust-tokio-reactor")
     (version "0.1.12")
@@ -3427,7 +3416,7 @@ applications.")
                        ("rust-futures" ,rust-futures-0.1)
                        ("rust-lazy-static" ,rust-lazy-static-1)
                        ("rust-log" ,rust-log-0.4)
-                       ("rust-mio" ,rust-mio-0.6)
+                       ("rust-mio" ,rust-mio-0.6.23)
                        ("rust-num-cpus" ,rust-num-cpus-1)
                        ("rust-parking-lot" ,rust-parking-lot-0.9)
                        ("rust-slab" ,rust-slab-0.4)
@@ -3440,8 +3429,7 @@ applications.")
     (description "Event loop that drives Tokio I/O resources.")
     (license license:expat)))
 
-;; maybe downgrade
-(define-public rust-tokio-stream-0.1
+(define-public rust-tokio-stream-0.1.9
   (package
     (name "rust-tokio-stream")
     (version "0.1.9")
@@ -3468,8 +3456,7 @@ applications.")
     (description "Utilities to work with `Stream` and `tokio`.")
     (license license:expat)))
 
-;; maybe downgrade
-(define-public rust-tokio-timer-0.2
+(define-public rust-tokio-timer-0.2.13
   (package
     (name "rust-tokio-timer")
     (version "0.2.13")
@@ -3507,10 +3494,10 @@ applications.")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-bytes" ,rust-bytes-1)
-                       ("rust-futures-core" ,rust-futures-core-0.3)
-                       ("rust-futures-io" ,rust-futures-io-0.3)
-                       ("rust-futures-sink" ,rust-futures-sink-0.3)
-                       ("rust-futures-util" ,rust-futures-util-0.3)
+                       ("rust-futures-core" ,rust-futures-core-0.3.21)
+                       ("rust-futures-io" ,rust-futures-io-0.3.21)
+                       ("rust-futures-sink" ,rust-futures-sink-0.3.21)
+                       ("rust-futures-util" ,rust-futures-util-0.3.21)
                        ("rust-hashbrown" ,rust-hashbrown-0.12)
                        ("rust-pin-project-lite" ,rust-pin-project-lite-0.2)
                        ("rust-slab" ,rust-slab-0.4)
@@ -3518,7 +3505,7 @@ applications.")
                        ("rust-tracing" ,rust-tracing-0.1))
        #:cargo-development-inputs (("rust-async-stream" ,rust-async-stream-0.3)
                                    ("rust-futures" ,rust-futures-0.3)
-                                   ("rust-futures-test" ,rust-futures-test-0.3)
+                                   ("rust-futures-test" ,rust-futures-test-0.3.21)
                                    ("rust-tokio" ,rust-tokio-1)
                                    ("rust-tokio-stream" ,rust-tokio-stream-0.1)
                                    ("rust-tokio-test" ,rust-tokio-test-0.4))))
@@ -3633,7 +3620,7 @@ applications.")
        #:cargo-inputs (("rust-cc" ,rust-cc-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-ogg-sys" ,rust-ogg-sys-0.0.9)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24))))
     (home-page "")
     (synopsis "FFI for the libvorbis library")
     (description "FFI for the libvorbis library")
@@ -3656,7 +3643,7 @@ applications.")
        #:cargo-inputs (("rust-gcc" ,rust-gcc-0.3)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-ogg-sys" ,rust-ogg-sys-0.0.9)
-                       ("rust-pkg-config" ,rust-pkg-config-0.3)
+                       ("rust-pkg-config" ,rust-pkg-config-0.3.24)
                        ("rust-vorbis-sys" ,rust-vorbis-sys-0.1))))
     (home-page "")
     (synopsis "FFI for the vorbisfile library")
@@ -3702,7 +3689,7 @@ applications.")
                        ("rust-fastrand" ,rust-fastrand-1)
                        ("rust-futures" ,rust-futures-0.3)
                        ("rust-nb-connect" ,rust-nb-connect-1)
-                       ("rust-nix" ,rust-nix-0.22)
+                       ("rust-nix" ,rust-nix-0.22.3)
                        ("rust-once-cell" ,rust-once-cell-1)
                        ("rust-polling" ,rust-polling-2)
                        ("rust-scoped-tls" ,rust-scoped-tls-1)
