@@ -262,6 +262,23 @@
 log output.")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-assert-impl-0.1
+  (package
+    (name "rust-assert-impl")
+    (version "0.1.3")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "assert-impl" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "17jvig9rwdc1sf1j5q8q9k69njg3k8g7x7g6wcb711hcvq9l6in3"))))
+    (build-system cargo-build-system)
+    (home-page "https://github.com/upsuper/assert-impl")
+    (synopsis "Macro for static assert types implement a trait or not")
+    (description "Macro for static assert types implement a trait or not")
+    (license license:expat)))
+
 (define-public rust-asio-sys-0.2
   (package
     (name "rust-asio-sys")
