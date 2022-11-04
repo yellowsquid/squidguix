@@ -2802,14 +2802,14 @@ in order to be used in Cargo build scripts.")
 (define-public rust-priority-queue-1
   (package
     (name "rust-priority-queue")
-    (version "1.2.1")
+    (version "1.2.3")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "priority-queue" version))
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "1w6a4wkxm7h7qhxqgivgxbixw51czmkd83x1vr0gqg4dq054ifh0"))))
+                "1id9vzrypiilraw4wd5lh577prkjgyhd5vv77rdcgb7kkbcq4l41"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
