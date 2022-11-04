@@ -1325,14 +1325,14 @@ futures-rs library.")
 (define-public rust-hound-3
   (package
     (name "rust-hound")
-    (version "3.4.0")
+    (version "3.5.0")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "hound" version))
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "0jbm25p2nc8758dnfjan1yk7hz2i85y89nrbai14zzxfrsr4n5la"))))
+                "1cadkxzdsb3bxwzri6r6l78a1jy9j0jxrfwmh34gjadvbnyws4sd"))))
     (build-system cargo-build-system)
     (inputs (list alsa-lib))
     (native-inputs (list pkg-config))
