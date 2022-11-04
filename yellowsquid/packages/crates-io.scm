@@ -2186,6 +2186,23 @@ multiplication and division with overflow protection")
     (description "Safe Rust bindings to the Android NDK")
     (license (list license:expat license:asl2.0))))
 
+(define-public rust-ndk-context-0.1
+  (package
+    (name "rust-ndk-context")
+    (version "0.1.1")
+    (source (origin
+              (method url-fetch)
+              (uri (crate-uri "ndk-context" version))
+              (file-name (string-append name "-" version ".tar.gz"))
+              (sha256
+               (base32
+                "12sai3dqsblsvfd1l1zab0z6xsnlha3xsfl7kagdnmj3an3jvc17"))))
+    (build-system cargo-build-system)
+    (home-page "https://github.com/rust-windowing/android-ndk-rs")
+    (synopsis "Handles for accessing Android APIs")
+    (description "Handles for accessing Android APIs")
+    (license (list license:expat license:asl2.0))))
+
 (define-public rust-ndk-glue-0.3
   (package
     (name "rust-ndk-glue")
@@ -2215,14 +2232,14 @@ multiplication and division with overflow protection")
 (define-public rust-ndk-glue-0.6
   (package
     (name "rust-ndk-glue")
-    (version "0.6.0")
+    (version "0.6.2")
     (source (origin
               (method url-fetch)
               (uri (crate-uri "ndk-glue" version))
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "0yaxwp953c0b5fpn8zalwjkrvw8rkf00physlmi9kssq115x3h04"))))
+                "0pz6cdmmlzsb2jhrfvkma5d5vw2i331dlghqnkk2c0l6hdxll30d"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -2231,6 +2248,7 @@ multiplication and division with overflow protection")
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-log" ,rust-log-0.4)
                        ("rust-ndk" ,rust-ndk-0.6)
+                       ("rust-ndk-context" ,rust-ndk-context-0.1)
                        ("rust-ndk-macro" ,rust-ndk-macro-0.3)
                        ("rust-ndk-sys" ,rust-ndk-sys-0.3))))
     (home-page "https://github.com/rust-windowing/android-ndk-rs")
