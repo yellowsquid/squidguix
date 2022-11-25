@@ -9,17 +9,6 @@
   #:use-module (nongnu packages linux)
   #:use-module (yellowsquid packages))
 
-(define %latest-version "6.0.9")
-
-(define-public linux-latest
-  (package
-    (inherit linux)
-    (name "linux-latest")
-    (version %latest-version)
-    (source ((@@ (gnu packages linux) %upstream-linux-source)
-             %latest-version
-             (base32 "1irip1yk62carcisxlacwcxsiqib4qswx6h5mfhv8f97x04a4531")))))
-
 (define-public linuxconsole-tools
   (package
     (name "linuxconsole-tools")
