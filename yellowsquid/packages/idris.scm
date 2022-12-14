@@ -1,4 +1,5 @@
 (define-module (yellowsquid packages idris)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages chez)
   #:use-module (gnu packages llvm)
@@ -8,6 +9,7 @@
   #:use-module (gnu packages version-control)
   #:use-module (guix build-system gnu)
   #:use-module (guix gexp)
+  #:use-module (guix git)
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
