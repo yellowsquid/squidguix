@@ -203,3 +203,56 @@ Epigram and Agda.")
    #:bootstrap-idris idris2-0.6.0
    #:idris-version-tag "3-e673d0"
    #:with-bootstrap-shortcut? #false))
+
+(define-public idris-setoid
+  (let ((commit "63e894b39a82e5a8b1edd06f1e03e6bfc5aa8c81")
+        (module-version "0.1"))
+    (package
+      (name "idris-setoid")
+      (version (git-version module-version "1" commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/ohad/idris-setoid")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1ax32mglv175nzbzggbivy5ajh2w6h8s60xa4skbfzjvq5wc3dba"))))
+      (build-system gnu-build-system)
+      (native-inputs
+       (list idris2-git))
+      (arguments
+       `(#:modules ((guix build gnu-build-system)
+               (guix build utils)
+               (ice-9 ftw)
+               (ice-9 match))
+         #:phases
+         (modify-phases %standard-phases
+           (delete 'configure)
+           (delete 'check)
+           (replace 'build
+             (lambda* (#:key inputs outputs #:allow-other-keys)
+               (let* ((out (assoc-ref outputs "out"))
+                      (module-name ,(and (string-prefix? "idris-" name)
+                                         (substring name 6)))
+                      (ipkg (string-append module-name ".ipkg")))
+                 (invoke "idris2" "--build" ipkg))))
+           (replace 'install
+             ;; FIXME: should use idris2 --install, but paths are not set.
+             (lambda* (#:key inputs outputs #:allow-other-keys)
+               (let* ((out (assoc-ref outputs "out"))
+                      (module-name ,(and (string-prefix? "idris-" name)
+                                         (substring name 6)))
+                      (ipkg (string-append module-name ".ipkg"))
+                      (libdir (string-append out "/share/idris2-0.6.0"))
+                      (lib    (string-append libdir "/" module-name "-" ,module-version)))
+                 (mkdir-p libdir)
+                 (copy-recursively "build/ttc/" lib)
+                 (with-output-to-file (string-append lib "/" ipkg)
+                   (lambda () (format #t "package ~a\nversion = ~a" module-name ,module-version)))))))))
+      (home-page "https://github.com/ohad/idris-setoid")
+      (synopsis "Setoid library for Idris 2")
+      (description "Provides support for working with setoids in Idris 2. This
+  includes equational-style proof construction.")
+      (license license:bsd-2))))
