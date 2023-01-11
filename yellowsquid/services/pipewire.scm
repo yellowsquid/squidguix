@@ -31,7 +31,7 @@
                                           home-pipewire-shepherd-service)
                        (service-extension home-profile-service-type
                                           (lambda (pkg) `(,pkg)))))
-                (default-value pipewire-0.3)
+                (default-value pipewire)
                 (description "Userland PipeWire daemon.")))
 
 (define (home-wireplumber-shepherd-service wireplumber)
