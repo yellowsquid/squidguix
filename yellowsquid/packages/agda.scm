@@ -5,7 +5,8 @@
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:use-module (yellowsquid build-system agda))
+  #:use-module (yellowsquid build-system agda)
+  #:use-module (yellowsquid packages))
 
 (define-public agda-stdlib-1.7
   (package
@@ -175,4 +176,34 @@ backwards compatibility is not assured.")
        #:readme "Cubical/README.agda"))
     (synopsis "Standard library for Cubical Agda")
     (description "A standard library for Cubical Agda. ")
+    (license license:expat)))
+
+(define-public agda-soas
+  (package
+    (name "agda-soas")
+    (version "1.0.0")
+    (home-page "https://github.com/DimaSamoz/agda-soas")
+    (source
+     (origin
+              (method git-fetch)
+              (uri (git-reference (url home-page)
+                                  (commit (string-append "v" version))))
+              (patches
+               (search-patches "agda-soas-agda-lib.patch"))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "14nfh7qaw4q5n6fq0vzw1yhrw0psywzb7lngmdafhajfrhifbipx"))))
+    (inputs (list agda-stdlib-1.7 agda-categories))
+    (build-system agda-build-system)
+    (arguments
+     '(#:readme "Everything.agda"
+       #:phases
+       (modify-phases %standard-phases
+         (add-before 'generate-libraries 'move-src
+           (lambda* (#:key outputs #:allow-other-keys)
+             (mkdir "src")
+             (rename-file "SOAS" "src/SOAS"))))))
+    (synopsis "Framework for working with second-order syntax")
+    (description "An Agda library for working with second-order syntax.")
     (license license:expat)))
