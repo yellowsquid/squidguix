@@ -30,7 +30,7 @@
                                                  "-" idris-version-tag)
                                                 "")))
                              (ignore-test-failures? #false)
-                             (unwrap? #true)
+                             (unwrap 1)
                              (tests? #true)
                              (historical? #false)
                              (hidden? #false) ; or (hidden? historical?)
@@ -112,8 +112,8 @@ build us (which is potentially recursive), or use the captured compiler output
                   (string-append "#!" (assoc-ref inputs "bash") "/bin/sh"))
                  (("/usr/bin/env")
                   (string-append (assoc-ref inputs "coreutils") "/bin/env"))))))
-         ,@(if unwrap?
-               `((add-after 'install 'unwrap
+         ,@(case unwrap
+               ((1) `((add-after 'install 'unwrap
                    (lambda* (#:key outputs #:allow-other-keys)
                      ;; The bin/idris2 calls bin/idris2_app/idris2.so which is
                      ;; the real executable, but it sets LD_LIBRARY_PATH
@@ -129,8 +129,21 @@ build us (which is potentially recursive), or use the captured compiler output
                        (delete-file (string-append out "/bin/idris2"))
                        (rename-file image (string-append out "/bin/idris2"))
                        (delete-file-recursively (string-append out "/bin/idris2_app"))
-                       (delete-file-recursively (string-append out "/lib"))))))
-               '())
+                       (delete-file-recursively (string-append out "/lib")))))))
+               ((2) `((add-after 'install 'unwrap
+                   (lambda* (#:key outputs #:allow-other-keys)
+                     ;; Same as previous, except idris no longer creates a lib directory
+                     (let* ((out (assoc-ref outputs "out"))
+                            (image-base (string-append
+                                         out "/bin/idris2_app/idris2"))
+                            (image (if (file-exists? image-base)
+                                       image-base
+                                       ;; For v0.5.1 and older.
+                                       (string-append image-base ".so"))))
+                       (delete-file (string-append out "/bin/idris2"))
+                       (rename-file image (string-append out "/bin/idris2"))
+                       (delete-file-recursively (string-append out "/bin/idris2_app")))))))
+               (else '()))
          ,@(if with-bootstrap-shortcut?
                `((replace 'build
                    (lambda* (#:key make-flags #:allow-other-keys)
@@ -202,7 +215,8 @@ Epigram and Agda.")
    "0.6.0"
    #:bootstrap-idris idris2-0.6.0
    #:idris-version-tag "6-2e9c7f"
-   #:with-bootstrap-shortcut? #false))
+   #:with-bootstrap-shortcut? #false
+   #:unwrap 2))
 
 (define-public idris-setoid
   (let ((commit "63e894b39a82e5a8b1edd06f1e03e6bfc5aa8c81")
