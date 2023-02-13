@@ -76,7 +76,7 @@ build us (which is potentially recursive), or use the captured compiler output
                bootstrap-idris)
            clang-toolchain-12 ; older clang-toolchain versions don't have a bin/cc
            coreutils which git
-           node                         ; only for the tests
+           node-lts                     ; only for the tests
            racket                       ; only for the tests
            sed))
     (inputs
