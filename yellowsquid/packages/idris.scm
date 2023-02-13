@@ -214,7 +214,7 @@ Epigram and Agda.")
      "0hndqlx4pl7wgsbqlr9lqi7m8kl3zypr1s9m9wkmh448sd1spm8w")
    "0.6.0"
    #:bootstrap-idris idris2-0.6.0
-   #:idris-version-tag "6-2e9c7f"
+   #:idris-version-tag "145-gff822a74"
    #:with-bootstrap-shortcut? #false
    #:unwrap 2))
 
