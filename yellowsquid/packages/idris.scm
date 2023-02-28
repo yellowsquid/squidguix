@@ -188,10 +188,11 @@ build us (which is potentially recursive), or use the captured compiler output
                ;;
                ;;(invoke-make "testenv")
                ;;(patch-shebang "build/stage2/runtests")
-               (,(if ignore-test-failures?
-                     'false-if-exception
-                     'begin)
-                (invoke-make "test"))))))))
+               ,(if ignore-test-failures?
+                    '(begin
+                       (false-if-exception (invoke-make "test"))
+                       #true)
+                    '(invoke-make "test"))))))))
     (properties `((hidden? . ,hidden?)))
     (home-page "https://www.idris-lang.org")
     (synopsis "General purpose language with full dependent types")
