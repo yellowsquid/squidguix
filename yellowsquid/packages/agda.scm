@@ -129,7 +129,7 @@ normalisation performance.")
 (define-public agda-categories
   (package
     (name "agda-categories")
-    (version "0.1.7.1")
+    (version "0.1.7.1a")
     (home-page "https://github.com/agda/agda-categories")
     (source (origin
               (method git-fetch)
@@ -138,9 +138,11 @@ normalisation performance.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1acb693ad2nrmnn6jxsyrlkc0di3kk2ksj2w9wnyfxrgvfsil7rn"))))
+                "1m96f4a98bs4fhwz5lb03dghf195gi7520jhcbrykyp02l7m2p2n"))
+              (patches
+               (search-patches "agda-categories-everything.patch"))))
     (build-system agda-build-system)
-    (inputs (list agda-stdlib-1.7))
+    (inputs (list agda-stdlib-1.7.1))
     (arguments
      '(#:readme "Everything.agda"))
     (synopsis "Categories library for Agda")
