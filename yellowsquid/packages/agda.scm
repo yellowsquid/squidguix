@@ -8,10 +8,10 @@
   #:use-module (yellowsquid build-system agda)
   #:use-module (yellowsquid packages))
 
-(define-public agda-stdlib-1.7
+(define-public agda-stdlib-1.7.1
   (package
     (name "agda-stdlib")
-    (version "1.7")
+    (version "1.7.1")
     (home-page "https://github.com/agda/agda-stdlib")
     (source (origin
               (method git-fetch)
@@ -20,7 +20,7 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "14h3jprm6924g9576v25axn9v6xnip354hvpzlcqsc5qqyj7zzjs"))))
+                "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))
     (build-system agda-build-system)
     (native-inputs (list ghc ghc-filemanip))
     (arguments
@@ -109,21 +109,6 @@ write efficient code, ease of proof is prioritised over type-checking and
 normalisation performance.")
     (license license:expat)))
 
-(define-public agda-stdlib-1.7.1
-  (package
-    (inherit agda-stdlib-1.7)
-    (name "agda-stdlib")
-    (version "1.7.1")
-    (home-page "https://github.com/agda/agda-stdlib")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference (url home-page)
-                                  (commit (string-append "v" version))))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))))
-
 (define-public agda-stdlib agda-stdlib-1.7.1)
 
 (define-public agda-categories
@@ -178,34 +163,4 @@ backwards compatibility is not assured.")
        #:readme "Cubical/README.agda"))
     (synopsis "Standard library for Cubical Agda")
     (description "A standard library for Cubical Agda. ")
-    (license license:expat)))
-
-(define-public agda-soas
-  (package
-    (name "agda-soas")
-    (version "1.0.0")
-    (home-page "https://github.com/DimaSamoz/agda-soas")
-    (source
-     (origin
-              (method git-fetch)
-              (uri (git-reference (url home-page)
-                                  (commit (string-append "v" version))))
-              (patches
-               (search-patches "agda-soas-agda-lib.patch"))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "14nfh7qaw4q5n6fq0vzw1yhrw0psywzb7lngmdafhajfrhifbipx"))))
-    (inputs (list agda-stdlib-1.7 agda-categories))
-    (build-system agda-build-system)
-    (arguments
-     '(#:readme "Everything.agda"
-       #:phases
-       (modify-phases %standard-phases
-         (add-before 'generate-libraries 'move-src
-           (lambda* (#:key outputs #:allow-other-keys)
-             (mkdir "src")
-             (rename-file "SOAS" "src/SOAS"))))))
-    (synopsis "Framework for working with second-order syntax")
-    (description "An Agda library for working with second-order syntax.")
     (license license:expat)))
