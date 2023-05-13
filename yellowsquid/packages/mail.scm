@@ -7,12 +7,13 @@
   #:use-module (guix gexp)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:use-module (guix utils))
+  #:use-module (guix utils)
+  #:use-module (yellowsquid packages))
 
 (define-public libspf2
   (let ((version "1.2.11")
-        (commit "8131fe140704eaae695e76b5cd09e39bd1dd220b")
-        (revision "1"))
+        (commit "4915c308d57ff3abac9fb241f09c4bed2ab54815")
+        (revision "2"))
     (package
       (name "libspf2")
       (version (string-append version "-" revision "." (string-take commit 7)))
@@ -23,9 +24,17 @@
                (url "https://github.com/shevek/libspf2")
                (commit commit)))
          (file-name (git-file-name name commit))
+         (patches
+          (search-patches "libspf2-undefined.patch"))
          (sha256
-          (base32 "1cmddih3hkfk5q1797jlc0r7h64kjpsgby4km3ik4dc3g915k6rw"))))
+          (base32 "0q8kh2yzsfp16xlnmc32xfyg1mdycyfs2nsjvz95sqwimqjbicxs"))))
+      (native-inputs (list autoconf automake libtool))
       (build-system gnu-build-system)
+      (arguments
+       '(#:phases
+         (modify-phases %standard-phases
+           (add-before 'bootstrap 'remove-configure
+             (lambda _ (delete-file "configure"))))))
       (synopsis "Library to check SPF records")
       (description "libspf2 implements the Sender Policy Framework, a part of the
 SPF/SRS protocol pair. libspf2 is a library which allows email systems such as
