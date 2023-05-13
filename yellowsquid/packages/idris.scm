@@ -212,11 +212,11 @@ Epigram and Agda.")
 
 (define-public idris2-git
   (make-idris-package
-   '("3ad391d597e86199639c43b2e53ab80a718be297"
-     "0rck5czkv7ayksvsarah32vwcbjfygq7hfj3jfgp4zq3ckwd2k29")
+   '("7221c99e9313cec6c17fd765232333e85839f61f"
+     "0m93y8yr9hymbf389rdj9m8l1b07jb6hr0hi80hnpzyx57j3d1qk")
    "0.6.0"
    #:bootstrap-idris idris2-0.6.0
-   #:idris-version-tag "186-g3ad391d59"
+   #:idris-version-tag "202-g7221c99e9"
    #:with-bootstrap-shortcut? #false
    #:ignore-test-failures? #true
    #:unwrap 2))
