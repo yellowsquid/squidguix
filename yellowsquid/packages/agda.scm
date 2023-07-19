@@ -152,7 +152,7 @@ backwards compatibility is not assured.")
                (base32
                 "0yfg7gr55n08ly1qgzpcp16s15k1abycppbcdi9lzg1hjryqxcg3"))))
     (build-system agda-build-system)
-    (inputs (list ghc))
+    (native-inputs (list ghc))
     (arguments
      '(#:phases
        (modify-phases %standard-phases
