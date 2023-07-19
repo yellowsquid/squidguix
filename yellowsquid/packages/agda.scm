@@ -8,10 +8,10 @@
   #:use-module (yellowsquid build-system agda)
   #:use-module (yellowsquid packages))
 
-(define-public agda-stdlib-1.7.1
+(define-public agda-stdlib-1.7.2
   (package
     (name "agda-stdlib")
-    (version "1.7.1")
+    (version "1.7.2")
     (home-page "https://github.com/agda/agda-stdlib")
     (source (origin
               (method git-fetch)
@@ -20,7 +20,7 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "0khl12jvknsvjsq3l5cbp2b5qlw983qbymi1dcgfz9z0b92si3r0"))))
+                "065hf24xjpciwdrvk4isslgcgi01q0k93ql0y1sjqqvy5ryg5xmy"))))
     (build-system agda-build-system)
     (native-inputs (list ghc ghc-filemanip))
     (arguments
@@ -109,12 +109,12 @@ write efficient code, ease of proof is prioritised over type-checking and
 normalisation performance.")
     (license license:expat)))
 
-(define-public agda-stdlib agda-stdlib-1.7.1)
+(define-public agda-stdlib agda-stdlib-1.7.2)
 
 (define-public agda-categories
   (package
     (name "agda-categories")
-    (version "0.1.7.1a")
+    (version "0.1.7.2")
     (home-page "https://github.com/agda/agda-categories")
     (source (origin
               (method git-fetch)
@@ -123,11 +123,11 @@ normalisation performance.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1m96f4a98bs4fhwz5lb03dghf195gi7520jhcbrykyp02l7m2p2n"))
+                "0xwgm2mfl2pxipsv31bin8p14y1yhd9n27lv3clvsxd4z9yc034m"))
               (patches
                (search-patches "agda-categories-everything.patch"))))
     (build-system agda-build-system)
-    (inputs (list agda-stdlib-1.7.1))
+    (inputs (list agda-stdlib-1.7.2))
     (arguments
      '(#:readme "Everything.agda"))
     (synopsis "Categories library for Agda")
@@ -141,7 +141,7 @@ backwards compatibility is not assured.")
 (define-public cubical
   (package
     (name "cubical")
-    (version "0.3")
+    (version "0.5")
     (home-page "https://github.com/agda/cubical")
     (source (origin
               (method git-fetch)
@@ -150,7 +150,7 @@ backwards compatibility is not assured.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "11pvsbswch77hyc4bz1fv1mn2gl01qalhfx7icx0hd0zghbnv8sx"))))
+                "0yfg7gr55n08ly1qgzpcp16s15k1abycppbcdi9lzg1hjryqxcg3"))))
     (build-system agda-build-system)
     (inputs (list ghc))
     (arguments
