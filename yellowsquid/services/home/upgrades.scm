@@ -40,7 +40,7 @@
             (default %home-unattended-upgrade-log-file)))
 
 (define %home-unattended-upgrade-log-file
-  #~(string-append (getenv "XDG_LOG_HOME") "/unattended-upgrade.log"))
+  #~(string-append (getenv "XDG_STATE_HOME") "/log/unattended-upgrade.log"))
 
 (define (home-unattended-upgrade-mcron-jobs config)
   (define channels
