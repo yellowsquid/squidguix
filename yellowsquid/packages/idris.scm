@@ -31,6 +31,7 @@
                                                 "")))
                              (ignore-test-failures? #false)
                              (unwrap 1)
+                             (destdir #f)
                              (tests? #true)
                              (historical? #false)
                              (hidden? #false) ; or (hidden? historical?)
@@ -95,7 +96,10 @@ build us (which is potentially recursive), or use the captured compiler output
                     #~(string-append "BOOTSTRAP_IDRIS="
                                      #$bootstrap-idris
                                      "/bin/" #$(package-name bootstrap-idris)))
-              (string-append "PREFIX=" (assoc-ref %outputs "out"))
+              #$@(if destdir
+                    '((string-append "DESTDIR=" (assoc-ref %outputs "out"))
+                      "PREFIX=")
+                    '((string-append "PREFIX=" (assoc-ref %outputs "out"))))
               "-j1")
       #:phases
       `(modify-phases %standard-phases
@@ -212,11 +216,12 @@ Epigram and Agda.")
 
 (define-public idris2-git
   (make-idris-package
-   '("badf1e98c8812e8b54258754cf47782f61d8fb15"
-     "0z2bh0wrq2rq9qidv6kpyz2gw91rgkdrihdk4wbbrsqpsmz8j642")
+   '("6dc06cd67d44d4ef2fab31b3a6f42b76f22f4527"
+     "0zz6xjkz05s25jaxh75fxbrp1kxsbvjb7ap5anh452amv2pamwhq")
    "0.6.0"
    #:bootstrap-idris idris2-0.6.0
-   #:idris-version-tag "265-gbadf1e98c"
+   #:idris-version-tag "294-g6dc06cd67"
    #:with-bootstrap-shortcut? #false
    #:ignore-test-failures? #true
-   #:unwrap 2))
+   #:unwrap 2
+   #:destdir #t))
