@@ -97,9 +97,9 @@ build us (which is potentially recursive), or use the captured compiler output
                                      #$bootstrap-idris
                                      "/bin/" #$(package-name bootstrap-idris)))
               #$@(if destdir
-                    '((string-append "DESTDIR=" (assoc-ref %outputs "out"))
-                      "PREFIX=")
-                    '((string-append "PREFIX=" (assoc-ref %outputs "out"))))
+                     '((string-append "DESTDIR=" (assoc-ref %outputs "out") "/")
+                       "PREFIX=")
+                     '((string-append "PREFIX=" (assoc-ref %outputs "out"))))
               "-j1")
       #:phases
       `(modify-phases %standard-phases
@@ -216,11 +216,11 @@ Epigram and Agda.")
 
 (define-public idris2-git
   (make-idris-package
-   '("6dc06cd67d44d4ef2fab31b3a6f42b76f22f4527"
-     "0zz6xjkz05s25jaxh75fxbrp1kxsbvjb7ap5anh452amv2pamwhq")
+   '("b65064a913ab7b64d908413014391bec325d4ded"
+     "1nqx5vlfla4ldbnjxppfygg3gwy7z12cv89ka91cr4qlir1vr2ym")
    "0.6.0"
    #:bootstrap-idris idris2-0.6.0
-   #:idris-version-tag "294-g6dc06cd67"
+   #:idris-version-tag "392-gb65064a91"
    #:with-bootstrap-shortcut? #false
    #:ignore-test-failures? #true
    #:unwrap 2
