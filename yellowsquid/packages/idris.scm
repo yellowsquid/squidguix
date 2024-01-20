@@ -22,19 +22,19 @@
 ;;;
 (define* (make-idris-package source idris-version
                              #:key bootstrap-idris
-                             (idris-version-tag #false)
+                             (idris-version-tag #f)
                              (guix-version (string-append
                                             idris-version
                                             (if idris-version-tag
                                                 (string-append
                                                  "-" idris-version-tag)
                                                 "")))
-                             (ignore-test-failures? #false)
+                             (ignore-test-failures? #f)
                              (unwrap 1)
                              (destdir #f)
-                             (tests? #true)
-                             (historical? #false)
-                             (hidden? #false) ; or (hidden? historical?)
+                             (tests? #t)
+                             (historical? #f)
+                             (hidden? #f) ; or (hidden? historical?)
                              (substitutable? (not historical?))
                              (files-to-patch-for-shell
                               '("src/Compiler/Scheme/Chez.idr"
@@ -46,7 +46,7 @@
                                 "build/stage1/idris2_app/idris2.ss"
                                 "build/stage1/idris2_app/idris2.rkt"
                                 ))
-                             (with-bootstrap-shortcut? (not historical?)))
+                             (with-bootstrap-shortcut? (historical?)))
   "HISTORICAL? means that it's only interesting for historical reasons, e.g. to be
 used as a bootsrapping stage.
 
@@ -212,16 +212,27 @@ Epigram and Agda.")
    '("v0.6.0"
      "0zphckjnq8j177y09nma66pd30rgqf3hjnhyyqsd44j8rlc00hzk")
    "0.6.0"
-   #:ignore-test-failures? #true))
+   #:historical? #t
+   #:hidden? #t
+   #:ignore-test-failures? #t))
+
+(define-public idris2-0.7.0
+  (make-idris-package
+   '("v0.7.0"
+     "0qxfwsm2gxjxwzni85jb5b4snvjf77knqs9bnd2bqznrfxgxw2sp")
+   "0.7.0"
+   #:bootstrap-idris idris2-0.6.0
+   #:unwrap 2
+   #:destdir #t
+   #:ignore-test-failures? #t))
 
 (define-public idris2-git
   (make-idris-package
-   '("b65064a913ab7b64d908413014391bec325d4ded"
-     "1nqx5vlfla4ldbnjxppfygg3gwy7z12cv89ka91cr4qlir1vr2ym")
-   "0.6.0"
-   #:bootstrap-idris idris2-0.6.0
-   #:idris-version-tag "392-gb65064a91"
-   #:with-bootstrap-shortcut? #false
-   #:ignore-test-failures? #true
+   '("d34cf62611808b9abcf580c0bf67ce48264f223f"
+     "01g0bwvxqjlnv9gawjviwlb4qdj6bgga829l4wcyj505jaw9dafr")
+   "0.7.0"
+   #:bootstrap-idris idris2-0.7.0
+   #:idris-version-tag "29-gd34cf6261"
    #:unwrap 2
-   #:destdir #t))
+   #:destdir #t
+   #:ignore-test-failures? #t))
