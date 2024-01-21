@@ -46,7 +46,7 @@
                                 "build/stage1/idris2_app/idris2.ss"
                                 "build/stage1/idris2_app/idris2.rkt"
                                 ))
-                             (with-bootstrap-shortcut? (historical?)))
+                             (with-bootstrap-shortcut? historical?))
   "HISTORICAL? means that it's only interesting for historical reasons, e.g. to be
 used as a bootsrapping stage.
 
