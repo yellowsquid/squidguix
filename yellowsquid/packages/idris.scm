@@ -84,6 +84,10 @@
                                           (list bootstrap-idris)
                                           '())))
       (inputs (list support chez-scheme gmp))
+      (native-search-paths
+       (list (search-path-specification
+              (variable "GUIX_IDRIS2_PACKAGE_PATH")
+              (files (list (string-append "lib/idris2-" (idris-source-version idris-source)))))))
       (build-system gnu-build-system)
       (arguments
        (list
@@ -91,6 +95,7 @@
                              (string-append "CC=" #$(cc-for-target))
                              (string-append "VERSION_TAG=" #$(idris-source-tag idris-source))
                              (string-append "IDRIS2_SUPPORT_DIR=" #$support-libs))
+        #:test-target "test"
         #:phases #~(modify-phases %standard-phases
                      (delete 'bootstrap)
                      (delete 'configure)
@@ -159,6 +164,9 @@
                      (add-after 'install 'wrap
                        (lambda* (#:key inputs #:allow-other-keys)
                          (let* ((lib-exec (string-append #$output "/libexec/idris2.so"))
+                                (package-path (format #f "~a/lib/idris2-~a"
+                                                      #$output
+                                                      #$(idris-source-version idris-source)))
                                 (idris (string-append #$output "/bin/idris2")))
                            ;; Remove existing wrapper because LD_LIBRARY_PATH is incorrect
                            (delete-file idris)
@@ -178,9 +186,6 @@
                                        (search-input-file inputs "/bin/sh")
                                        (string-join
                                         (list
-                                         (format #f "~a=\"${~a:-~a}\""
-                                                 "XDG_DATA_DIRS" "XDG_DATA_DIRS"
-                                                 "/usr/local/share/:/usr/share/")
                                          (format #f "export ~a=\"${~a:-~a}\""
                                                  "CHEZ" "CHEZ"
                                                  (search-input-file inputs "/bin/chez-scheme"))
@@ -195,9 +200,7 @@
                                                  #$support-share)
                                          (format #f "export ~a=\"${~a}${~a:+:}~a\""
                                                  "IDRIS2_PACKAGE_PATH" "IDRIS2_PACKAGE_PATH" "IDRIS2_PACKAGE_PATH"
-                                                 (string-append
-                                                  "${XDG_DATA_DIRS//://" #$name ":}/" #$name
-                                                  ":" #$output "/share/" #$name))
+                                                 "$GUIX_IDRIS2_PACKAGE_PATH")
                                          (format #f "export ~a=\"${~a}${~a:+:}~a\""
                                                  "LD_LIBRARY_PATH" "LD_LIBRARY_PATH" "LD_LIBRARY_PATH"
                                                  #$support-libs)
@@ -209,41 +212,66 @@
                            (chmod idris #o755)
 
                            ;; Move libraries to /share/{name}
-                           (mkdir-p (string-append #$output "/share"))
+                           (mkdir-p (dirname package-path))
                            (rename-file
-                            (string-append #$output "/" #$name "-" #$(idris-source-version idris-source))
-                            (string-append #$output "/share/" #$name))))))))
+                            (string-append #$output "/idris2-" #$(idris-source-version idris-source))
+                            package-path)))))))
       (synopsis "")
       (description "")
       (license license:bsd-3)
       (home-page "https://www.idris-lang.org"))))
 
 (define (idris-git-source version commit tag hash)
-  (idris-source
-   (origin
-     (method git-fetch)
-     (uri (git-reference (url
-                          "https://github.com/idris-lang/Idris2.git")
-                         (commit commit)))
-     (sha256 (base32 hash)))
-   version
-   (substring tag 4)
-   (string-append version "-" tag)))
+  (let ((guix-version (string-append version "-" tag)))
+    (idris-source
+     (origin
+       (method git-fetch)
+       (uri (git-reference (url
+                            "https://github.com/idris-lang/Idris2.git")
+                           (commit commit)))
+       (file-name (git-file-name "idris2" guix-version))
+       (sha256 (base32 hash)))
+     version
+     (substring tag 4)
+     (string-append version "-" tag))))
 
-(define idris-source-git
+;; The earliest idris we can build
+
+(define %idris-source-root
+  (idris-git-source "0.7.0" "034f1e89c4c58cdd59aabe2b0d0fe4e9ff3411f6"
+                    "50-g034f1e89c"
+                    "1b6yvarydyk2m1q82hg96f2rfywda42i4cw66jzbm71fvg84ya2k"))
+
+(define idris2-support-root
+  (make-idris-support %idris-source-root))
+
+(define idris2-bootstrap-root
+  (package
+    (inherit (make-idris2 %idris-source-root idris2-support-root))
+    (name "idris2-bootstrap")))
+
+(define idris2-root
+  (make-idris2 %idris-source-root idris2-support-root
+               #:bootstrap-idris idris2-bootstrap-root))
+
+;; Latest "stable" version
+
+(define-public idris2 idris2-root)
+
+;; Latest git commit
+
+(define %idris-source-git
   (idris-git-source "0.7.0" "034f1e89c4c58cdd59aabe2b0d0fe4e9ff3411f6"
                     "50-g034f1e89c"
                     "1b6yvarydyk2m1q82hg96f2rfywda42i4cw66jzbm71fvg84ya2k"))
 
 (define-public idris2-support-git
-  (make-idris-support idris-source-git))
-
-(define-public idris2-bootstrap-git
   (package
-    (inherit (make-idris2 idris-source-git idris2-support-git))
-    (name "idris2-bootstrap")
+    (inherit (make-idris-support %idris-source-git))
     (properties '((hidden . #t)))))
 
 (define-public idris2-git
-  (make-idris2 idris-source-git idris2-support-git
-               #:bootstrap-idris idris2-bootstrap-git))
+  (package
+    (inherit (make-idris2 %idris-source-git idris2-support-git
+                          #:bootstrap-idris idris2-root))
+    (properties '((hidden . #t)))))
