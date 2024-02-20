@@ -1,4 +1,5 @@
 (define-module (yellowsquid packages idris)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages chez)
   #:use-module (gnu packages multiprecision)
   #:use-module (guix build-system gnu)
@@ -9,7 +10,8 @@
   #:use-module (guix packages)
   #:use-module (guix utils)
   #:use-module (ice-9 regex)
-  #:use-module (srfi srfi-9))
+  #:use-module (srfi srfi-9)
+  #:use-module (yellowsquid build-system idris))
 
 (define-record-type <idris-source>
   (idris-source origin version tag guix-version)
@@ -275,3 +277,50 @@
     (inherit (make-idris2 %idris-source-git idris2-support-git
                           #:bootstrap-idris idris2-root))
     (properties '((hidden . #t)))))
+
+;; Idris packages
+
+(define-public idris2-api
+  (package
+    (name "idris2-api")
+    (version "0.7.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference (url
+                            "https://github.com/idris-lang/Idris2.git")
+                           (commit (string-append "v" version))))
+       (sha256 (base32 "1b6yvarydyk2m1q82hg96f2rfywda42i4cw66jzbm71fvg84ya2k"))))
+    (build-system idris2-build-system)
+    (native-inputs (list gnu-make))
+    (arguments
+     '(#:ipkg-name "idris2api"
+       #:phases
+       (modify-phases %standard-phases
+         (add-before 'build 'make-idris-paths
+           (lambda* _
+             (invoke "make" "src/IdrisPaths.idr"))))))
+    (synopsis "")
+    (description "")
+    (license license:bsd-3)
+    (home-page "https://www.idris-lang.org")))
+
+(define-public idris2-collie
+  (package
+    (name "idris2-collie")
+    (version "0.0.0-1")
+    (source
+     (let ((commit "e496277f6dd557d31668b2430cfb07c47e841e2f"))
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/ohad/collie.git")
+               (commit commit)))
+         (file-name (git-file-name name commit))
+         (sha256 (base32 "0ka0yj3f1da0hdm5iwii4y23v32y8cfm0mnrm8f6vvy30xazlj3n")))))
+    (build-system idris2-build-system)
+    (arguments '(#:ipkg-name "collie"))
+    (synopsis "")
+    (description "")
+    (license (license:non-copyleft "file://LICENSE"))
+    (home-page "https://github.com/ohad/collie.git")))
