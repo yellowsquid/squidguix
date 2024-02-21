@@ -101,40 +101,35 @@
         #:phases #~(modify-phases %standard-phases
                      (delete 'bootstrap)
                      (delete 'configure)
-                     #$(if bootstrap-idris
-                           #~(add-before 'build 'patch-paths
-                               (lambda* _
-                                 (format (current-error-port)
-                                         "patch-paths: no patches as not bootstrapping~%")))
-                           #~(add-before 'build 'patch-paths
-                               ;; Bootstrapping generates the wrong shebangs.
-                               ;; We have to patch the sources first.
-                               (lambda* (#:key inputs #:allow-other-keys)
-                                 (let ((sh (string-append "#!" (search-input-file inputs "/bin/sh")))
-                                       (env (search-input-file inputs "/bin/env"))
-                                       ;; NOTE: this is overzealous.
-                                       (files-to-patch
-                                        (append
-                                         (find-files "src/Compiler")
-                                         (find-files "." "\\.((sh)|(ss)|(rkt))$"))))
-                                   ;; Derived from patch-/usr/bin/file
-                                   (for-each
-                                    (lambda (file)
-                                      (when (file-exists? file)
-                                        (substitute* file
-                                          ((#$(regexp-quote "#!/bin/sh"))
-                                           (begin
-                                             (format (current-error-port)
-                                                     "patch-paths: ~a: changing `~a' to `~a'~%"
-                                                     file "#!/bin/sh" sh)
-                                             sh))
-                                          ((#$(regexp-quote "/usr/bin/env"))
-                                           (begin
-                                             (format (current-error-port)
-                                                     "patch-paths: ~a: changing `~a' to `~a'~%"
-                                                     file "/usr/bin/env" env)
-                                             env)))))
-                                    files-to-patch)))))
+                     (add-before 'build 'patch-paths
+                       ;; Bootstrapping generates the wrong shebangs.
+                       ;; We have to patch the sources first.
+                       (lambda* (#:key inputs #:allow-other-keys)
+                         (let ((sh (string-append "#!" (search-input-file inputs "/bin/sh")))
+                               (env (search-input-file inputs "/bin/env"))
+                               ;; NOTE: this is overzealous.
+                               (files-to-patch
+                                (append
+                                 (find-files "src/Compiler")
+                                 (find-files "." "\\.((sh)|(ss)|(rkt))$"))))
+                           ;; Derived from patch-/usr/bin/file
+                           (for-each
+                            (lambda (file)
+                              (when (file-exists? file)
+                                (substitute* file
+                                  ((#$(regexp-quote "#!/bin/sh"))
+                                   (begin
+                                     (format (current-error-port)
+                                             "patch-paths: ~a: changing `~a' to `~a'~%"
+                                             file "#!/bin/sh" sh)
+                                     sh))
+                                  ((#$(regexp-quote "/usr/bin/env"))
+                                   (begin
+                                     (format (current-error-port)
+                                             "patch-paths: ~a: changing `~a' to `~a'~%"
+                                             file "/usr/bin/env" env)
+                                     env)))))
+                            files-to-patch))))
                      (replace 'build
                        #$(make-target
                           (if bootstrap-idris '("all") '("bootstrap"))
@@ -270,12 +265,14 @@
 (define-public idris2-support-git
   (package
     (inherit (make-idris-support %idris-source-git))
+    (name "idris2-support-git")
     (properties '((hidden . #t)))))
 
 (define-public idris2-git
   (package
     (inherit (make-idris2 %idris-source-git idris2-support-git
                           #:bootstrap-idris idris2-root))
+    (name "idris2-git")
     (properties '((hidden . #t)))))
 
 ;; Idris packages
