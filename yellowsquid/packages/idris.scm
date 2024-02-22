@@ -321,3 +321,24 @@
     (description "")
     (license (license:non-copyleft "file://LICENSE"))
     (home-page "https://github.com/ohad/collie.git")))
+
+(define-public idris2-elab-util
+  (package
+    (name "idris2-elab-util")
+    (home-page "https://github.com/stefan-hoeck/idris2-elab-util")
+    (version "0.6.0")
+    (source
+     (let ((commit "2fc2d188640ce6822b5e250db73b62f5a952ca4d"))
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url home-page)
+               (commit commit)))
+         (file-name (git-file-name name commit))
+         (sha256
+          (base32 "0s956hm3njm7d3kccrppqxnk4az67scp57k8v4j27q3j3y2fp0q9")))))
+    (build-system idris2-build-system)
+    (arguments '(#:ipkg-name "elab-util"))
+    (synopsis "")
+    (description "")
+    (license license:bsd-2)))
