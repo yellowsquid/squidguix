@@ -287,7 +287,7 @@
        (uri (git-reference (url
                             "https://github.com/idris-lang/Idris2.git")
                            (commit (string-append "v" version))))
-       (sha256 (base32 "1b6yvarydyk2m1q82hg96f2rfywda42i4cw66jzbm71fvg84ya2k"))))
+       (sha256 (base32 "0qxfwsm2gxjxwzni85jb5b4snvjf77knqs9bnd2bqznrfxgxw2sp"))))
     (build-system idris2-build-system)
     (native-inputs (list gnu-make))
     (arguments
