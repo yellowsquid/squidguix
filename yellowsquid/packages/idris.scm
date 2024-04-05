@@ -278,29 +278,27 @@
 ;; Idris packages
 
 (define-public idris2-api
-  (package
-    (name "idris2-api")
-    (version "0.7.0")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference (url
-                            "https://github.com/idris-lang/Idris2.git")
-                           (commit (string-append "v" version))))
-       (sha256 (base32 "0qxfwsm2gxjxwzni85jb5b4snvjf77knqs9bnd2bqznrfxgxw2sp"))))
-    (build-system idris2-build-system)
-    (native-inputs (list gnu-make))
-    (arguments
-     '(#:ipkg-name "idris2api"
-       #:phases
-       (modify-phases %standard-phases
-         (add-before 'build 'make-idris-paths
-           (lambda* _
-             (invoke "make" "src/IdrisPaths.idr"))))))
-    (synopsis "")
-    (description "")
-    (license license:bsd-3)
-    (home-page "https://www.idris-lang.org")))
+  (let ((idris-source %idris-source-root))
+    (package
+      (name "idris2-api")
+      (version (idris-source-guix-version idris-source))
+      (source (idris-source-origin idris-source))
+      (build-system idris2-build-system)
+      (native-inputs (list gnu-make))
+      (arguments
+       (list
+        #:ipkg-name "idris2api"
+        #:phases
+        #~(modify-phases %standard-phases
+            (add-before 'build 'make-idris-paths
+              (lambda* _
+                (invoke "make"
+                        (string-append "VERSION_TAG=" #$(idris-source-tag idris-source))
+                        "src/IdrisPaths.idr"))))))
+      (synopsis "")
+      (description "")
+      (license license:bsd-3)
+      (home-page "https://www.idris-lang.org"))))
 
 (define-public idris2-collie
   (package
