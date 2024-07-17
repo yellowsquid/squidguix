@@ -45,18 +45,18 @@ viruses/worms.")
       (home-page "https://www.libspf2.org/index.html")
       (license (list license:lgpl2.1+ license:bsd-2)))))
 
-(define-public opendmarc-1.3
+(define-public opendmarc-1.4
   (package
     (name "opendmarc")
-    (version "1.3.3")
+    (version "1.4.2")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
              (url "https://github.com/trusteddomainproject/OpenDMARC")
-             (commit "rel-opendmarc-1-3-3")))
+             (commit "rel-opendmarc-1-4-2")))
        (file-name (git-file-name name version))
-       (sha256 (base32 "15vb8ay6r7rqxcbv9063724wq864aw6zhx8lc8nl2m6zabjgq0a9"))))
+       (sha256 (base32 "0xqzgjqw8hv8wkkw5lamzd3dzb6g01y3gazyxjfjgk71y57asxdy"))))
     (native-inputs (list autoconf automake libtool))
     (build-system gnu-build-system)
     (arguments
@@ -79,8 +79,8 @@ produce DMARC reports.")
   (package
     (inherit gnu:exim)
     (inputs (modify-inputs (package-inputs gnu:exim)
-              (delete "gnutls" "gnutls-dane")
-              (append openssl libspf2 opendmarc-1.3)))
+                           (delete "gnutls" "gnutls-dane")
+                           (append openssl libspf2 opendmarc-1.4)))
     (arguments
      (substitute-keyword-arguments (package-arguments gnu:exim)
        ((#:phases phases)
@@ -97,7 +97,7 @@ produce DMARC reports.")
                     (("USE_GNUTLS(|_PC)=.*" all)
                      (string-append "# " all "\n"))
                     (("# (USE_OPENSSL(|_PC)=.*)" all line)
-                        (string-append line "\n"))
+                     (string-append line "\n"))
                     ;; Enable LMTP
                     (("# (TRANSPORT_LMTP=yes)" all line) line)
                     ;; Enable SPF
