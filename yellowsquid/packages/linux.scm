@@ -1,8 +1,16 @@
 (define-module (yellowsquid packages linux)
+  #:use-module (gnu packages admin)
+  #:use-module (gnu packages aidc)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages dns)
+  #:use-module (gnu packages gtk)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages sdl)
+  #:use-module (guix build-system glib-or-gtk)
   #:use-module (guix build-system gnu)
   #:use-module (guix download)
+  #:use-module (guix gexp)
+  #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
   #:use-module (guix utils)
@@ -53,3 +61,36 @@ support for serial mice, touchscreens etc.), and test the input event layer.
 
 * jstest - test joystick devices")
     (license license:gpl2+)))
+
+(define-public wihotspot
+  (package
+    (name "wihotspot")
+    (version "4.7.2")
+    (home-page "https://github.com/lakinduakash/linux-wifi-hotspot")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference (url home-page)
+                           (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (patches (search-patches "wihotspot-destdir.patch"))
+       (sha256 (base32 "0fd22rppbj3kbgx1qkiaj8g3kagc0941q2xd59z0pj041rcxhqgr"))))
+    (build-system glib-or-gtk-build-system)
+    (arguments
+     (list
+      #:make-flags
+      #~(list (string-append "PREFIX=" #$output)
+              "PKGCONFIG=pkg-config")
+      #:phases
+      #~(modify-phases %standard-phases
+          (delete 'configure)
+          (delete 'check))))
+    (inputs (list gtk+ qrencode))
+    (propagated-inputs (list dnsmasq hostapd))
+    (native-inputs (list pkg-config))
+    (synopsis "Wifi hotspot creator for Linux.")
+    (description
+     "Feature-rich wifi hotspot creator for Linux which provides both GUI and
+command-line interface. It is also able to create a hotspot using the same wifi
+card which is connected to an AP already.")
+    (license license:bsd-2)))
