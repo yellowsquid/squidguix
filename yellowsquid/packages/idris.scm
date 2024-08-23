@@ -5,8 +5,7 @@
   #:use-module (guix build-system gnu)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
-  #:use-module ((guix licenses)
-                #:prefix license:)
+  #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
   #:use-module (guix utils)
   #:use-module (ice-9 regex)
@@ -23,8 +22,12 @@
   (guix-version idris-source-guix-version))
 
 ;; Make the specified target.
-(define* (make-target targets #:key (extra-flags #~'()) (tests? #f))
-  #~(lambda* (#:key make-flags parallel-build? parallel-tests? #:allow-other-keys)
+(define* (make-target targets
+                      #:key
+                      (extra-flags #~'())
+                      (tests? #f))
+  #~(lambda* (#:key make-flags parallel-build? parallel-tests?
+              #:allow-other-keys)
       (apply invoke "make"
              `(#$@targets
                ,@(if (or (and #$(not tests?) parallel-build?)
@@ -50,20 +53,23 @@
       #:phases #~(modify-phases %standard-phases
                    (delete 'bootstrap)
                    (delete 'configure)
-                   (replace 'build #$(make-target '("support")))
+                   (replace 'build
+                     #$(make-target '("support")))
                    (replace 'install
                      (lambda* (#:key make-flags #:allow-other-keys)
                        (apply invoke "make" "install-support" make-flags)))
                    (add-after 'install 'fix-paths
                      (lambda _
-                       ;; Split top-level /idris2-${version} into /lib and /share/idris2-support
-                       (let* ((old-dir (string-append #$output
-                                                      "/idris2-"
-                                                      #$(idris-source-version idris-source)))
+                       ;; Split top-level /idris2-${version}
+                       ;; into /lib and /share/idris2-support
+                       (let* ((old-dir (string-append #$output "/idris2-"
+                                                      #$(idris-source-version
+                                                         idris-source)))
                               (old-lib (string-append old-dir "/lib"))
                               (new-lib (string-append #$output "/lib"))
                               (old-share (string-append old-dir "/support"))
-                              (new-share (string-append #$output "/share/idris2-support")))
+                              (new-share (string-append #$output
+                                                        "/share/idris2-support")))
                          (mkdir-p (dirname new-lib))
                          (mkdir-p (dirname new-share))
                          (rename-file old-lib new-lib)
@@ -74,7 +80,8 @@
     (license license:bsd-3)
     (home-page "https://www.idris-lang.org")))
 
-(define* (make-idris2 idris-source support #:key (bootstrap-idris #f))
+(define* (make-idris2 idris-source support
+                      #:key (bootstrap-idris #f))
   (let* ((support-libs (file-append support "/lib"))
          (support-share (file-append support "/share/idris2-support")))
     (package
@@ -89,14 +96,19 @@
       (native-search-paths
        (list (search-path-specification
               (variable "GUIX_IDRIS2_PACKAGE_PATH")
-              (files (list (string-append "lib/idris2-" (idris-source-version idris-source)))))))
+              (files (list (string-append "lib/idris2-"
+                                          (idris-source-version idris-source)))))))
       (build-system gnu-build-system)
       (arguments
        (list
-        #:make-flags #~(list (string-append "PREFIX=" #$output)
-                             (string-append "CC=" #$(cc-for-target))
-                             (string-append "VERSION_TAG=" #$(idris-source-tag idris-source))
-                             (string-append "IDRIS2_SUPPORT_DIR=" #$support-libs))
+        #:make-flags #~(list (string-append "PREFIX="
+                                            #$output)
+                             (string-append "CC="
+                                            #$(cc-for-target))
+                             (string-append "VERSION_TAG="
+                                            #$(idris-source-tag idris-source))
+                             (string-append "IDRIS2_SUPPORT_DIR="
+                                            #$support-libs))
         #:test-target "test"
         #:phases #~(modify-phases %standard-phases
                      (delete 'bootstrap)
@@ -109,9 +121,8 @@
                                (env (search-input-file inputs "/bin/env"))
                                ;; NOTE: this is overzealous.
                                (files-to-patch
-                                (append
-                                 (find-files "src/Compiler")
-                                 (find-files "." "\\.((sh)|(ss)|(rkt))$"))))
+                                (append (find-files "src/Compiler")
+                                        (find-files "." "\\.((sh)|(ss)|(rkt))$"))))
                            ;; Derived from patch-/usr/bin/file
                            (for-each
                             (lambda (file)
@@ -131,19 +142,29 @@
                                      env)))))
                             files-to-patch))))
                      (replace 'build
-                       #$(make-target
-                          (if bootstrap-idris '("all") '("bootstrap"))
-                          #:extra-flags
-                          (if bootstrap-idris
-                              #~'()
-                              #~(list
-                                 (string-append "SCHEME=" #+(file-append chez-scheme "/bin/chez-scheme"))
-                                 (string-append "IDRIS2_DATA=" #$support-share)
-                                 (string-append "IDRIS2_LIBS=" #$support-libs)))))
+                       #$(make-target (if bootstrap-idris
+                                          '("all")
+                                          '("bootstrap"))
+                                      #:extra-flags
+                                      (if bootstrap-idris
+                                          #~'()
+                                          #~(list (string-append
+                                                   "SCHEME="
+                                                   #+(file-append chez-scheme "/bin/chez-scheme"))
+                                                  (string-append
+                                                   "IDRIS2_DATA="
+                                                   #$support-share)
+                                                  (string-append
+                                                   "IDRIS2_LIBS="
+                                                   #$support-libs)))))
                      ;; Change target of gnu:check
                      (replace 'check
-                       (lambda* (#:key target make-flags tests? test-target
-                                 parallel-tests? test-suite-log-regexp
+                       (lambda* (#:key target
+                                 make-flags
+                                 tests?
+                                 test-target
+                                 parallel-tests?
+                                 test-suite-log-regexp
                                  #:allow-other-keys)
                          (if tests?
                              #$(make-target
@@ -157,7 +178,8 @@
                                     (string-append "TEST_IDRIS2_SUPPORT_DIR=" #$support-libs)))
                              (format #t "test suite not run~%"))))
                      (replace 'install
-                       #$(make-target '("install-idris2" "install-with-src-libs")))
+                       #$(make-target '("install-idris2"
+                                        "install-with-src-libs")))
                      (add-after 'install 'wrap
                        (lambda* (#:key inputs #:allow-other-keys)
                          (let* ((lib-exec (string-append #$output "/libexec/idris2.so"))
@@ -173,7 +195,8 @@
                            (rename-file
                             (string-append #$output "/bin/idris2_app/idris2.so")
                             lib-exec)
-                           (delete-file-recursively (string-append #$output "/bin/idris2_app"))
+                           (delete-file-recursively
+                            (string-append #$output "/bin/idris2_app"))
 
                            ;; Write wrapper executable
                            (call-with-output-file idris
@@ -183,26 +206,44 @@
                                        (search-input-file inputs "/bin/sh")
                                        (string-join
                                         (list
-                                         (format #f "export ~a=\"${~a:-~a}\""
+                                         (format #f
+                                                 "export ~a=\"${~a:-~a}\""
                                                  "CHEZ" "CHEZ"
                                                  (search-input-file inputs "/bin/chez-scheme"))
-                                         (format #f "export ~a=\"${~a:-\"~a\"}\""
-                                                 "IDRIS2_PREFIX" "IDRIS2_PREFIX"
+                                         (format #f
+                                                 "export ~a=\"${~a:-\"~a\"}\""
+                                                 "IDRIS2_PREFIX"
+                                                 "IDRIS2_PREFIX"
                                                  "$HOME/.idris2")
-                                         (format #f "export ~a=\"${~a}${~a:+:}~a\""
-                                                 "IDRIS2_LIBS" "IDRIS2_LIBS" "IDRIS2_LIBS"
+                                         (format #f
+                                                 "export ~a=\"${~a}${~a:+:}~a\""
+                                                 "IDRIS2_LIBS"
+                                                 "IDRIS2_LIBS"
+                                                 "IDRIS2_LIBS"
                                                  #$support-libs)
-                                         (format #f "export ~a=\"${~a}${~a:+:}~a\""
-                                                 "IDRIS2_DATA" "IDRIS2_DATA" "IDRIS2_DATA"
+                                         (format #f
+                                                 "export ~a=\"${~a}${~a:+:}~a\""
+                                                 "IDRIS2_DATA"
+                                                 "IDRIS2_DATA"
+                                                 "IDRIS2_DATA"
                                                  #$support-share)
-                                         (format #f "export ~a=\"${~a}${~a:+:}~a\""
-                                                 "IDRIS2_PACKAGE_PATH" "IDRIS2_PACKAGE_PATH" "IDRIS2_PACKAGE_PATH"
+                                         (format #f
+                                                 "export ~a=\"${~a}${~a:+:}~a\""
+                                                 "IDRIS2_PACKAGE_PATH"
+                                                 "IDRIS2_PACKAGE_PATH"
+                                                 "IDRIS2_PACKAGE_PATH"
                                                  "$GUIX_IDRIS2_PACKAGE_PATH")
-                                         (format #f "export ~a=\"${~a}${~a:+:}~a\""
-                                                 "LD_LIBRARY_PATH" "LD_LIBRARY_PATH" "LD_LIBRARY_PATH"
+                                         (format #f
+                                                 "export ~a=\"${~a}${~a:+:}~a\""
+                                                 "LD_LIBRARY_PATH"
+                                                 "LD_LIBRARY_PATH"
+                                                 "LD_LIBRARY_PATH"
                                                  #$support-libs)
-                                         (format #f "export ~a=\"${~a}${~a:+:}~a\""
-                                                 "DYLD_LIBRARY_PATH" "DYLD_LIBRARY_PATH" "DYLD_LIBRARY_PATH"
+                                         (format #f
+                                                 "export ~a=\"${~a}${~a:+:}~a\""
+                                                 "DYLD_LIBRARY_PATH"
+                                                 "DYLD_LIBRARY_PATH"
+                                                 "DYLD_LIBRARY_PATH"
                                                  #$support-libs))
                                         "\n")
                                        lib-exec)))
@@ -213,24 +254,22 @@
                            (rename-file
                             (string-append #$output "/idris2-" #$(idris-source-version idris-source))
                             package-path)))))))
-      (synopsis "")
-      (description "")
+      (synopsis "Dependently typed functional programming language and proof assistant")
+      (description "Idris is a programming language designed to encourage Type-Driven Development.  In type-driven development, types are tools for constructing programs.  We treat the type as the plan for a program, and use the compiler and type checker as our assistant, guiding us to a complete program that satisfies the type.  The more expressive the type is that we give up front, the more confidence we can have that the resulting program will be correct.")
       (license license:bsd-3)
       (home-page "https://www.idris-lang.org"))))
 
 (define (idris-git-source version commit tag hash)
   (let ((guix-version (string-append version "-" tag)))
-    (idris-source
-     (origin
-       (method git-fetch)
-       (uri (git-reference (url
-                            "https://github.com/idris-lang/Idris2.git")
-                           (commit commit)))
-       (file-name (git-file-name "idris2" guix-version))
-       (sha256 (base32 hash)))
-     version
-     (substring tag 4)
-     (string-append version "-" tag))))
+    (idris-source (origin
+                    (method git-fetch)
+                    (uri (git-reference (url
+                                         "https://github.com/idris-lang/Idris2")
+                                        (commit commit)))
+                    (file-name (git-file-name "idris2" guix-version))
+                    (sha256 (base32 hash))) version
+                    (substring tag 4)
+                    (string-append version "-" tag))))
 
 ;; The earliest idris we can build
 
@@ -253,7 +292,8 @@
 
 ;; Latest "stable" version
 
-(define-public idris2 idris2-root)
+(define-public idris2
+  idris2-root)
 
 ;; Latest git commit
 
@@ -282,21 +322,22 @@
     (package
       (name "idris2-api")
       (version (idris-source-guix-version idris-source))
-      (source (idris-source-origin idris-source))
+      (source
+       (idris-source-origin idris-source))
       (build-system idris2-build-system)
       (native-inputs (list gnu-make))
       (arguments
        (list
         #:ipkg-name "idris2api"
-        #:phases
-        #~(modify-phases %standard-phases
-            (add-before 'build 'make-idris-paths
-              (lambda* _
-                (invoke "make"
-                        (string-append "VERSION_TAG=" #$(idris-source-tag idris-source))
-                        "src/IdrisPaths.idr"))))))
-      (synopsis "")
-      (description "")
+        #:phases #~(modify-phases %standard-phases
+                     (add-before 'build 'make-idris-paths
+                       (lambda* _
+                         (invoke "make"
+                                 (string-append "VERSION_TAG="
+                                                #$(idris-source-tag idris-source))
+                                 "src/IdrisPaths.idr"))))))
+      (synopsis "API for the Idris2 compiler")
+      (description "API for the Idris2 compiler.")
       (license license:bsd-3)
       (home-page "https://www.idris-lang.org"))))
 
@@ -308,17 +349,18 @@
      (let ((commit "e496277f6dd557d31668b2430cfb07c47e841e2f"))
        (origin
          (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/ohad/collie.git")
-               (commit commit)))
+         (uri (git-reference (url "https://github.com/ohad/collie")
+                             (commit commit)))
          (file-name (git-file-name name commit))
-         (sha256 (base32 "0ka0yj3f1da0hdm5iwii4y23v32y8cfm0mnrm8f6vvy30xazlj3n")))))
+         (sha256 (base32
+                  "0ka0yj3f1da0hdm5iwii4y23v32y8cfm0mnrm8f6vvy30xazlj3n")))))
     (build-system idris2-build-system)
-    (arguments '(#:ipkg-name "collie"))
-    (synopsis "")
-    (description "")
+    (arguments
+     '(#:ipkg-name "collie"))
+    (synopsis "Command line interfaces for Idris2 applications")
+    (description "Command line interfaces for Idris2 applications.")
     (license (license:non-copyleft "file://LICENSE"))
-    (home-page "https://github.com/ohad/collie.git")))
+    (home-page "https://github.com/ohad/collie")))
 
 (define-public idris2-elab-util
   (package
@@ -329,14 +371,14 @@
      (let ((commit "2fc2d188640ce6822b5e250db73b62f5a952ca4d"))
        (origin
          (method git-fetch)
-         (uri (git-reference
-               (url home-page)
-               (commit commit)))
+         (uri (git-reference (url home-page)
+                             (commit commit)))
          (file-name (git-file-name name commit))
-         (sha256
-          (base32 "0s956hm3njm7d3kccrppqxnk4az67scp57k8v4j27q3j3y2fp0q9")))))
+         (sha256 (base32
+                  "0s956hm3njm7d3kccrppqxnk4az67scp57k8v4j27q3j3y2fp0q9")))))
     (build-system idris2-build-system)
-    (arguments '(#:ipkg-name "elab-util"))
-    (synopsis "")
-    (description "")
+    (arguments
+     '(#:ipkg-name "elab-util"))
+    (synopsis "Idris2 elaborator reflection library")
+    (description "Utilities and documentation for exploring Idris2 elaborator reflection.")
     (license license:bsd-2)))
