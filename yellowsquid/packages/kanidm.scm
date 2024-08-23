@@ -28,7 +28,7 @@
 (define-public kanidm
   (package
     (name "kanidm")
-    (version "1.3.2")
+    (version "1.3.3")
     (home-page "https://kanidm.github.io/kanidm/stable/")
     (source
      (origin
@@ -36,7 +36,7 @@
        (uri (git-reference (url "https://github.com/kanidm/kanidm")
                            (commit (string-append "v" version))))
        (file-name (git-file-name name version))
-       (sha256 (base32 "18ffyz2qlsl58i49wsqhnar4s24h2ans1921xhz2kcfwa1k9cnb0"))))
+       (sha256 (base32 "1dh1nvrk24dxrwl1pkb2ndq2nfhg5gb67whpzjqfwxkqqnibp4av"))))
     (build-system cargo-build-system)
     (arguments
      `(#:install-source? #f
