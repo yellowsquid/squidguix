@@ -22,7 +22,8 @@
   #:use-module (guix build-system cargo)
   #:use-module (guix download)
   #:use-module (guix git-download)
-  #:use-module ((guix licenses) #:prefix license:)
+  #:use-module ((guix licenses)
+                #:prefix license:)
   #:use-module (guix packages))
 
 (define-public kanidm
@@ -33,15 +34,17 @@
     (source
      (origin
        (method git-fetch)
-       (uri (git-reference (url "https://github.com/kanidm/kanidm")
-                           (commit (string-append "v" version))))
+       (uri (git-reference
+             (url "https://github.com/kanidm/kanidm")
+             (commit (string-append "v" version))))
        (file-name (git-file-name name version))
-       (sha256 (base32 "1dh1nvrk24dxrwl1pkb2ndq2nfhg5gb67whpzjqfwxkqqnibp4av"))))
+       (sha256
+        (base32 "1dh1nvrk24dxrwl1pkb2ndq2nfhg5gb67whpzjqfwxkqqnibp4av"))))
     (build-system cargo-build-system)
     (arguments
      `(#:install-source? #f
        #:rust ,rust-1.79
-       #:tests? #f ; needs rustdoc, which requires rebuilding rust
+       #:tests? #f ;needs rustdoc, which requires rebuilding rust
        #:cargo-inputs (("rust-anyhow" ,rust-anyhow-1)
                        ("rust-argon2" ,rust-argon2-0.5)
                        ("rust-askama" ,rust-askama-0.12)
@@ -109,7 +112,7 @@
                        ("rust-nonempty" ,rust-nonempty-0.8)
                        ("rust-notify-debouncer-full" ,rust-notify-debouncer-full-0.1)
                        ("rust-num_enum" ,rust-num-enum-0.5)
-                       ("rust-oauth2" ,rust-oauth2-4) ; oauth2_ext?
+                       ("rust-oauth2" ,rust-oauth2-4) ;oauth2_ext?
                        ("rust-openssl" ,rust-openssl-0.10)
                        ("rust-openssl-sys" ,rust-openssl-sys-0.9)
                        ("rust-opentelemetry" ,rust-opentelemetry-0.20)
@@ -134,7 +137,7 @@
                        ("rust-selinux" ,rust-selinux-0.4)
                        ("rust-serde" ,rust-serde-1)
                        ("rust-serde-wasm-bindgen" ,rust-serde-wasm-bindgen-0.5)
-                       ("rust-serde_cbor_2" ,rust-serde-cbor-2-0.12) ; serde_cbor
+                       ("rust-serde_cbor_2" ,rust-serde-cbor-2-0.12) ;serde_cbor
                        ("rust-serde_json" ,rust-serde-json-1)
                        ("rust-serde_with" ,rust-serde-with-3)
                        ("rust-sha2" ,rust-sha2-0.10)
@@ -176,59 +179,108 @@
                        ("rust-yew" ,rust-yew-0.20)
                        ("rust-yew-router" ,rust-yew-router-0.17)
                        ("rust-zxcvbn" ,rust-zxcvbn-2))
-       #:phases
-       (modify-phases %standard-phases
-         (add-before 'build 'set-build-profile
-           (lambda* (#:key inputs outputs #:allow-other-keys)
-             (let ((out (assoc-ref outputs "out")))
-               (with-output-to-file "libs/profiles/guix.toml"
-                 (lambda ()
-                   (format #t
-                           "\
-web_ui_pkg_path = \"~a/share/kanidm/ui\"
+       #:phases (modify-phases %standard-phases
+                  (add-before 'build 'set-build-profile
+                    (lambda* (#:key inputs outputs #:allow-other-keys)
+                      (let ((out (assoc-ref outputs "out")))
+                        (with-output-to-file "libs/profiles/guix.toml"
+                          (lambda ()
+                            (format #t
+                                    "web_ui_pkg_path = \"~a/share/kanidm/ui\"
 htmx_ui_pkg_path = \"~a/share/kanidm/ui\"
 admin_bind_path = \"/var/run/kanidmd/sock\"
 default_config_path = \"/etc/kanidm/server.toml\"
 default_unix_shell_path = ~s
 "
-                           out out
-                           (search-input-file inputs "bin/sh"))))
-               (setenv "KANIDM_BUILD_PROFILE" "guix"))))
-         (replace 'build
-           (lambda* (#:key cargo-build-flags #:allow-other-keys)
-             (apply invoke "cargo" "build" "--manifest-path" "server/daemon/Cargo.toml" cargo-build-flags)
-             (apply invoke "cargo" "build" "--manifest-path" "unix_integration/resolver/Cargo.toml" cargo-build-flags)
-             (apply invoke "cargo" "build" "--manifest-path" "unix_integration/nss_kanidm/Cargo.toml" cargo-build-flags)
-             (apply invoke "cargo" "build" "--manifest-path" "unix_integration/pam_kanidm/Cargo.toml" cargo-build-flags)
-             (apply invoke "cargo" "build" "--manifest-path" "tools/cli/Cargo.toml" cargo-build-flags)))
-         (replace 'install
-           (lambda* (#:key outputs #:allow-other-keys)
-             (let ((out (assoc-ref outputs "out"))
-                   (unix (assoc-ref outputs "unix"))
-                   (client (assoc-ref outputs "client")))
-               (mkdir-p out)
-               (mkdir-p unix)
-               (mkdir-p client)
-               (setenv "CARGO_TARGET_DIR" "./target")
+                                    out out
+                                    (search-input-file inputs "bin/sh"))))
+                        (setenv "KANIDM_BUILD_PROFILE" "guix"))))
+                  (replace 'build
+                    (lambda* (#:key cargo-build-flags #:allow-other-keys)
+                      (apply invoke
+                             "cargo"
+                             "build"
+                             "--manifest-path"
+                             "server/daemon/Cargo.toml"
+                             cargo-build-flags)
+                      (apply invoke
+                             "cargo"
+                             "build"
+                             "--manifest-path"
+                             "unix_integration/resolver/Cargo.toml"
+                             cargo-build-flags)
+                      (apply invoke
+                             "cargo"
+                             "build"
+                             "--manifest-path"
+                             "unix_integration/nss_kanidm/Cargo.toml"
+                             cargo-build-flags)
+                      (apply invoke
+                             "cargo"
+                             "build"
+                             "--manifest-path"
+                             "unix_integration/pam_kanidm/Cargo.toml"
+                             cargo-build-flags)
+                      (apply invoke
+                             "cargo"
+                             "build"
+                             "--manifest-path"
+                             "tools/cli/Cargo.toml"
+                             cargo-build-flags)))
+                  (replace 'install
+                    (lambda* (#:key outputs #:allow-other-keys)
+                      (let ((out (assoc-ref outputs "out"))
+                            (unix (assoc-ref outputs "unix"))
+                            (client (assoc-ref outputs "client")))
+                        (mkdir-p out)
+                        (mkdir-p unix)
+                        (mkdir-p client)
+                        (setenv "CARGO_TARGET_DIR" "./target")
 
-               ;; Daemon
-               (invoke "cargo" "install" "--no-track" "--path" "server/daemon" "--root" out)
-               ;; TODO: build web_ui
-               (mkdir-p (string-append out "/share/kanidm"))
-               (copy-recursively "server/web_ui/pkg" (string-append out "/share/kanidm/ui"))
+                        ;; Daemon
+                        (invoke "cargo"
+                                "install"
+                                "--no-track"
+                                "--path"
+                                "server/daemon"
+                                "--root"
+                                out)
+                        ;; TODO: build web_ui
+                        (mkdir-p (string-append out "/share/kanidm"))
+                        (copy-recursively "server/web_ui/pkg"
+                                          (string-append out
+                                                         "/share/kanidm/ui"))
 
-               ;; Unix integration
-               (invoke "cargo" "install" "--no-track" "--path" "unix_integration/resolver" "--root" unix)
-               (invoke "install" "-D" "target/release/libnss_kanidm.so" (string-append unix "/lib/libnss_kanidm.so.2"))
-               (invoke "install" "-D" "target/release/libpam_kanidm.so" (string-append unix "/lib/security/pam_kanidm.so"))
+                        ;; Unix integration
+                        (invoke "cargo"
+                                "install"
+                                "--no-track"
+                                "--path"
+                                "unix_integration/resolver"
+                                "--root"
+                                unix)
+                        (invoke "install" "-D"
+                                "target/release/libnss_kanidm.so"
+                                (string-append unix "/lib/libnss_kanidm.so.2"))
+                        (invoke "install" "-D"
+                                "target/release/libpam_kanidm.so"
+                                (string-append unix
+                                               "/lib/security/pam_kanidm.so"))
 
-               ;; Client tools
-               (invoke "cargo" "install" "--no-track" "--path" "tools/cli" "--root" client)))))))
+                        ;; Client tools
+                        (invoke "cargo"
+                                "install"
+                                "--no-track"
+                                "--path"
+                                "tools/cli"
+                                "--root"
+                                client)))))))
     (native-inputs (list pkg-config))
     (inputs (list eudev linux-pam openssl sqlite))
     (outputs (list "out" "unix" "client"))
     (synopsis "Simple, secure and fast identity management platform")
-    (description "Kanidm is a simple and secture identity management platform, allowing other
+    (description
+     "Kanidm is a simple and secture identity management platform, allowing other
 applications and services to offload the challenge of authenticating and storing
 identities to Kanidm.")
     (license license:mpl2.0)))
@@ -251,7 +303,8 @@ identities to Kanidm.")
     (synopsis
      "The package provides a source of BLAS and LAPACK via the Accelerate framework")
     (description
-     "This package provides The package provides a source of BLAS and LAPACK via the Accelerate framework.")
+     "This package provides The package provides a source of BLAS and LAPACK via
+the Accelerate framework.")
     (license (list license:asl2.0 license:expat))))
 
 (define-public rust-addr-0.11
@@ -273,7 +326,7 @@ identities to Kanidm.")
                        ("rust-psl-types" ,rust-psl-types-2)
                        ("rust-serde" ,rust-serde-1))))
     (home-page "https://github.com/addr-rs/addr")
-    (synopsis "library for parsing domain names")
+    (synopsis "Library for parsing domain names")
     (description "This package provides a library for parsing domain names.")
     (license (list license:expat license:asl2.0))))
 
@@ -303,7 +356,7 @@ identities to Kanidm.")
                        ("rust-smallvec" ,rust-smallvec-1))))
     (home-page "https://github.com/gimli-rs/addr2line")
     (synopsis
-     "cross-platform symbolication library written in Rust, using `gimli`")
+     "Cross-platform symbolication library written in Rust, using `gimli`")
     (description
      "This package provides a cross-platform symbolication library written in Rust,
 using `gimli`.")
@@ -328,7 +381,8 @@ using `gimli`.")
     (synopsis
      "NIST 800-38F AES Key Wrap (KW) and Key Wrap with Padding (KWP) modes")
     (description
-     "This package provides NIST 800-38F AES Key Wrap (KW) and Key Wrap with Padding (KWP) modes.")
+     "This package provides NIST 800-38F AES Key Wrap (KW) and Key Wrap with
+Padding (KWP) modes.")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-ahash-0.8
@@ -355,7 +409,7 @@ using `gimli`.")
                        ("rust-zerocopy" ,rust-zerocopy-0.7))))
     (home-page "https://github.com/tkaitchuck/ahash")
     (synopsis
-     "non-cryptographic hash function using AES-NI for high performance")
+     "Non-cryptographic hash function using AES-NI for high performance")
     (description
      "This package provides a non-cryptographic hash function using AES-NI for high
 performance.")
@@ -376,7 +430,7 @@ performance.")
     (arguments
      `(#:skip-build? #t))
     (home-page "https://github.com/rust-mobile/android_log-sys-rs")
-    (synopsis "FFI bindings to Android log Library.")
+    (synopsis "FFI bindings to Android log Library")
     (description "This package provides FFI bindings to Android log Library.")
     (license (list license:expat license:asl2.0))))
 
@@ -400,7 +454,7 @@ performance.")
                        ("rust-once-cell" ,rust-once-cell-1))))
     (home-page "https://github.com/rust-mobile/android_logger-rs")
     (synopsis
-     "logging implementation for `log` which hooks to android log output.")
+     "Logging implementation for `log` which hooks to android log output")
     (description
      "This package provides a logging implementation for `log` which hooks to android
 log output.")
@@ -467,11 +521,11 @@ log output.")
     (home-page
      "https://github.com/RustCrypto/password-hashes/tree/master/argon2")
     (synopsis
-     "Pure Rust implementation of the Argon2 password hashing function with support
-for the Argon2d, Argon2i, and Argon2id algorithmic variants")
+     "Pure Rust implementation of the Argon2 password hashing function")
     (description
-     "This package provides Pure Rust implementation of the Argon2 password hashing function with support
-for the Argon2d, Argon2i, and Argon2id algorithmic variants.")
+     "This package provides Pure Rust implementation of the Argon2 password
+hashing function with support for the Argon2d, Argon2i, and Argon2id algorithmic
+variants.")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-assert-cmd-2
@@ -559,14 +613,14 @@ for the Argon2d, Argon2i, and Argon2id algorithmic variants.")
 (define-public rust-async-process-2
   (package
     (name "rust-async-process")
-    (version "2.2.3")
+    (version "2.2.4")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "async-process" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0ajyzx21llsavkslp3z46mqcr3fysycw07cd60mrrql4pndsgvgp"))))
+        (base32 "0x3305pq0fzaqmw7q4c93sgabq97zhkr32xig5dkhkcscn4pg858"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -700,10 +754,10 @@ for the Argon2d, Argon2i, and Argon2id algorithmic variants.")
                        ("rust-winapi" ,rust-winapi-0.3))))
     (home-page "https://github.com/mozilla/authenticator-rs/")
     (synopsis
-     "Library for interacting with CTAP1/2 security keys for Web Authentication. Used by Firefox")
+     "Library for interacting with CTAP1/2 security keys for Web Authentication")
     (description
-     "This package provides Library for interacting with CTAP1/2 security keys for Web Authentication.  Used
-by Firefox.")
+     "This package provides Library for interacting with CTAP1/2 security keys
+for Web Authentication.  Used by Firefox.")
     (license license:mpl2.0)))
 
 (define-public rust-automod-1
@@ -774,13 +828,13 @@ by Firefox.")
                        ("rust-paste" ,rust-paste-1)
                        ("rust-untrusted" ,rust-untrusted-0.7)
                        ("rust-zeroize" ,rust-zeroize-1))))
-    (home-page "https://github.com/awslabs/aws-lc-rs")
+    (home-page "https://github.com/aws/aws-lc-rs")
     (synopsis
-     "aws-lc-rs is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring")
+     "Cryptographic library using AWS-LC for its cryptographic operations")
     (description
-     "This package provides aws-lc-rs is a cryptographic library using AWS-LC for its cryptographic
-operations.  This library strives to be API-compatible with the popular Rust
-library named ring.")
+     "A cryptographic library using AWS-LC for its cryptographic operations.
+This library strives to be API-compatible with the popular Rust library named
+ring.")
     (license (list license:isc license:asl2.0))))
 
 (define-public rust-aws-lc-sys-0.20
@@ -806,13 +860,12 @@ library named ring.")
                        ("rust-paste" ,rust-paste-1))))
     (home-page "https://github.com/aws/aws-lc-rs")
     (synopsis
-     "AWS-LC is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It Ñs based on code from the Google BoringSSL project and the OpenSSL project")
+     "General-purpose cryptographic library for AWS")
     (description
-     "This package provides AWS-LC is a general-purpose cryptographic library maintained by the AWS
-Cryptography team for AWS and their customers.  It Ñs based on code from the
-Google @code{BoringSSL} project and the @code{OpenSSL} project.")
-    (license (list license:isc license:asl2.0
-                   license:openssl))))
+     "A general-purpose cryptographic library maintained by the AWS Cryptography
+team for AWS and their customers.  It's based on code from the Google
+@code{BoringSSL} project and the @code{OpenSSL} project.")
+    (license (list license:isc license:asl2.0 license:openssl))))
 
 (define-public rust-axum-0.7
   (package
@@ -879,7 +932,8 @@ Google @code{BoringSSL} project and the @code{OpenSSL} project.")
     (home-page "https://github.com/tokio-rs/axum")
     (synopsis "Web framework that focuses on ergonomics and modularity")
     (description
-     "This package provides Web framework that focuses on ergonomics and modularity.")
+     "This package provides Web framework that focuses on ergonomics and
+modularity.")
     (license license:expat)))
 
 (define-public rust-axum-auth-0.7
@@ -985,7 +1039,7 @@ Google @code{BoringSSL} project and the @code{OpenSSL} project.")
        #:cargo-development-inputs (("rust-axum" ,rust-axum-0.7))))
     (home-page "https://github.com/robertwayne/axum-htmx")
     (synopsis
-     "set of htmx extractors, responders, and request guards for axum.")
+     "Set of htmx extractors, responders, and request guards for axum")
     (description
      "This package provides a set of htmx extractors, responders, and request guards
 for axum.")
@@ -1059,7 +1113,7 @@ for axum.")
                        ("rust-winapi" ,rust-winapi-0.3))))
     (home-page "https://github.com/rust-lang/backtrace-rs")
     (synopsis
-     "library to acquire a stack trace (backtrace) at runtime in a Rust program.")
+     "Library to acquire a stack trace (backtrace) at runtime in a Rust program")
     (description
      "This package provides a library to acquire a stack trace (backtrace) at runtime
 in a Rust program.")
@@ -1068,14 +1122,14 @@ in a Rust program.")
 (define-public rust-bardecoder-0.4
   (package
     (name "rust-bardecoder")
-    (version "0.4.0")
+    (version "0.4.2")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "bardecoder" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0jvw6lch61nyacjwblxnvpgvcjqwbw2fi1x97bcylc6k3lmk87yb"))))
+        (base32 "071gz5gr7wyl02l1xjcqh4hxmfmw3y1n6m7c8j0bvcqkkv15ivgq"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -1173,7 +1227,7 @@ in a Rust program.")
                        ("rust-zeroize" ,rust-zeroize-1))))
     (home-page
      "https://github.com/RustCrypto/password-hashes/tree/master/bcrypt-pbkdf")
-    (synopsis "bcrypt-pbkdf password-based key derivation function")
+    (synopsis "The bcrypt-pbkdf password-based key derivation function")
     (description
      "This package provides bcrypt-pbkdf password-based key derivation function.")
     (license (list license:expat license:asl2.0))))
@@ -1211,7 +1265,8 @@ in a Rust program.")
     (synopsis
      "Automatically generates Rust FFI bindings to C and C++ libraries")
     (description
-     "This package provides Automatically generates Rust FFI bindings to C and C++ libraries.")
+     "This package provides Automatically generates Rust FFI bindings to C and
+C++ libraries.")
     (license license:bsd-3)))
 
 (define-public rust-bindgen-0.65
@@ -1248,7 +1303,8 @@ in a Rust program.")
     (synopsis
      "Automatically generates Rust FFI bindings to C and C++ libraries")
     (description
-     "This package provides Automatically generates Rust FFI bindings to C and C++ libraries.")
+     "This package provides Automatically generates Rust FFI bindings to C and
+C++ libraries.")
     (license license:bsd-3)))
 
 (define-public rust-bitfield-0.13
@@ -1291,7 +1347,7 @@ in a Rust program.")
                        ("rust-rustc-std-workspace-core" ,rust-rustc-std-workspace-core-1)
                        ("rust-serde" ,rust-serde-1))))
     (home-page "https://github.com/bitflags/bitflags")
-    (synopsis "macro to generate structures which behave like bitflags.")
+    (synopsis "Macro to generate structures which behave like bitflags")
     (description
      "This package provides a macro to generate structures which behave like bitflags.")
     (license (list license:expat license:asl2.0))))
@@ -1388,10 +1444,11 @@ in a Rust program.")
                        ("rust-uuid" ,rust-uuid-1))))
     (home-page "https://github.com/bluez-rs/bluez-async/")
     (synopsis
-     "An async wrapper around the D-Bus interface of BlueZ (the Linux Bluetooth daemon), supporting GATT client (central) functionality")
+     "An async wrapper around the D-Bus interface of BlueZ")
     (description
-     "This package provides An async wrapper around the D-Bus interface of @code{BlueZ} (the Linux Bluetooth
-daemon), supporting GATT client (central) functionality.")
+     "This package provides an async wrapper around the D-Bus interface of
+@code{BlueZ} (the Linux Bluetooth daemon), supporting GATT client (central)
+functionality.")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-bluez-generated-0.3
@@ -1412,7 +1469,8 @@ daemon), supporting GATT client (central) functionality.")
     (home-page "https://github.com/bluez-rs/bluez-async/")
     (synopsis "Generated async D-Bus bindings for talking to BlueZ on Linux")
     (description
-     "This package provides Generated async D-Bus bindings for talking to @code{BlueZ} on Linux.")
+     "This package provides generated async D-Bus bindings for talking to
+@code{BlueZ} on Linux.")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-boolinator-2
@@ -1431,10 +1489,10 @@ daemon), supporting GATT client (central) functionality.")
      `(#:skip-build? #t))
     (home-page "https://github.com/DanielKeep/rust-boolinator")
     (synopsis
-     "Provides the Boolinator trait, which lets you use Option and Result-style combinators with bools")
+     "Combine @code{Option} and @code{Result}-style combinators with @code{bool}s")
     (description
-     "This package provides the Boolinator trait, which lets you use Option and
-Result-style combinators with bools.")
+     "This package provides the @code{Boolinator} trait, which lets you use
+@code{Option} and @code{Result}-style combinators with @code{bool}s.")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-boringssl-src-0.5
@@ -1453,7 +1511,7 @@ Result-style combinators with bools.")
      `(#:skip-build? #t
        #:cargo-inputs (("rust-cmake" ,rust-cmake-0.1))))
     (home-page "https://github.com/BusyJay/boringssl-src-rs")
-    (synopsis "crate for building boringssl.")
+    (synopsis "Crate for building boringssl")
     (description "This package provides a crate for building boringssl.")
     (license (list license:expat license:asl2.0))))
 
@@ -1477,7 +1535,7 @@ Result-style combinators with bools.")
                        ("rust-sha2" ,rust-sha2-0.10))))
     (home-page "https://github.com/dropbox/rust-brotli")
     (synopsis
-     "brotli compressor and decompressor that with an interface avoiding the rust stdlib. This makes it suitable for embedded devices and kernels. It is designed with a pluggable allocator so that the standard lib's allocator may be employed. The default build also includes a stdlib allocator and stream interface. Disable this with --features=no-stdlib. All included code is safe.")
+     "Brotli compressor and decompressor")
     (description
      "This package provides a brotli compressor and decompressor that with an
 interface avoiding the rust stdlib.  This makes it suitable for embedded devices
@@ -1505,7 +1563,7 @@ included code is safe.")
                        ("rust-alloc-stdlib" ,rust-alloc-stdlib-0.2))))
     (home-page "https://github.com/dropbox/rust-brotli-decompressor")
     (synopsis
-     "brotli decompressor that with an interface avoiding the rust stdlib. This makes it suitable for embedded devices and kernels. It is designed with a pluggable allocator so that the standard lib's allocator may be employed. The default build also includes a stdlib allocator and stream interface. Disable this with --features=no-stdlib. Alternatively, --features=unsafe turns off array bounds checks and memory initialization but provides a safe interface for the caller.  Without adding the --features=unsafe argument, all included code is safe. For compression in addition to this library, download https://github.com/dropbox/rust-brotli")
+     "Brotli decompressor with an interface avoiding the rust stdlib")
     (description
      "This package provides a brotli decompressor that with an interface avoiding the
 rust stdlib.  This makes it suitable for embedded devices and kernels.  It is
@@ -1517,26 +1575,6 @@ provides a safe interface for the caller.  Without adding the --features=unsafe
 argument, all included code is safe.  For compression in addition to this
 library, download https://github.com/dropbox/rust-brotli.")
     (license (list license:bsd-3 license:expat))))
-
-(define-public rust-bssl-sys-0.1
-  (package
-    (name "rust-bssl-sys")
-    (version "0.1.0")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (crate-uri "bssl-sys" version))
-       (file-name (string-append name "-" version ".tar.gz"))
-       (sha256
-        (base32 "0p5v3ad1paf12db4hmwq4j8dvcrppsscf57dwvr880q67hwi4b9i"))))
-    (build-system cargo-build-system)
-    (arguments
-     `(#:skip-build? #t))
-    (home-page "")
-    (synopsis "Placeholder package for boringssl bindings")
-    (description
-     "This package provides Placeholder package for boringssl bindings.")
-    (license license:expat)))
 
 (define-public rust-btleplug-0.11
   (package
@@ -1574,8 +1612,7 @@ library, download https://github.com/dropbox/rust-brotli.")
                        ("rust-uuid" ,rust-uuid-1)
                        ("rust-windows" ,rust-windows-0.52))))
     (home-page "https://github.com/deviceplug/btleplug")
-    (synopsis "Cross-Platform Rust Bluetooth Low Energy (BLE) GATT
-library.")
+    (synopsis "Cross-Platform Rust Bluetooth Low Energy (BLE) GATT library")
     (description
      "This package provides a Cross-Platform Rust Bluetooth Low Energy (BLE) GATT
 library.")
@@ -1598,7 +1635,7 @@ library.")
        #:cargo-inputs (("rust-allocator-api2" ,rust-allocator-api2-0.2)
                        ("rust-serde" ,rust-serde-1))))
     (home-page "https://github.com/fitzgen/bumpalo")
-    (synopsis "fast bump allocation arena for Rust.")
+    (synopsis "Fast bump allocation arena for Rust")
     (description
      "This package provides a fast bump allocation arena for Rust.")
     (license (list license:expat license:asl2.0))))
@@ -1606,20 +1643,20 @@ library.")
 (define-public rust-bytemuck-1
   (package
     (name "rust-bytemuck")
-    (version "1.16.3")
+    (version "1.17.0")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "bytemuck" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "10zwyavqw01szs0gn3y44n3zmkdjig2qzksnx9i7hrxlhvi8f80h"))))
+        (base32 "0cdvfvgnww7l904326h4fsydsfgy2lmjrf5lq3ss5bmhqgfcdm3g"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
        #:cargo-inputs (("rust-bytemuck-derive" ,rust-bytemuck-derive-1))))
     (home-page "https://github.com/Lokathor/bytemuck")
-    (synopsis "crate for mucking around with piles of bytes.")
+    (synopsis "Crate for mucking around with piles of bytes")
     (description
      "This package provides a crate for mucking around with piles of bytes.")
     (license (list license:zlib license:asl2.0 license:expat))))
@@ -6867,7 +6904,6 @@ move to more appropriate crates if we find them.")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-bindgen" ,rust-bindgen-0.65)
-                       ("rust-bssl-sys" ,rust-bssl-sys-0.1)
                        ("rust-cc" ,rust-cc-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-openssl-src" ,rust-openssl-src-300)
@@ -8639,8 +8675,7 @@ rustc.")
     (synopsis "Safe Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls")
     (description
      "This package provides Safe Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls.")
-    (license (list license:asl2.0
-                   license:expat))))
+    (license (list license:asl2.0 license:expat))))
 
 (define-public rust-rustls-0.23
   (package
@@ -11064,8 +11099,7 @@ dependency.")
     (description
      "This package provides a simple event-driven library for parsing
 @code{WebAssembly} binary files.")
-    (license (list license:asl2.0
-                   license:expat))))
+    (license (list license:asl2.0 license:expat))))
 
 (define-public rust-web-sys-0.3
   (package
