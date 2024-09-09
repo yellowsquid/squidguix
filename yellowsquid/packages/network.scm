@@ -45,12 +45,21 @@
       #~(modify-phases %standard-phases
           (add-after 'configure 'patch-path
             (lambda* (#:key inputs #:allow-other-keys #:rest args)
-              (let* ((modprobe (search-input-file inputs "/bin/modprobe")))
+              (let* ((ipsec (search-input-file inputs "/sbin/ipsec"))
+                     (xl2tpd (search-input-file inputs "/sbin/xl2tpd"))
+                     (modprobe (search-input-file inputs "/bin/modprobe"))
+                     (pretty-xl2tpd (string-append "\"" xl2tpd "\""))
+                     (pretty-ipsec (string-append "\"" ipsec "\"")))
                 (for-each
                  (lambda (file)
                    (substitute* file
+                     (("\"(/usr(/local)?)?/s?bin/xl2tpd\"") pretty-xl2tpd)
+                     (("\"(/usr(/local)?)?/s?bin/kl2tpd\"") "NULL")
+                     (("\"(/usr(/local)?)?/s?bin/ipsec\"") pretty-ipsec)
+                     (("\"(/usr(/local)?)?/s?bin/strongswan\"") "NULL")
                      (("/sbin/modprobe") modprobe)))
-                 '("src/nm-l2tp-service.c"))))))))
+                 '("src/nm-l2tp-service.c"
+                   "shared/utils.c"))))))))
     (native-inputs
      (list autoconf
            automake
