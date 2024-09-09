@@ -54,7 +54,7 @@
                      (lambda _
                        ;; XXX: Do not create /var
                        (invoke "make" "localstatedir=/tmp/discard" "install")))
-                   (add-after 'wrap 'wrap-ddclient
+                   (add-after 'install 'wrap-ddclient
                      (lambda* (#:key inputs #:allow-other-keys)
                        (wrap-program (string-append #$output "/bin/ddclient")
                          `("PERL5LIB" ":" prefix
