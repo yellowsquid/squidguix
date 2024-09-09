@@ -4,12 +4,15 @@
   #:use-module (gnu packages glib)
   #:use-module (gnu packages gnome)
   #:use-module (gnu packages gtk)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages nss)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages samba)
   #:use-module (gnu packages tls)
   #:use-module (gnu packages vpn)
+  #:use-module (gnu packages xml)
   #:use-module (guix build-system gnu)
+  #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module ((guix licenses)
                 #:prefix license:)
@@ -33,23 +36,44 @@
        (sha256
         (base32 "1f2n4wayf7dw6a04krdaj225pzra9xl72yzna4v5s017fp3wxi7g"))))
     (build-system gnu-build-system)
-    (native-inputs (list autoconf
-                         automake
-                         gettext-minimal
-                         (list glib "bin")
-                         gobject-introspection
-                         libtool
-                         pkg-config))
-    (inputs (list gettext-minimal
-                  gtk+
-                  libnma
-                  libsecret
-                  network-manager
-                  nss
-                  openssl
-                  ppp
-                  strongswan
-                  xl2tpd))
+    (arguments
+     (list
+      #:configure-flags #~(list "--enable-absolute-paths"
+                                "--localstatedir=/var"
+                                "--with-gtk4=yes")
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'configure 'patch-path
+            (lambda* (#:key inputs #:allow-other-keys #:rest args)
+              (let* ((modprobe (search-input-file inputs "/bin/modprobe")))
+                (for-each
+                 (lambda (file)
+                   (substitute* file
+                     (("/sbin/modprobe") modprobe)))
+                 '("src/nm-l2tp-service.c"))))))))
+    (native-inputs
+     (list autoconf
+           automake
+           (list glib "bin")
+           gobject-introspection
+           (list gtk "bin")
+           intltool
+           libtool
+           libxml2
+           pkg-config))
+    (inputs
+     (list gettext-minimal
+           gtk
+           gtk+
+           kmod
+           libnma
+           libsecret
+           network-manager
+           nss
+           openssl
+           ppp
+           strongswan
+           xl2tpd))
     (synopsis "L2TP plugin of NetworkManager")
     (description
      "This extension of NetworkManager allows it to take car of connections
