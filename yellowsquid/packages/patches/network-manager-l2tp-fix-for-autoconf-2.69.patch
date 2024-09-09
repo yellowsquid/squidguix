@@ -1,0 +1,48 @@
+From 3969c8db87aed6d41b945573c269cd09bc7e3179 Mon Sep 17 00:00:00 2001
+From: Douglas Kosovic <doug@uq.edu.au>
+Date: Wed, 29 May 2024 21:17:37 +1000
+Subject: [PATCH] build: Fix for autoconf 2.69
+
+Generated configure script had syntax error when autoconf 2.69's
+autoreconf was used.
+---
+ configure.ac | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 98f63c0..4b23cb9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -52,27 +52,14 @@ dnl
+ dnl Required headers
+ dnl
+ AC_HEADER_STDC
+-AC_CHECK_HEADERS([
+-	fcntl.h
+-	paths.h
+-	stdarg.h
+-	stdbool.h
+-	sys/ioctl.h
+-	sys/time.h
+-	syslog.h
+-	unistd.h
+-	])
++AC_CHECK_HEADERS([fcntl.h paths.h stdarg.h stdbool.h sys/ioctl.h sys/time.h syslog.h unistd.h])
+ 
+ AC_CHECK_HEADERS(pppd/pppd.h,,
+   AC_MSG_ERROR(couldn't find pppd.h. pppd development headers are required.))
+ 
+ dnl
+ dnl Check the presense of other pppd/*.h files
+-AC_CHECK_HEADERS([
+-    pppd/chap.h
+-    pppd/chap-new.h
+-    pppd/chap_ms.h
+-    ])
++AC_CHECK_HEADERS([pppd/chap.h pppd/chap-new.h pppd/chap_ms.h])
+ 
+ dnl
+ dnl Versions >= 2.5.0 will have pkg-config support
+-- 
+2.46.0
+
