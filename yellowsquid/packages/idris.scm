@@ -10,7 +10,8 @@
   #:use-module (guix utils)
   #:use-module (ice-9 regex)
   #:use-module (srfi srfi-9)
-  #:use-module (yellowsquid build-system idris))
+  #:use-module (yellowsquid build-system idris)
+  #:use-module (yellowsquid packages))
 
 (define-record-type <idris-source>
   (idris-source origin version tag guix-version)
@@ -267,9 +268,11 @@
                                          "https://github.com/idris-lang/Idris2")
                                         (commit commit)))
                     (file-name (git-file-name "idris2" guix-version))
-                    (sha256 (base32 hash))) version
-                    (substring tag 4)
-                    (string-append version "-" tag))))
+                    (sha256 (base32 hash))
+                    (patches (search-patches "idris2-no-support.patch")))
+                  version
+                  (substring tag (1+ (string-index tag #\g)))
+                  (string-append version "-" tag))))
 
 ;; The earliest idris we can build
 
@@ -298,9 +301,9 @@
 ;; Latest git commit
 
 (define %idris-source-git
-  (idris-git-source "0.7.0" "034f1e89c4c58cdd59aabe2b0d0fe4e9ff3411f6"
-                    "50-g034f1e89c"
-                    "1b6yvarydyk2m1q82hg96f2rfywda42i4cw66jzbm71fvg84ya2k"))
+  (idris-git-source "0.7.0" "0659bcc2c0c8b437affd9d33b62668f0b08c74f7"
+                    "268-g0659bcc2c"
+                    "1chjy0gnrsgb205rhxridbpp7nf72922mg1cx6mg1gkl9z97ad1j"))
 
 (define-public idris2-support-git
   (package

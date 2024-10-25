@@ -1,0 +1,27 @@
+From 0ca600f7f0edc231c9335f9df710408ce852703c Mon Sep 17 00:00:00 2001
+From: Chloe Brown <chloe.brown.00@outlook.com>
+Date: Fri, 25 Oct 2024 13:53:34 +0100
+Subject: [PATCH] Do not install support when installing Idris.
+
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 1e828cf88..9e6e6195c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -195,8 +195,8 @@ clean: clean-libs clean-support testenv-clean
+ 	${MAKE} -C tests clean
+ 	$(RM) -r build
+ 
+-install: install-idris2 install-support install-libs
+-bootstrap-install: install-idris2 install-support install-bootstrap-libs
++install: install-idris2 install-libs
++bootstrap-install: install-idris2 install-bootstrap-libs
+ 
+ install-api: src/IdrisPaths.idr
+ 	${IDRIS2_BOOT} --install ${IDRIS2_LIB_IPKG}
+-- 
+2.46.0
+

@@ -20,7 +20,7 @@
 
 (define %idris-build-system-modules
   `((yellowsquid build idris-build-system)
-    ,@%gnu-build-system-modules))
+    ,@%default-gnu-imported-modules))
 
 (define %default-modules
   '((yellowsquid build idris-build-system)
