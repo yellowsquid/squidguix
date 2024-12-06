@@ -29,7 +29,7 @@
 (define-public kanidm
   (package
     (name "kanidm")
-    (version "1.4.0")
+    (version "1.4.4")
     (home-page "https://kanidm.github.io/kanidm/stable/")
     (source
      (origin
@@ -39,7 +39,7 @@
              (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0aikrq6j7h0kl8zyij8a9862v5h3rk6q42csd5ib9y7piaphf5l5"))))
+        (base32 "1i7winl5af124ing9jp1mxgn3qbv449qf22jmcpy8jb7i3v2ly01"))))
     (build-system cargo-build-system)
     (arguments
      `(#:install-source? #f
@@ -179,38 +179,6 @@ default_unix_shell_path = ~s
                                     out out
                                     (search-input-file inputs "bin/sh"))))
                         (setenv "KANIDM_BUILD_PROFILE" "guix"))))
-                  (replace 'build
-                    (lambda* (#:key cargo-build-flags #:allow-other-keys)
-                      (apply invoke
-                             "cargo"
-                             "build"
-                             "--manifest-path"
-                             "server/daemon/Cargo.toml"
-                             cargo-build-flags)
-                      (apply invoke
-                             "cargo"
-                             "build"
-                             "--manifest-path"
-                             "unix_integration/resolver/Cargo.toml"
-                             cargo-build-flags)
-                      (apply invoke
-                             "cargo"
-                             "build"
-                             "--manifest-path"
-                             "unix_integration/nss_kanidm/Cargo.toml"
-                             cargo-build-flags)
-                      (apply invoke
-                             "cargo"
-                             "build"
-                             "--manifest-path"
-                             "unix_integration/pam_kanidm/Cargo.toml"
-                             cargo-build-flags)
-                      (apply invoke
-                             "cargo"
-                             "build"
-                             "--manifest-path"
-                             "tools/cli/Cargo.toml"
-                             cargo-build-flags)))
                   (replace 'install
                     (lambda* (#:key outputs #:allow-other-keys)
                       (let ((out (assoc-ref outputs "out"))
@@ -222,27 +190,28 @@ default_unix_shell_path = ~s
                         (setenv "CARGO_TARGET_DIR" "./target")
 
                         ;; Daemon
-                        (invoke "cargo"
-                                "install"
-                                "--no-track"
-                                "--path"
-                                "server/daemon"
-                                "--root"
-                                out)
+                        (invoke "install" "-D"
+                                "target/release/kanidmd"
+                                (string-append out "/bin/kanidmd"))
                         ;; TODO: build web_ui
                         (mkdir-p (string-append out "/share/kanidm"))
-                        (copy-recursively "server/web_ui/pkg"
+                        (copy-recursively "server/core/static"
                                           (string-append out
                                                          "/share/kanidm/ui"))
 
                         ;; Unix integration
-                        (invoke "cargo"
-                                "install"
-                                "--no-track"
-                                "--path"
-                                "unix_integration/resolver"
-                                "--root"
-                                unix)
+                        (invoke "install" "-D"
+                                "target/release/kanidm_unixd"
+                                (string-append unix "/bin/kanidm_unixd"))
+                        (invoke "install" "-D"
+                                "target/release/kanidm_unixd_tasks"
+                                (string-append unix "/bin/kanidm_unixd_tasks"))
+                        (invoke "install" "-D"
+                                "target/release/kanidm_ssh_authorizedkeys"
+                                (string-append unix "/bin/kanidm_ssh_authorizedkeys"))
+                        (invoke "install" "-D"
+                                "target/release/kanidm_unixd"
+                                (string-append unix "/bin/kanidm_unixd"))
                         (invoke "install" "-D"
                                 "target/release/libnss_kanidm.so"
                                 (string-append unix "/lib/libnss_kanidm.so.2"))
@@ -252,13 +221,10 @@ default_unix_shell_path = ~s
                                                "/lib/security/pam_kanidm.so"))
 
                         ;; Client tools
-                        (invoke "cargo"
-                                "install"
-                                "--no-track"
-                                "--path"
-                                "tools/cli"
-                                "--root"
-                                client)))))))
+                        (invoke "install" "-D"
+                                "target/release/kanidm"
+                                (string-append client
+                                               "/bin/kanidm"))))))))
     (native-inputs (list pkg-config))
     (inputs (list eudev linux-pam openssl sqlite))
     (outputs (list "out" "unix" "client"))
