@@ -2,6 +2,8 @@
   #:use-module (gnu packages c)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages crates-apple)
+  #:use-module (gnu packages crates-check)
+  #:use-module (gnu packages crates-compression)
   #:use-module (gnu packages crates-crypto)
   #:use-module (gnu packages crates-graphics)
   #:use-module (gnu packages crates-io)
@@ -461,7 +463,8 @@ log output.")
         (base32 "04xgvbdlgcfd80ahvgsk1dq9q4969ilj9n4xp62052nlsxk73wvl"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-backtrace" ,rust-backtrace-0.3))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-backtrace" ,rust-backtrace-0.3))
        #:cargo-development-inputs (("rust-futures" ,rust-futures-0.3)
                                    ("rust-rustversion" ,rust-rustversion-1)
                                    ("rust-syn" ,rust-syn-2)
@@ -471,6 +474,25 @@ log output.")
     (synopsis "Flexible concrete Error type built on std::error::Error")
     (description
      "This package provides Flexible concrete Error type built on std::error::Error.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-anymap2-0.13
+  (package
+    (name "rust-anymap2")
+    (version "0.13.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "anymap2" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "031kw3bp0zh2pn9fcayaw0w0gydgpgfhm08pg4yz5cml9jwv60fk"))))
+    (build-system cargo-build-system)
+    (arguments `(#:skip-build? #t))
+    (home-page "https://github.com/azriel91/anymap2")
+    (synopsis "safe and convenient store for one value of each type")
+    (description
+     "This package provides a safe and convenient store for one value of each type.")
     (license (list license:expat license:asl2.0))))
 
 (define-public rust-argon2-0.5
@@ -486,7 +508,8 @@ log output.")
         (base32 "0wn0kk97k49wxidfigmz1pdqmygqzi4h6w72ib7cpq765s4i0diw"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64ct" ,rust-base64ct-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64ct" ,rust-base64ct-1)
                        ("rust-blake2" ,rust-blake2-0.10)
                        ("rust-cpufeatures" ,rust-cpufeatures-0.2)
                        ("rust-password-hash" ,rust-password-hash-0.5)
@@ -516,7 +539,8 @@ variants.")
         (base32 "0qzifp9qgxhchgnsf53gbgngdbdn7qjif3vnc2pw8nmzrpvh65m4"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-askama" ,rust-askama-0.12)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-askama" ,rust-askama-0.12)
                        ("rust-axum-core" ,rust-axum-core-0.4)
                        ("rust-http" ,rust-http-1))
        #:cargo-development-inputs (("rust-axum" ,rust-axum-0.7)
@@ -543,7 +567,8 @@ variants.")
         (base32 "0gdj0710k3lnvyjmpv8a4dgwrk9ib85l2wfw4n2xwy3qyavka66w"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-anstream" ,rust-anstream-0.6)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-anstream" ,rust-anstream-0.6)
                        ("rust-anstyle" ,rust-anstyle-1)
                        ("rust-bstr" ,rust-bstr-1)
                        ("rust-doc-comment" ,rust-doc-comment-0.3)
@@ -657,7 +682,8 @@ variants.")
         (base32 "04ac4zh8qz2xjc79lmfi4jlqj5f92xjvfaqvbzwkizyqd4pl4hrv"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
                        ("rust-quote" ,rust-quote-1)
                        ("rust-syn" ,rust-syn-2))
        #:cargo-development-inputs (("rust-futures-executor" ,rust-futures-executor-0.3)
@@ -702,7 +728,8 @@ variants.")
         (base32 "1p8q8gm4fv2fdka8hwy2w3f8df7p5inixqi7rlmbnky3wmysw73j"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
                        ("rust-quote" ,rust-quote-1)
                        ("rust-syn" ,rust-syn-2))
        #:cargo-development-inputs (("rust-futures" ,rust-futures-0.3)
@@ -882,7 +909,8 @@ team for AWS and their customers.  It's based on code from the Google
         (base32 "1bkhgnj7rk1aih1c1ylqkmn72mjbgi8lql1paim35j3s613kjkjh"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
                        ("rust-axum-core" ,rust-axum-core-0.4)
                        ("rust-axum-macros" ,rust-axum-macros-0.4)
                        ("rust-base64" ,rust-base64-0.22)
@@ -949,7 +977,8 @@ team for AWS and their customers.  It's based on code from the Google
         (base32 "02hjwhji03lrjsabkg22hnzk0paqvy0kbz7w2j3gcm2z30x12sc1"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
                        ("rust-axum-core" ,rust-axum-core-0.4)
                        ("rust-base64" ,rust-base64-0.21)
                        ("rust-http" ,rust-http-1))
@@ -1008,7 +1037,8 @@ team for AWS and their customers.  It's based on code from the Google
         (base32 "1ydi660sqd9bl6252axx12xkdn9v3jqgkidny6f71sla305j5hvk"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-axum" ,rust-axum-0.7)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-axum" ,rust-axum-0.7)
                        ("rust-axum-core" ,rust-axum-core-0.4)
                        ("rust-axum-macros" ,rust-axum-macros-0.4)
                        ("rust-bytes" ,rust-bytes-1)
@@ -1061,7 +1091,8 @@ team for AWS and their customers.  It's based on code from the Google
         (base32 "07lh36gz23sz2lcr8aj7wkg5930r9g59pavcl1g6wjq9vhghbxs0"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
                        ("rust-axum-core" ,rust-axum-core-0.4)
                        ("rust-futures-core" ,rust-futures-core-0.3)
                        ("rust-http" ,rust-http-1)
@@ -1113,7 +1144,8 @@ for axum.")
         (base32 "1n67cx39cm9zsm0dwm0nla67qjswj90ccqrwq0x3kagn904ckfjn"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-arc-swap" ,rust-arc-swap-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-arc-swap" ,rust-arc-swap-1)
                        ("rust-bytes" ,rust-bytes-1)
                        ("rust-futures-util" ,rust-futures-util-0.3)
                        ("rust-http" ,rust-http-1)
@@ -1212,7 +1244,8 @@ in a Rust program.")
         (base32 "0xp0a3xml25xw2bp5pyac2nld7vmmfjl02qynnyfn6aznfggwb82"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-development-inputs (("rust-quickcheck" ,rust-quickcheck-1))))
+     `(#:skip-build? #t
+       #:cargo-development-inputs (("rust-quickcheck" ,rust-quickcheck-1))))
     (home-page "https://github.com/andreasots/base32")
     (synopsis "Base32 encoder/decoder for Rust")
     (description "This package provides Base32 encoder/decoder for Rust.")
@@ -1253,7 +1286,8 @@ in a Rust program.")
         (base32 "1izhcay5n5h6zj6b0nps9zdb7q3wxfnm8x4d0skyzlawvx78jmhs"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.21)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.21)
                        ("rust-paste" ,rust-paste-1)
                        ("rust-serde" ,rust-serde-1))
        #:cargo-development-inputs (("rust-serde-cbor-2" ,rust-serde-cbor-2-0.12)
@@ -1822,7 +1856,8 @@ library.")
         (base32 "1nnhpb7jlpj393qnjr1n9n6sgpl3w5ymrwl3pnjmrriam861bh4s"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-serde" ,rust-serde-1))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-serde" ,rust-serde-1))
        #:cargo-development-inputs (("rust-loom" ,rust-loom-0.7)
                                    ("rust-serde-test" ,rust-serde-test-1))))
     (home-page "https://github.com/tokio-rs/bytes")
@@ -1938,7 +1973,8 @@ winded `#[cfg()]` checks.")
         (base32 "009l8vc5p8750vn02z30mblg4pv2qhkbfizhfwmzc6vpy5nr67x2"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-android-tzdata" ,rust-android-tzdata-0.1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-android-tzdata" ,rust-android-tzdata-0.1)
                        ("rust-arbitrary" ,rust-arbitrary-1)
                        ("rust-iana-time-zone" ,rust-iana-time-zone-0.1)
                        ("rust-js-sys" ,rust-js-sys-0.3)
@@ -1993,7 +2029,8 @@ winded `#[cfg()]` checks.")
         (base32 "1s37v23gcxkjy4800qgnkxkpliz68vslpr5sgn1xar56hmnkfzxr"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-clap-builder" ,rust-clap-builder-4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-clap-builder" ,rust-clap-builder-4)
                        ("rust-clap-derive" ,rust-clap-derive-4))
        #:cargo-development-inputs (("rust-automod" ,rust-automod-1)
                                    ("rust-clap-cargo" ,rust-clap-cargo-0.14)
@@ -2077,7 +2114,8 @@ Argument Parser.")
         (base32 "1qmhfyanci10wdinc5jrga7p9sb38jy73v7b7cpyb0dwjkg77g46"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-clap" ,rust-clap-4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-clap" ,rust-clap-4)
                        ("rust-clap-lex" ,rust-clap-lex-0.7)
                        ("rust-completest" ,rust-completest-0.4)
                        ("rust-completest-pty" ,rust-completest-pty-0.5)
@@ -2209,7 +2247,8 @@ Argument Parser.")
         (base32 "0rpj3q92iz2fhfs6z0j41q6gsf9lcc6xdn00pgxk6z4bqyqr6r3b"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.21)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.21)
                        ("rust-base64urlsafedata" ,rust-base64urlsafedata-0.5)
                        ("rust-hex" ,rust-hex-0.4)
                        ("rust-kanidm-hsm-crypto" ,rust-kanidm-hsm-crypto-0.2)
@@ -2281,7 +2320,8 @@ Argument Parser.")
         (base32 "1gm09lb67nkiv963bk2h9xqrjaxcr051p38apggrf99cabphr86b"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
                        ("rust-arc-swap" ,rust-arc-swap-1)
                        ("rust-crossbeam-epoch" ,rust-crossbeam-epoch-0.9)
                        ("rust-crossbeam-queue" ,rust-crossbeam-queue-0.3)
@@ -2396,7 +2436,8 @@ Android and @code{iOS}.")
         (base32 "01qc1cnhibxh55pwv3mwaxvfgbjpgk1lfl7an5m4ljvv0xrkx33g"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-chrono" ,rust-chrono-0.4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-chrono" ,rust-chrono-0.4)
                        ("rust-nom" ,rust-nom-7)
                        ("rust-once-cell" ,rust-once-cell-1))
        #:cargo-development-inputs (("rust-chrono-tz" ,rust-chrono-tz-0.6))))
@@ -2419,7 +2460,8 @@ Android and @code{iOS}.")
         (base32 "1a5c7yacnk723x0hfycdbl91ks2nxhwbwy46b8y5vyy0gxzcsdqi"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5)
                        ("rust-crossbeam-deque" ,rust-crossbeam-deque-0.8)
                        ("rust-crossbeam-epoch" ,rust-crossbeam-epoch-0.9)
                        ("rust-crossbeam-queue" ,rust-crossbeam-queue-0.3)
@@ -2728,7 +2770,8 @@ DHAT.")
         (base32 "0df6mighw65h5cm3l0fl37hq35rq31zz8773v19f26dfngkbk062"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-enum-iterator-derive" ,rust-enum-iterator-derive-1))))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-enum-iterator-derive" ,rust-enum-iterator-derive-1))))
     (home-page "https://github.com/stephaneyfx/enum-iterator")
     (synopsis
      "Tools to iterate over all values of a type (e.g. all variants of an enumeration)")
@@ -2772,7 +2815,8 @@ variants of an enumeration).")
         (base32 "1djza8py0rrgc5jlrijfrym0ljmr0cmy0rvjicafz6j5klzg4060"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-log" ,rust-log-0.4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-log" ,rust-log-0.4)
                        ("rust-once-cell" ,rust-once-cell-1)
                        ("rust-serde" ,rust-serde-1)
                        ("rust-serde-json" ,rust-serde-json-1))
@@ -2821,7 +2865,8 @@ variants of an enumeration).")
         (base32 "1rakgi4xd54n1j9miv2fvzjk1i8g8sfip24ybb6i6415k0zbclnx"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.22)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.22)
                        ("rust-cookie" ,rust-cookie-0.18)
                        ("rust-futures-core" ,rust-futures-core-0.3)
                        ("rust-futures-util" ,rust-futures-util-0.3)
@@ -2905,7 +2950,8 @@ variants of an enumeration).")
         (base32 "0czxf8xqhj2pimwqqfp679ddk2pb2lmhgv6a5kkrwfs8x5gp4sy6"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-aes" ,rust-aes-0.8)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-aes" ,rust-aes-0.8)
                        ("rust-base64" ,rust-base64-0.22)
                        ("rust-byteorder" ,rust-byteorder-1)
                        ("rust-cbc" ,rust-cbc-0.1)
@@ -2997,7 +3043,8 @@ variants of an enumeration).")
         (base32 "0l259b9b70n869jlv4zwcx5yff1p937k848mx17jr1z3lks1sh5z"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-cfg-if" ,rust-cfg-if-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-cfg-if" ,rust-cfg-if-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-libredox" ,rust-libredox-0.1)
                        ("rust-windows-sys" ,rust-windows-sys-0.59))
@@ -3126,7 +3173,8 @@ hashing algorithm.")
         (base32 "1y0m3pk9iq16b61p3g643234bfy0kdbyjymxczklafy2fsn81qgp"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-std" ,rust-async-std-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-std" ,rust-async-std-1)
                        ("rust-rustix" ,rust-rustix-0.38)
                        ("rust-smol" ,rust-smol-2)
                        ("rust-tokio" ,rust-tokio-1)
@@ -3198,7 +3246,8 @@ and replace libc by rustix.")
         (base32 "0xh8ddbkm9jy8kc5gbvjp9a4b6rqqxvc8471yb2qaz5wm2qhgg35"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-futures-channel" ,rust-futures-channel-0.3)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-futures-channel" ,rust-futures-channel-0.3)
                        ("rust-futures-core" ,rust-futures-core-0.3)
                        ("rust-futures-executor" ,rust-futures-executor-0.3)
                        ("rust-futures-io" ,rust-futures-io-0.3)
@@ -3253,7 +3302,8 @@ composability, and iterator-like interfaces.")
         (base32 "1mki9bvr13kzmsp1i4vhgyy72swp6vs595pblfmxjkrs1fri2d0i"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
                        ("rust-futures-core" ,rust-futures-core-0.3)
                        ("rust-pin-project" ,rust-pin-project-1))
        #:cargo-development-inputs (("rust-async-io" ,rust-async-io-1)
@@ -3441,7 +3491,8 @@ composability, and iterator-like interfaces.")
         (base32 "0c0y7mc8bpsjkvvykqcic9cynskvm82iz4fn4335pmhqd2m5adnw"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-rustix" ,rust-rustix-0.38)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-rustix" ,rust-rustix-0.38)
                        ("rust-windows-targets" ,rust-windows-targets-0.52))))
     (home-page "https://github.com/swsnr/gethostname.rs")
     (synopsis "gethostname for all platforms")
@@ -3509,7 +3560,8 @@ format.")
         (base32 "0kv3w87h8gbwg16k7nqzalb417v8yzh7fq0nh28350nckz91916p"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-std" ,rust-async-std-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-std" ,rust-async-std-1)
                        ("rust-document-features" ,rust-document-features-0.2)
                        ("rust-gix-actor" ,rust-gix-actor-0.31)
                        ("rust-gix-archive" ,rust-gix-archive-0.13)
@@ -5016,7 +5068,8 @@ worktree to a particular state.")
         (base32 "0kdr8ahxl77fby89fvfwq13kqqyyw63pnjpv6gynz4gnbvd9r698"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-gloo-console" ,rust-gloo-console-0.2)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-gloo-console" ,rust-gloo-console-0.2)
                        ("rust-gloo-dialogs" ,rust-gloo-dialogs-0.1)
                        ("rust-gloo-events" ,rust-gloo-events-0.1)
                        ("rust-gloo-file" ,rust-gloo-file-0.2)
@@ -5276,7 +5329,8 @@ worktree to a particular state.")
         (base32 "1am31cd6889shb7158bg9zzsjcpvyzxrhfhxgia8rc8k84smam8b"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-js-sys" ,rust-js-sys-0.3)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-js-sys" ,rust-js-sys-0.3)
                        ("rust-serde" ,rust-serde-1)
                        ("rust-serde-json" ,rust-serde-json-1)
                        ("rust-wasm-bindgen" ,rust-wasm-bindgen-0.2)
@@ -5498,7 +5552,8 @@ library.")
         (base32 "1wa1vy1xs3mp11bn3z9dv0jricgr6a2j0zkf1g19yz3vw4il89z5"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
                        ("rust-allocator-api2" ,rust-allocator-api2-0.2)
                        ("rust-compiler-builtins" ,rust-compiler-builtins-0.1)
                        ("rust-equivalent" ,rust-equivalent-1)
@@ -5605,7 +5660,8 @@ library.")
         (base32 "0n426lmcxas6h75c2cp25m933pswlrfjz10v91vc62vib2sdvf91"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bytes" ,rust-bytes-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bytes" ,rust-bytes-1)
                        ("rust-fnv" ,rust-fnv-1)
                        ("rust-itoa" ,rust-itoa-1))
        #:cargo-development-inputs (("rust-doc-comment" ,rust-doc-comment-0.3)
@@ -5633,7 +5689,8 @@ responses.")
         (base32 "16pspkgizcnsr1qcpqvm5l45nfwk7244q9av56cqqwm40slg1gxv"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bytes" ,rust-bytes-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bytes" ,rust-bytes-1)
                        ("rust-futures-channel" ,rust-futures-channel-0.3)
                        ("rust-futures-util" ,rust-futures-util-0.3)
                        ("rust-h2" ,rust-h2-0.4)
@@ -5711,7 +5768,8 @@ responses.")
         (base32 "1d1iwrkysjhq63pg54zk3vfby1j7zmxzm9zzyfr4lwvp0szcybfz"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bytes" ,rust-bytes-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bytes" ,rust-bytes-1)
                        ("rust-futures-channel" ,rust-futures-channel-0.3)
                        ("rust-futures-util" ,rust-futures-util-0.3)
                        ("rust-http" ,rust-http-1)
@@ -5747,7 +5805,8 @@ responses.")
         (base32 "0yyrx3prh5lvgrjxg046sd28hgjxvwg1f2kinffwwv1c4x8831gg"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-serde" ,rust-serde-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-serde" ,rust-serde-1)
                        ("rust-serde-derive" ,rust-serde-derive-1)
                        ("rust-smallvec" ,rust-smallvec-1))
        #:cargo-development-inputs (("rust-criterion" ,rust-criterion-0.3))))
@@ -5769,7 +5828,8 @@ responses.")
         (base32 "17gnr6ifnpzvhjf6dwbl9hki8x6bji5mwcqp0048x1jm5yfi742n"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bytemuck" ,rust-bytemuck-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bytemuck" ,rust-bytemuck-1)
                        ("rust-byteorder" ,rust-byteorder-1)
                        ("rust-color-quant" ,rust-color-quant-1)
                        ("rust-dav1d" ,rust-dav1d-0.10)
@@ -5928,7 +5988,8 @@ common image formats.")
         (base32 "11hiy3qzl643zcigknclh446qb9zlg4dpdzfkjaa9q9fqpgyfgj1"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-either" ,rust-either-1))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-either" ,rust-either-1))
        #:cargo-development-inputs (("rust-criterion" ,rust-criterion-0.4)
                                    ("rust-paste" ,rust-paste-1)
                                    ("rust-permutohedron" ,rust-permutohedron-0.2)
@@ -6001,7 +6062,8 @@ common image formats.")
         (base32 "0v99rz97asnzapb0jsc3jjhvxpfxr7h7qd97yqyrf9i7viimbh99"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-wasm-bindgen" ,rust-wasm-bindgen-0.2))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-wasm-bindgen" ,rust-wasm-bindgen-0.2))
        #:cargo-development-inputs (("rust-wasm-bindgen-futures" ,rust-wasm-bindgen-futures-0.4)
                                    ("rust-wasm-bindgen-test" ,rust-wasm-bindgen-test-0.3)
                                    ("rust-web-sys" ,rust-web-sys-0.3))))
@@ -6128,7 +6190,8 @@ JSON-Schema-Test-Suite.")
         (base32 "0y3mq8aagjikdjag2629kjzbd1vsi5vpqy58yh1wp6rc2h3gs2pc"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
                        ("rust-anyhow" ,rust-anyhow-1)
                        ("rust-base64" ,rust-base64-0.22)
                        ("rust-bytecount" ,rust-bytecount-0.6)
@@ -6177,7 +6240,8 @@ JSON-Schema-Test-Suite.")
         (base32 "0c7bj54rwnpp99d5rnmr60vwqisqvivnh22jzyhvv1mk1fnqjx2h"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-ahash" ,rust-ahash-0.8)
                        ("rust-anyhow" ,rust-anyhow-1)
                        ("rust-base64" ,rust-base64-0.22)
                        ("rust-bytecount" ,rust-bytecount-0.6)
@@ -6322,7 +6386,8 @@ JSON-Schema-Test-Suite.")
         (base32 "1zk6dqqni0193xg6iijh7i3i44sryglwgvx20spdvwk3r6sbrlmv"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-spin" ,rust-spin-0.9))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-spin" ,rust-spin-0.9))
        #:cargo-development-inputs (("rust-doc-comment" ,rust-doc-comment-0.3)
                                    ("rust-trybuild" ,rust-trybuild-1))))
     (home-page "https://github.com/rust-lang-nursery/lazy-static.rs")
@@ -6366,7 +6431,8 @@ JSON-Schema-Test-Suite.")
         (base32 "1zv1bd2jrlpy97a5l40wffj2y39vx6fspp2wckz578xxk747y0n6"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.21)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.21)
                        ("rust-futures-util" ,rust-futures-util-0.3)
                        ("rust-ldap3-proto" ,rust-ldap3-proto-0.5)
                        ("rust-openssl" ,rust-openssl-0.10)
@@ -6396,7 +6462,8 @@ JSON-Schema-Test-Suite.")
         (base32 "07j1wwm23xhpzwaqcrgggydrr1yd1lqm9b2j1yklsfwxnk0lg879"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.21)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.21)
                        ("rust-bytes" ,rust-bytes-1)
                        ("rust-lber" ,rust-lber-0.4)
                        ("rust-nom" ,rust-nom-7)
@@ -6547,7 +6614,8 @@ formats (ZLIB, GZIP).")
         (base32 "06q2q776drhy61zifwz1kgxkprc00yw7kvg9arydd1y73wlw0jrw"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-lazy-static" ,rust-lazy-static-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-lazy-static" ,rust-lazy-static-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-paste" ,rust-paste-1))))
     (home-page "https://github.com/csnewman/libnss-rs")
@@ -6569,7 +6637,8 @@ formats (ZLIB, GZIP).")
         (base32 "1ym7x39ihcf2s0iyd3iqk6i283kgxcrdc7hxig94cybi7p83by19"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bindgen" ,rust-bindgen-0.60)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bindgen" ,rust-bindgen-0.60)
                        ("rust-cc" ,rust-cc-1)
                        ("rust-openssl-sys" ,rust-openssl-sys-0.9)
                        ("rust-pkg-config" ,rust-pkg-config-0.3)
@@ -6751,7 +6820,8 @@ and attach/detach semantics.")
         (base32 "1lzsl0khrcmdfqimywccmqhrl9ww5brxhpwqii0q3qv8v9yflbbv"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-crc32fast" ,rust-crc32fast-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-crc32fast" ,rust-crc32fast-1)
                        ("rust-fallible-collections" ,rust-fallible-collections-0.4)
                        ("rust-flate2" ,rust-flate2-1)
                        ("rust-libc" ,rust-libc-0.2)
@@ -6777,7 +6847,8 @@ and attach/detach semantics.")
         (base32 "0f1a7cgqxbyhrmgaqqa11m3azwhcc36w0v5r4izgbhadl3sg8k13"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-hashbrown" ,rust-hashbrown-0.15))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-hashbrown" ,rust-hashbrown-0.15))
        #:cargo-development-inputs (("rust-scoped-threadpool" ,rust-scoped-threadpool-0.1)
                                    ("rust-stats-alloc" ,rust-stats-alloc-0.1))))
     (home-page "https://github.com/jeromefroe/lru-rs")
@@ -6862,7 +6933,8 @@ and attach/detach semantics.")
         (base32 "1v4v97vf54cjf4iwlnf7i92wal7b0rb8slngh7anm6jcis9vyhls"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-blas" ,rust-blas-0.22)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-blas" ,rust-blas-0.22)
                        ("rust-blas-src" ,rust-blas-src-0.8)
                        ("rust-blas-sys" ,rust-blas-sys-0.7)
                        ("rust-lapack" ,rust-lapack-0.19)
@@ -6961,7 +7033,8 @@ routines for 1, 2 or 3 byte search and single substring search.")
         (base32 "0csnyrxc16i592gm5ffham07jyj2w98qsh9jyy1rv59lmr8474b8"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-libmimalloc-sys" ,rust-libmimalloc-sys-0.1))))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-libmimalloc-sys" ,rust-libmimalloc-sys-0.1))))
     (home-page "https://github.com/purpleprotocol/mimalloc_rust")
     (synopsis "Performance and security oriented drop-in allocator")
     (description
@@ -7144,7 +7217,8 @@ routines for 1, 2 or 3 byte search and single substring search.")
         (base32 "1jfkadljx2rs7bhh22w5scsgg38i2zq044hrkilkxs9x83blmbxf"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-serde" ,rust-serde-1))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-serde" ,rust-serde-1))
        #:cargo-development-inputs (("rust-serde-json" ,rust-serde-json-1))))
     (home-page "https://github.com/cloudhead/nonempty")
     (synopsis "Correct by construction non-empty vector")
@@ -7165,7 +7239,8 @@ routines for 1, 2 or 3 byte search and single substring search.")
         (base32 "06a2wsi514dhrq8q5ghsvkgwj7n0pliid5plipxpdrwvnhg2r0gl"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-crossbeam-channel" ,rust-crossbeam-channel-0.5)
                        ("rust-file-id" ,rust-file-id-0.1)
                        ("rust-notify" ,rust-notify-6)
                        ("rust-parking-lot" ,rust-parking-lot-0.12)
@@ -7221,7 +7296,8 @@ routines for 1, 2 or 3 byte search and single substring search.")
         (base32 "0zwkmwxwygl4fwghgyanixzqgn7yvkwwwacdghz7x124v36l3263"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.13)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.13)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-curl" ,rust-curl-0.4)
                        ("rust-getrandom" ,rust-getrandom-0.2)
@@ -7421,7 +7497,8 @@ move to more appropriate crates if we find them.")
         (base32 "1xbiz2bmba2fibg70s462yk2fndp3f9vz11c7iw0ilh2y54bqx31"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-2)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bitflags" ,rust-bitflags-2)
                        ("rust-cfg-if" ,rust-cfg-if-1)
                        ("rust-foreign-types" ,rust-foreign-types-0.3)
                        ("rust-libc" ,rust-libc-0.2)
@@ -7543,7 +7620,8 @@ move to more appropriate crates if we find them.")
         (base32 "0m2cg0kqv8hplm3w6aajjm4yl05k19a5k9bidzmjyv8fphvxk4cm"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-opentelemetry-api" ,rust-opentelemetry-api-0.20)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-opentelemetry-api" ,rust-opentelemetry-api-0.20)
                        ("rust-opentelemetry-sdk" ,rust-opentelemetry-sdk-0.20))
        #:cargo-development-inputs (("rust-opentelemetry-stdout" ,rust-opentelemetry-stdout-0.1))))
     (home-page "https://github.com/open-telemetry/opentelemetry-rust")
@@ -7672,7 +7750,8 @@ strategies.")
         (base32 "0x8jghmb6qd9im2ahs5z1swgkmxlks9vxbzsyfcl11im85f5lpky"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
                        ("rust-futures-core" ,rust-futures-core-0.3)
                        ("rust-grpcio" ,rust-grpcio-0.12)
                        ("rust-http" ,rust-http-0.2)
@@ -7886,7 +7965,8 @@ defined in SP 800-186.")
         (base32 "02pxffpdqkapy292harq6asfjvadgp1s005fip9ljfsn9fvxgh2p"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-development-inputs (("rust-paste-test-suite" ,rust-paste-test-suite-0.0.0)
+     `(#:skip-build? #t
+       #:cargo-development-inputs (("rust-paste-test-suite" ,rust-paste-test-suite-0.0.0)
                                    ("rust-rustversion" ,rust-rustversion-1)
                                    ("rust-trybuild" ,rust-trybuild-1))))
     (home-page "https://github.com/dtolnay/paste")
@@ -7953,7 +8033,8 @@ defined in SP 800-186.")
         (base32 "13qfwkmlmm3wbwzsrc3bkb16m1xjd5w7aah5cvpx2ipk5nq86li9"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-peg-macros" ,rust-peg-macros-0.8)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-peg-macros" ,rust-peg-macros-0.8)
                        ("rust-peg-runtime" ,rust-peg-runtime-0.8))
        #:cargo-development-inputs (("rust-trybuild" ,rust-trybuild-1)
                                    ("rust-version-check" ,rust-version-check-0.9))))
@@ -8022,7 +8103,8 @@ generator.")
         (base32 "1ns7mbxidnn2pqahbbjccxkrqkrll2i5rbxx43ns6rh6fn3cridl"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-fixedbitset" ,rust-fixedbitset-0.4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-fixedbitset" ,rust-fixedbitset-0.4)
                        ("rust-indexmap" ,rust-indexmap-2)
                        ("rust-quickcheck" ,rust-quickcheck-0.8)
                        ("rust-rayon" ,rust-rayon-1)
@@ -8328,7 +8410,8 @@ generator.")
         (base32 "1wk6yp2phl91795ia0lwkr3wl4a9xkrympvhqq8cxk4d75hwhglm"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-development-inputs (("rust-lazy-static" ,rust-lazy-static-1))))
+     `(#:skip-build? #t
+       #:cargo-development-inputs (("rust-lazy-static" ,rust-lazy-static-1))))
     (home-page "https://github.com/rust-lang/pkg-config-rs")
     (synopsis
      "library to run the pkg-config system tool at build time in order to be used in
@@ -8637,7 +8720,8 @@ in order to be used in Cargo build scripts.")
         (base32 "0lkgnid3sjfbqf3sbcgyihlw80a6n9l6m0n23b7f5pm927qk96h5"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-libc" ,rust-libc-0.2)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-libc" ,rust-libc-0.2)
                        ("rust-nix" ,rust-nix-0.14))))
     (home-page "https://github.com/viraptor/prctl-rs")
     (synopsis
@@ -8689,7 +8773,8 @@ equation coefficients.")
         (base32 "0vlq56v41dsj69pnk7lil7fxvbfid50jnzdn3xnr31g05mkb0fgi"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-unicode-ident" ,rust-unicode-ident-1))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-unicode-ident" ,rust-unicode-ident-1))
        #:cargo-development-inputs (("rust-flate2" ,rust-flate2-1)
                                    ("rust-quote" ,rust-quote-1)
                                    ("rust-rayon" ,rust-rayon-1)
@@ -8805,7 +8890,8 @@ non-@code{WebAssembly} targets.")
         (base32 "0zzmrwb44r17zn0hkpin0yldwxjdwya2nkvv23jwcc1nbx2z3lhn"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-checked-int-cast" ,rust-checked-int-cast-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-checked-int-cast" ,rust-checked-int-cast-1)
                        ("rust-image" ,rust-image-0.23))
        #:cargo-development-inputs (("rust-image" ,rust-image-0.23))))
     (home-page "https://github.com/kennytm/qrcode-rust")
@@ -8918,7 +9004,8 @@ non-@code{WebAssembly} targets.")
         (base32 "19xcmh445bg6simirnnd4fvkmp6v2qiwxh5f6rw4a70h76pnm9qg"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1))
        #:cargo-development-inputs (("rust-rustversion" ,rust-rustversion-1)
                                    ("rust-trybuild" ,rust-trybuild-1))))
     (home-page "https://github.com/dtolnay/quote")
@@ -9056,7 +9143,8 @@ finite automata and guarantees linear time matching on all inputs.")
         (base32 "0vq40h75fmrkfjyyjxl84g0pzjzz0n989ag1cajy17g78spn4z57"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-compression" ,rust-async-compression-0.4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-compression" ,rust-async-compression-0.4)
                        ("rust-base64" ,rust-base64-0.22)
                        ("rust-bytes" ,rust-bytes-1)
                        ("rust-cookie" ,rust-cookie-0.18)
@@ -9234,7 +9322,8 @@ common convenience methods and implements standard Rust traits to make
         (base32 "0gvy3lcpph9vv1rl0cjfn72ylvmgbw2vklmj6w0iv4cpr3ijniw0"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-libc" ,rust-libc-0.2)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-libc" ,rust-libc-0.2)
                        ("rust-rtoolbox" ,rust-rtoolbox-0.0.1)
                        ("rust-windows-sys" ,rust-windows-sys-0.48))))
     (home-page "https://github.com/conradkleinespel/rpassword")
@@ -9277,7 +9366,8 @@ common convenience methods and implements standard Rust traits to make
         (base32 "0aj2jvlcdy1miahy6wsia50ak26q3ziynl8yx0raqffb7sy17qh1"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bitflags" ,rust-bitflags-1)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-csv" ,rust-csv-1)
                        ("rust-fallible-iterator" ,rust-fallible-iterator-0.2)
@@ -9726,7 +9816,8 @@ programming.")
         (base32 "0la4d28ym4rarm8bax07yh9f5r0jb2iqxwmjz00ffgirgxghrqhv"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-sendfd" ,rust-sendfd-0.4))))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-sendfd" ,rust-sendfd-0.4))))
     (home-page "https://github.com/lnicola/sd-notify")
     (synopsis "Lightweight crate for systemd service state notifications")
     (description
@@ -9816,7 +9907,8 @@ programming.")
         (base32 "1d9hkh8p38ys8igv45rqg1ibsx8zhm8z2fm3pnv5wc41di1v4f81"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bitflags" ,rust-bitflags-2)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bitflags" ,rust-bitflags-2)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-once-cell" ,rust-once-cell-1)
                        ("rust-reference-counted-singleton" ,rust-reference-counted-singleton-0.1)
@@ -9867,7 +9959,8 @@ programming.")
         (base32 "1danzh1zw9pg10y3bg0b7bvbkqbk5dfpiwchg2ni4757mj9k2p7m"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-serde-derive" ,rust-serde-derive-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-serde-derive" ,rust-serde-derive-1)
                        ("rust-serde-derive" ,rust-serde-derive-1))
        #:cargo-development-inputs (("rust-serde-derive" ,rust-serde-derive-1))))
     (home-page "https://serde.rs")
@@ -9954,7 +10047,8 @@ programming.")
         (base32 "00yv8vyn1qiplziswm1vwam4a0xs1rfr162q75njc85kyjpvy9np"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-indexmap" ,rust-indexmap-2)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-indexmap" ,rust-indexmap-2)
                        ("rust-itoa" ,rust-itoa-1)
                        ("rust-memchr" ,rust-memchr-2)
                        ("rust-ryu" ,rust-ryu-1)
@@ -10052,7 +10146,8 @@ programming.")
         (base32 "05z83zkx9q8k4yw3z7isb3l95c5k43q0hwcz8h739f5jdnnvsa4f"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.22)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.22)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-doc-comment" ,rust-doc-comment-0.3)
                        ("rust-document-features" ,rust-document-features-0.2)
@@ -10208,7 +10303,8 @@ programming.")
         (base32 "11mjg1n4hl945m15xzany4w9wpwpk8qjykvm5pa130wdf84r1rw8"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64ct" ,rust-base64ct-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64ct" ,rust-base64ct-1)
                        ("rust-rand" ,rust-rand-0.8)
                        ("rust-sha2" ,rust-sha2-0.10)
                        ("rust-subtle" ,rust-subtle-2))))
@@ -10329,7 +10425,8 @@ implemented by the POSIX crypt C library.")
         (base32 "1q3vkj3k5qb38bbdky94kvkqb4w421c5zinnwwlm5p0mzvl75lx8"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-smallvec" ,rust-smallvec-1))))
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-smallvec" ,rust-smallvec-1))))
     (home-page "https://github.com/hbina/smolset")
     (synopsis
      "\"
@@ -10414,7 +10511,8 @@ insert and find) and more features!")
         (base32 "00jskqmrczi7msz8h65qgm85j9nm6lgaxh0p9xn1dfl7vsm5wa1l"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64" ,rust-base64-0.21)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64" ,rust-base64-0.21)
                        ("rust-base64urlsafedata" ,rust-base64urlsafedata-0.5)
                        ("rust-nom" ,rust-nom-7)
                        ("rust-openssl" ,rust-openssl-0.10)
@@ -10528,6 +10626,7 @@ Interface (SSPI) API.")
        (sha256
         (base32 "04kim0zxjfcif7aksd4rwrsgxva5hr24hhjd6z94k13y6fnibn02"))))
     (build-system cargo-build-system)
+    (arguments `(#:skip-build? #t))
     (home-page "https://github.com/bodoni/svg")
     (synopsis "The package provides an SVG composer and parser")
     (description
@@ -10692,7 +10791,8 @@ absence of concurrency.")
         (base32 "0nyagmbd4v5g6nzfydiihcn6l9j1w9bxgzyca5lyzgnhcbyckwph"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-cfg-if" ,rust-cfg-if-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-cfg-if" ,rust-cfg-if-1)
                        ("rust-fastrand" ,rust-fastrand-2)
                        ("rust-once-cell" ,rust-once-cell-1)
                        ("rust-rustix" ,rust-rustix-0.38)
@@ -10841,7 +10941,8 @@ and should not be relied upon directly.")
         (base32 "1fwb4nm630hmy9cyl2ar6wxqckgvsakwhg1rhjza4is3a09k8pql"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-backtrace" ,rust-backtrace-0.3)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-backtrace" ,rust-backtrace-0.3)
                        ("rust-bytes" ,rust-bytes-1)
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-mio" ,rust-mio-1)
@@ -10911,7 +11012,8 @@ applications.")
         (base32 "1pga4xm5fcms6k1rqg4hsl8mmna7qiizhdlsgxbbffx4r94nipsr"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-openssl" ,rust-openssl-0.10)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-openssl" ,rust-openssl-0.10)
                        ("rust-openssl-sys" ,rust-openssl-sys-0.9)
                        ("rust-tokio" ,rust-tokio-1))
        #:cargo-development-inputs (("rust-futures-util" ,rust-futures-util-0.3)
@@ -11049,7 +11151,8 @@ implementation.")
         (base32 "0spc0g4irbnf2flgag22gfii87avqzibwfm0si0d1g0k9ijw7rv1"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-bytes" ,rust-bytes-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bytes" ,rust-bytes-1)
                        ("rust-futures-core" ,rust-futures-core-0.3)
                        ("rust-futures-io" ,rust-futures-io-0.3)
                        ("rust-futures-sink" ,rust-futures-sink-0.3)
@@ -11216,7 +11319,8 @@ clients and servers.")
         (base32 "1xakj3x0anp55gjqibiwvzma5iz0w9pcjsr7qk97sx4qm4sd970y"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-compression" ,rust-async-compression-0.4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-compression" ,rust-async-compression-0.4)
                        ("rust-base64" ,rust-base64-0.21)
                        ("rust-bitflags" ,rust-bitflags-2)
                        ("rust-bytes" ,rust-bytes-1)
@@ -11357,7 +11461,8 @@ clients and servers.")
         (base32 "0bsr88f4shanjr86ajrx9p8dmsfxxmr24a8llhxixpadn5fq6h7f"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-ansi-term" ,rust-ansi-term-0.12)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-ansi-term" ,rust-ansi-term-0.12)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-serde" ,rust-serde-1)
                        ("rust-smallvec" ,rust-smallvec-1)
@@ -11389,7 +11494,8 @@ clients and servers.")
         (base32 "1j6kzqphczra4q7vz0wdb0zkqyfb6s81cgsyiz1dsa3qcrmpqckm"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-trait" ,rust-async-trait-0.1)
                        ("rust-once-cell" ,rust-once-cell-1)
                        ("rust-opentelemetry" ,rust-opentelemetry-0.20)
                        ("rust-opentelemetry-sdk" ,rust-opentelemetry-sdk-0.20)
@@ -11748,7 +11854,8 @@ Templates up and to including ones designated Level 4.")
         (base32 "08xbxz3an28g0rv9agmqs1qix4nrrzppylw24r8clz901skb3by5"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-indexmap" ,rust-indexmap-2)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-indexmap" ,rust-indexmap-2)
                        ("rust-serde" ,rust-serde-1)
                        ("rust-serde-json" ,rust-serde-json-1)
                        ("rust-serde-yaml" ,rust-serde-yaml-0.9)
@@ -11801,7 +11908,8 @@ Templates up and to including ones designated Level 4.")
         (base32 "1npjm8cziq2wjgvjymjj6v4jrpxfa3h265ml0hg9c4f08f6qcf8b"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-actix-web" ,rust-actix-web-4)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-actix-web" ,rust-actix-web-4)
                        ("rust-axum" ,rust-axum-0.7)
                        ("rust-mime-guess" ,rust-mime-guess-2)
                        ("rust-regex" ,rust-regex-1)
@@ -11830,7 +11938,8 @@ Templates up and to including ones designated Level 4.")
         (base32 "0sj4l28lif2wm4xrafdfgqjywjzv43wzp8nii9a4i539myhg1igq"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-arbitrary" ,rust-arbitrary-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-arbitrary" ,rust-arbitrary-1)
                        ("rust-atomic" ,rust-atomic-0.6)
                        ("rust-borsh" ,rust-borsh-1)
                        ("rust-borsh-derive" ,rust-borsh-derive-1)
@@ -12187,7 +12296,8 @@ dependency.")
         (base32 "0zsyijv3wgj9p4q47a4awla8j4kw33jd7da2fsd1wml0nh6wn3my"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-futures" ,rust-futures-0.3)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-futures" ,rust-futures-0.3)
                        ("rust-js-sys" ,rust-js-sys-0.3)
                        ("rust-parking-lot" ,rust-parking-lot-0.11)
                        ("rust-pin-utils" ,rust-pin-utils-0.1)
@@ -12318,7 +12428,8 @@ dependency.")
         (base32 "1vrbs4pdw1ycbc8xy8dc636hq6q07pg72rkdikjgkrpirpd000hc"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-async-stream" ,rust-async-stream-0.3)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-async-stream" ,rust-async-stream-0.3)
                        ("rust-async-trait" ,rust-async-trait-0.1)
                        ("rust-authenticator-ctap2-2021" ,rust-authenticator-ctap2-2021-0.3)
                        ("rust-base64" ,rust-base64-0.21)
@@ -12376,7 +12487,8 @@ dependency.")
         (base32 "1h16yp1808ispkzkxavmq332fdpswqri9vp8yw33wvn2kvf7r7gv"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64urlsafedata" ,rust-base64urlsafedata-0.5)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64urlsafedata" ,rust-base64urlsafedata-0.5)
                        ("rust-serde" ,rust-serde-1)
                        ("rust-tracing" ,rust-tracing-0.1)
                        ("rust-url" ,rust-url-2)
@@ -12528,7 +12640,8 @@ specification.")
         (base32 "0vdvm6sga4v9515l6glqqfnmzp246nq66dd09cw5ri4fyn3mnb9p"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-redox-syscall" ,rust-redox-syscall-0.5)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-redox-syscall" ,rust-redox-syscall-0.5)
                        ("rust-wasite" ,rust-wasite-0.1)
                        ("rust-web-sys" ,rust-web-sys-0.3))))
     (home-page "https://github.com/ardaku/whoami/blob/v1/CHANGELOG.md")
@@ -12625,7 +12738,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "1zci61gds97n7v6pnfp75dd2xsdmna09wwg6nkn7h8jgfxhjfg8n"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12644,7 +12759,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "1lrcq38cr2arvmz19v32qaggvj8bh1640mdm9c2fr877h0hn591j"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12663,7 +12780,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "030arpfkvvjda1dgxlsgfmcr8kq83765k8v686wd607bpkr5y07g"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12682,7 +12801,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "0sfl0nysnz32yyfh773hpi49b1q700ah6y7sacmjbqjjn5xjmv09"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12746,7 +12867,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "02s4n5dymg33aky1dclpdnrvq0wcha3y8a5jnkw06bz3a4nxzd02"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12765,7 +12888,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "02zspglbykh1jh9pi7gn8g1f97jh1rrccni9ivmrfbl0mgamm6wf"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12784,7 +12909,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "0rpdx1537mw6slcpqa0rm3qixmsb79nbhqy5fsm3q2q9ik9m5vhf"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12803,7 +12930,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "1xsy70vjcfs811l0agg54lgkh1w59lmxfzghcwr2y7sp6il9d2jn"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -12822,7 +12951,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "0rkcqmp4zzmfvrrrx01260q3xkpzi6fzi2x2pgdcdry50ny4h294"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -13062,7 +13193,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "157rm1q3m6vsxzzmq953rp4624wnwwx96v89dlklwi6z3an5sfgw"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -13081,7 +13214,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "0y0sifqcb56a56mvn7xjgs8g43p33mfqkd8wj1yhrgxzma05qyhl"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -13100,7 +13235,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "1q5mvglb8djq3l910iwqrlhdqi67svd8m76mw4vb9m8mnwifrs4h"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -13119,7 +13256,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "03gda7zjx1qh8k9nnlgb7m3w3s1xkysg55hkd1wjch8pqhyv5m94"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -13138,7 +13277,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "09krzmz8x1ckf8yc9kf5c6zpkrsybvigc4hmvwcr0rkb47q635wb"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -13157,7 +13298,9 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "1v7rb5cibyzx8vak29pdrk8nx9hycsjs4w0jgms08qk49jl6v7sq"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t))
+     `(#:skip-build? #t
+       #:phases (modify-phases %standard-phases
+                  (delete 'check-for-pregenerated-files))))
     (home-page "https://github.com/microsoft/windows-rs")
     (synopsis "Import lib for Windows")
     (description "This package provides Import lib for Windows.")
@@ -13201,7 +13344,8 @@ UTF-32, malformed encoding, C-style strings, etc.")
         (base32 "1k7igb7w30b9jshb72jaflhswsar892v8gicjg10rds38gjczgjx"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-base64ct" ,rust-base64ct-1)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-base64ct" ,rust-base64ct-1)
                        ("rust-bincode" ,rust-bincode-1)
                        ("rust-console-error-panic-hook" ,rust-console-error-panic-hook-0.1)
                        ("rust-futures" ,rust-futures-0.3)
@@ -13274,7 +13418,8 @@ applications.")
         (base32 "0vhl0k7nclh2653ga9ikbxavnncdnm4brgczwg2scwi5dm4f0vj2"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-gloo" ,rust-gloo-0.8)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-gloo" ,rust-gloo-0.8)
                        ("rust-js-sys" ,rust-js-sys-0.3)
                        ("rust-route-recognizer" ,rust-route-recognizer-0.3)
                        ("rust-serde" ,rust-serde-1)
@@ -13610,7 +13755,8 @@ works everywhere, even WASM!")
         (base32 "1r4l1i76sdk51syp032kbjngmxwgqhjprs40yfda43ppzx8shgqh"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-derive-builder" ,rust-derive-builder-0.12)
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-derive-builder" ,rust-derive-builder-0.12)
                        ("rust-fancy-regex" ,rust-fancy-regex-0.11)
                        ("rust-itertools" ,rust-itertools-0.10)
                        ("rust-js-sys" ,rust-js-sys-0.3)
