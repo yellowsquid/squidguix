@@ -45,7 +45,7 @@
     (build-system cargo-build-system)
     (arguments
      `(#:install-source? #f
-       #:rust ,rust-1.79
+       #:rust ,rust-1.81
        #:tests? #f ;needs rustdoc, which requires rebuilding rust
        #:cargo-inputs (("rust-anyhow" ,rust-anyhow-1)
                        ("rust-argon2" ,rust-argon2-0.5)
